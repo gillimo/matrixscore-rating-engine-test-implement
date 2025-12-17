@@ -1,0 +1,619 @@
+﻿# -*- coding: utf-8 -*-
+import math
+import threading
+import tkinter as tk
+from tkinter import ttk, messagebox
+import os
+import json
+import base64
+import io
+from pathlib import Path
+from PIL import Image, ImageTk
+
+import requests
+
+POKEAPI_BASE = "https://pokeapi.co/api/v2"
+EXCLUDED_TYPES = {"shadow", "unknown"}
+TRACE_FUNCTIONS = False  # tracing hard-disabled to keep GUI quiet
+
+TYPE_COLORS = {
+    "normal": "#A8A77A",
+    "fire": "#EE8130",
+    "water": "#6390F0",
+    "electric": "#F7D02C",
+    "grass": "#7AC74C",
+    "ice": "#96D9D6",
+    "fighting": "#C22E28",
+    "poison": "#A33EA1",
+    "ground": "#E2BF65",
+    "flying": "#A98FF3",
+    "psychic": "#F95587",
+    "bug": "#A6B91A",
+    "rock": "#B6A136",
+    "ghost": "#735797",
+    "dragon": "#6F35FC",
+    "dark": "#705746",
+    "steel": "#B7B7CE",
+    "fairy": "#D685AD",
+}
+ROLE_MOVE_MIX = {
+    "sweeper": "Prefers 1 STAB, 2 coverage hitting team weaknesses, and 1 priority/recoil or setup flex slot.",
+    "tank": "Prefers heal/screen/hazard control first, plus 1 STAB and 1 coverage; utility takes priority.",
+    "balanced": "Prefers 1 status/control, 1 STAB, 1 coverage, and 1 flex utility/buff slot.",
+}
+DEFAULT_ROLE_MOVE_MIX = "Prefers a balanced mix of STAB, coverage, and utility tuned to the team."
+# Local fallback: use bundled icons (add PNGs under icons/types/{type}.png)
+TYPE_ICON_URL = None
+TYPE_ICON_LOCAL = Path(__file__).with_name("icons").joinpath("types", "{type}.png")
+SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png"
+TYPE_ICON_CACHE = {}
+TYPE_ICON_CACHE_DIM = {}
+STATS_CACHE = {}
+
+
+def trace_call(fn):
+    """Wrapper to print entry/exit when tracing is enabled."""
+    def wrapper(*args, **kwargs):
+        result = fn(*args, **kwargs)
+        return result
+    return wrapper
+
+
+def fetch_json(url: str):
+    resp = requests.get(url, timeout=15)
+    resp.raise_for_status()
+    return resp.json()
+
+def fetch_base_stat_total(name: str):
+    key = (name or "").lower()
+    if not key:
+        return 0
+    if key in STATS_CACHE:
+        return STATS_CACHE[key]
+    try:
+        data = fetch_json(f"{POKEAPI_BASE}/pokemon/{key}")
+        total = sum(s.get("base_stat", 0) for s in data.get("stats", []))
+        STATS_CACHE[key] = total
+        return total
+    except Exception:
+        STATS_CACHE[key] = 0
+        return 0
+
+def load_payload_team():
+    payload_path = os.environ.get("TEAM_PAYLOAD_PATH")
+    if not payload_path:
+        return None, None
+    try:
+        with open(payload_path, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        team_data = payload.get("team", [])
+        role_move_mix = payload.get("role_move_mix", {})
+        # Expect list of {name, types, suggested_moves}
+        team = []
+        for entry in team_data:
+            team.append(
+                {
+                    "name": entry.get("name", ""),
+                    "types": entry.get("types", []),
+                    "source": "payload",
+                    "suggested_moves": entry.get("suggested_moves", []),
+                    "suggested_by_category": entry.get("suggested_by_category", {}),
+                    "role": entry.get("role", ""),
+                }
+            )
+        return team, role_move_mix
+    except Exception:
+        return None, None
+
+def fetch_types():
+    listing = fetch_json(f"{POKEAPI_BASE}/type")
+    results = [t for t in listing["results"] if t["name"] not in EXCLUDED_TYPES]
+    details = []
+    for t in results:
+        data = fetch_json(t["url"])
+        rel = data["damage_relations"]
+        details.append(
+            {
+                "name": t["name"],
+                "double_damage_to": [x["name"] for x in rel["double_damage_to"]],
+                "half_damage_to": [x["name"] for x in rel["half_damage_to"]],
+                "no_damage_to": [x["name"] for x in rel["no_damage_to"]],
+            }
+        )
+    return details
+
+def build_matrix(details):
+    attack_types = [d["name"] for d in details]
+    matrix = {a: {d: 1.0 for d in attack_types} for a in attack_types}
+    for d in details:
+        atk = d["name"]
+        for target in d["double_damage_to"]:
+            matrix[atk][target] = 2.0
+        for target in d["half_damage_to"]:
+            matrix[atk][target] = 0.5
+        for target in d["no_damage_to"]:
+            matrix[atk][target] = 0.0
+    return matrix
+
+def fetch_pokemon_typing(name: str):
+    data = fetch_json(f"{POKEAPI_BASE}/pokemon/{name.lower()}")
+    types = sorted(data["types"], key=lambda x: x["slot"])
+    return [t["type"]["name"] for t in types]
+
+def fetch_sprite_image(name: str):
+    try:
+        data = fetch_json(f"{POKEAPI_BASE}/pokemon/{name.lower()}")
+        sprite_url = (
+            data.get("sprites", {})
+            .get("other", {})
+            .get("official-artwork", {})
+            .get("front_default")
+            or data.get("sprites", {}).get("front_default")
+        )
+        if not sprite_url:
+            return None
+        img_bytes = requests.get(sprite_url, timeout=15).content
+        im = Image.open(io.BytesIO(img_bytes)).convert("RGBA")
+        im.thumbnail((72, 72), Image.LANCZOS)
+        return ImageTk.PhotoImage(im)
+    except Exception:
+        return None
+
+def fetch_type_icon(t: str):
+    """Return lit icon; also populates dim cache."""
+    if t in TYPE_ICON_CACHE:
+        return TYPE_ICON_CACHE[t]
+    try:
+        path = str(TYPE_ICON_LOCAL).format(type=t)
+        with open(path, "rb") as f:
+            img_bytes = f.read()
+        im = Image.open(io.BytesIO(img_bytes)).convert("RGBA")
+        im.thumbnail((40, 40), Image.LANCZOS)
+        icon = ImageTk.PhotoImage(im)
+        TYPE_ICON_CACHE[t] = icon
+        # dim version
+        dim_im = im.copy()
+        dim_im.putalpha(90)
+        TYPE_ICON_CACHE_DIM[t] = ImageTk.PhotoImage(dim_im)
+        return icon
+    except Exception:
+        TYPE_ICON_CACHE[t] = None
+        TYPE_ICON_CACHE_DIM[t] = None
+        return None
+
+def defensive_multiplier(attack_type: str, defense_types, matrix):
+    base = matrix.get(attack_type)
+    if not base:
+        return 1.0
+    mult = 1.0
+    for dt in defense_types:
+        mult *= base.get(dt, 1.0)
+    return mult
+
+def compute_coverage(team, matrix):
+    attacks = list(matrix.keys())
+    cov = []
+    for atk in attacks:
+        weak = resist = immune = neutral = 0
+        for member in team:
+            if not member["types"]:
+                continue
+            m = defensive_multiplier(atk, member["types"], matrix)
+            if m == 0:
+                immune += 1
+            elif m > 1:
+                weak_inc = 1.0
+                if atk in member["types"]:
+                    weak_inc *= 0.25
+                weak += weak_inc
+            elif m < 1:
+                resist += 1
+            else:
+                neutral += 1
+        size = sum(1 for m in team if m["types"])
+        cov.append(
+            {
+                "attack": atk,
+                "weak": weak,
+                "resist": resist,
+                "immune": immune,
+                "neutral": neutral,
+                "size": size,
+            }
+        )
+    return cov
+def team_type_presence(team):
+    """Return a set of defensive types present on the team."""
+    present = set()
+    for member in team:
+        for t in member.get("types") or []:
+            present.add(t)
+    return present
+
+
+def get_icon_for_type(t, lit=True):
+    # Return cached icon, optionally dimmed
+    icon = fetch_type_icon(t)
+    if not icon:
+        return None
+    if lit:
+        return icon
+    return TYPE_ICON_CACHE_DIM.get(t) or icon
+def typing_score(cov):
+    total_weak = sum(c["weak"] for c in cov)
+    total_resist = sum(c["resist"] for c in cov)
+    total_immune = sum(c["immune"] for c in cov)
+    net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
+    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+    def_score = (
+        100
+        - 2.1 * total_weak
+        + 1.4 * total_resist
+        + 2.2 * total_immune
+        - 12 * net_exposed
+        - 14 * stack_overlap
+    )
+    return max(0, min(100, int(def_score)))
+
+def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
+    move_types = set()
+    for info in team_infos:
+        for m in info.get("suggested_moves", []):
+            if m.get("type"):
+                move_types.add(m["type"])
+    if not move_types:
+        return 0
+    exposures = []
+    for c in cov:
+        exposure = max(0, c["weak"] - (c["resist"] + c["immune"]))
+        exposures.append((c["attack"], exposure))
+    exposures.sort(key=lambda x: x[1], reverse=True)
+    max_exposure = exposures[0][1] if exposures else 0
+    exposure_weight = {t: (exp / max_exposure) if max_exposure > 0 else 0 for t, exp in exposures}
+    weak_types = {t for t, exp in exposures if exp > 0}
+
+    total = 0.0
+    se_types = set()
+    for def_type in attack_types:
+        best = 1.0
+        for atk_type in move_types:
+            mult = chart[atk_type].get(def_type, 1.0)
+            if mult > best:
+                best = mult
+        if best > 1.0:
+            base = 0.35
+        elif best == 1.0:
+            base = 0.06
+        else:
+            base = 0.0
+        multiplier = 1.0
+        if def_type in weak_types and best >= 1.0:
+            weight = 1 + 1.6 * exposure_weight.get(def_type, 0)
+            multiplier *= weight
+        if best >= 2.0:
+            se_types.add(def_type)
+            se_mult = 1.15 if def_type in weak_types else 0.65
+            multiplier *= se_mult
+        elif best < 1 and def_type in weak_types:
+            multiplier *= 0.6
+        total += base * multiplier
+    raw = (total / len(attack_types)) * 100
+    breadth_bonus = min(5.0, len(se_types) * 0.8)
+    diversity = len(move_types)
+    diversity_bonus = min(4.0, max(0, diversity - 2) * 0.7)
+    se_penalty = max(0, 18 - len(se_types)) * 0.7
+    off_score = max(0, min(100, raw + breadth_bonus + diversity_bonus - se_penalty))
+    if off_score > 80:
+        off_score = 80 + (off_score - 80) * 0.55
+    return int(off_score)
+
+def typing_delta_display(team, add_types, matrix, attack_types, base_cov=None, base_score=None):
+    if base_cov is None:
+        base_cov = compute_coverage(team, matrix)
+    if base_score is None:
+        base_score = typing_score(base_cov)
+    sim_cov = compute_coverage(team + [{"name": "sim", "types": add_types, "source": "sim"}], matrix)
+    sim_score = typing_score(sim_cov)
+    return sim_score - base_score, sim_score, base_score
+
+def adjust_color(hex_color: str, factor: float):
+    hex_color = hex_color.lstrip("#")
+    r, g, b = tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+    r = max(0, min(255, int(r * factor)))
+    g = max(0, min(255, int(g * factor)))
+    b = max(0, min(255, int(b * factor)))
+    return f"#{r:02X}{g:02X}{b:02X}"
+
+class App:
+    def __init__(self, root: tk.Tk):
+        self.root = root
+        self.root.title("PokeAPI Team Wheel (Tk)")
+        self._set_initial_geometry()
+        self.root.configure(bg="#e8f2ff")
+
+        self.status_var = tk.StringVar(value="Team view ready.")
+        payload_team, role_move_mix = load_payload_team()
+        self.role_move_mix = role_move_mix or ROLE_MOVE_MIX
+        if payload_team:
+            base_team = payload_team[:6]
+            while len(base_team) < 6:
+                base_team.append({"name": "", "types": [], "source": ""})
+            self.team = base_team
+            self.payload_moves = [t.get("suggested_moves", []) for t in payload_team[:6]]
+            self.payload_by_cat = [t.get("suggested_by_category", {}) for t in payload_team[:6]]
+        else:
+            self.team = [{"name": "", "types": [], "source": ""} for _ in range(6)]
+            self.payload_moves = [[] for _ in range(6)]
+            self.payload_by_cat = [{} for _ in range(6)]
+        self.sprite_cache = {}
+        self.cached_move_blocks = [None] * 6
+
+        self._build_ui()
+        self._render_payload_panel()
+
+    def _set_initial_geometry(self):
+        # Size window relative to screen, with sensible bounds
+        self.root.update_idletasks()
+        sw = self.root.winfo_screenwidth()
+        sh = self.root.winfo_screenheight()
+        width = min(1600, max(1100, int(sw * 0.85)))
+        height = min(1000, max(800, int(sh * 0.85)))
+        self.root.geometry(f"{width}x{height}")
+        self.root.minsize(900, 720)
+
+    def _build_ui(self):
+        style = ttk.Style()
+        style.theme_use("default")
+        style.configure("TFrame", background="#e8f2ff")
+        style.configure("TLabel", background="#e8f2ff", foreground="#0f172a")
+        style.configure("Glass.TLabelframe", background="#f7fbff", bordercolor="#cbd5e1")
+        style.configure("Glass.TLabelframe.Label", background="#f7fbff")
+
+        wrapper = ttk.Frame(self.root)
+        wrapper.pack(fill="both", expand=True, padx=16, pady=12)
+
+        header = ttk.Frame(wrapper)
+        header.pack(fill="x", pady=(0, 8))
+        ttk.Label(header, text="Team Cards (PokeAPI)", font=("Segoe UI", 18, "bold")).pack(
+            anchor="w"
+        )
+        ttk.Label(
+            header,
+            text="Team cards only: typing, role, and move mix per slot.",
+            font=("Segoe UI", 10),
+        ).pack(anchor="w")
+
+        self.final_panel = ttk.Labelframe(wrapper, text="Team (6 slots)", style="Glass.TLabelframe")
+        self.final_panel.pack(fill="both", expand=True)
+
+        self.final_panel_inner = ttk.Frame(self.final_panel, padding=10)
+        self.final_panel_inner.pack(fill="both", expand=True)
+        for col in range(3):
+            self.final_panel_inner.columnconfigure(col, weight=1, uniform="cards")
+
+        status_bar = ttk.Frame(wrapper)
+        status_bar.pack(fill="x", pady=(8, 0))
+        ttk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic")).pack(
+            anchor="w"
+        )
+
+    def _load_types(self):
+        try:
+            details = fetch_types()
+            matrix = build_matrix(details)
+            self.types = [d["name"] for d in details]
+            self.matrix = matrix
+            self.status_var.set("Types loaded.")
+            self._redraw()
+            # if payload, refresh panel now that matrix is ready
+            self._render_payload_panel()
+        except Exception as exc:
+            self.status_var.set(f"Failed to load types: {exc}")
+            messagebox.showerror("Error", f"Failed to load types:\n{exc}")
+
+    def add_pokemon(self):
+        name = self.name_entry.get().strip()
+        if not name:
+            return
+        slot = next((i for i, m in enumerate(self.team) if not m["types"]), None)
+        if slot is None:
+            messagebox.showinfo("Team full", "All 6 slots are filled. Remove one first.")
+            return
+        self.status_var.set(f"Loading typing for {name}...")
+        threading.Thread(target=self._add_pokemon_thread, args=(name, slot), daemon=True).start()
+
+    def _add_pokemon_thread(self, name, slot):
+        try:
+            types = fetch_pokemon_typing(name)
+            self.team[slot] = {"name": name, "types": types, "source": "api"}
+            self.status_var.set(f"Added {name} ({', '.join(types)})")
+            self.cached_move_blocks[slot] = None
+            self._render_payload_panel()
+        except Exception as exc:
+            self.status_var.set(f"Failed to load {name}: {exc}")
+            messagebox.showerror("Error", f"Failed to load {name}:\n{exc}")
+
+    def apply_manual(self):
+        slot = next((i for i, m in enumerate(self.team) if not m["types"]), None)
+        if slot is None:
+            slot = 0
+        raw = self.manual_entry.get().strip()
+        parts = [p.strip().lower() for p in raw.split(",") if p.strip()]
+        if not parts:
+            return
+        self.team[slot] = {"name": "custom", "types": parts, "source": "manual"}
+        self.status_var.set(f"Manual types set: {', '.join(parts)} in slot {slot+1}")
+        self.cached_move_blocks[slot] = None
+        self._render_payload_panel()
+
+    def remove_slot(self, idx):
+        self.team[idx] = {"name": "", "types": [], "source": ""}
+        self.status_var.set(f"Cleared slot {idx+1}")
+        self.cached_move_blocks[idx] = None
+        self._render_payload_panel()
+
+    def _render_payload_panel(self):
+        for child in self.final_panel_inner.winfo_children():
+            child.destroy()
+
+        total_slots = 6
+        row = 0
+        col = 0
+        cols = 3
+        for idx in range(total_slots):
+            member = self.team[idx] if idx < len(self.team) else {"name": "", "types": [], "source": ""}
+            name = member.get("name") or f"Slot {idx+1}"
+            types = member.get("types") or []
+            role = (member.get("role") or "").lower() or "balanced"
+            role_label = role.title() if role else "Unassigned"
+            mix_text = self.role_move_mix.get(role, self.role_move_mix.get("balanced", DEFAULT_ROLE_MOVE_MIX))
+            cat_map = self._get_cached_move_options(idx, member)
+
+            card = ttk.Frame(self.final_panel_inner, padding=12, style="Glass.TLabelframe")
+            card.grid(row=row, column=col, sticky="nsew", padx=10, pady=10)
+            self.final_panel_inner.rowconfigure(row, weight=1)
+
+            header = ttk.Frame(card)
+            header.pack(fill="x")
+            img = None
+            if member.get("name"):
+                img = self.sprite_cache.get(member["name"])
+                if img is None:
+                    img = fetch_sprite_image(member["name"])
+                    self.sprite_cache[member["name"]] = img
+            if img:
+                lbl_img = ttk.Label(header, image=img)
+                lbl_img.image = img
+                lbl_img.pack(side="left", padx=(0, 10), pady=4)
+            ttk.Label(header, text=name.title(), font=("Segoe UI", 11, "bold")).pack(
+                anchor="w", pady=2, padx=2
+            )
+
+            ttk.Label(card, text=f"Role: {role_label}", foreground="#334155").pack(
+                anchor="w", padx=2, pady=(0, 2)
+            )
+            ttk.Label(
+                card,
+                text=mix_text,
+                wraplength=360,
+                foreground="#0f172a",
+                justify="left",
+            ).pack(anchor="w", padx=2, pady=(0, 6))
+
+            type_frame = ttk.Frame(card)
+            type_frame.pack(anchor="w", pady=(2, 8))
+            if types:
+                for t in types:
+                    color = TYPE_COLORS.get(t, "#94a3b8")
+                    icon = fetch_type_icon(t)
+                    if icon:
+                        lbl = ttk.Label(type_frame, image=icon)
+                        lbl.image = icon
+                        lbl.pack(side="left", padx=2)
+                    else:
+                        lbl = tk.Label(type_frame, text=t.upper(), bg=color, fg="#0b0d14", padx=6, pady=2)
+                        lbl.pack(side="left", padx=2)
+            else:
+                ttk.Label(type_frame, text="Types: --", foreground="#64748b").pack(anchor="w")
+
+            if cat_map:
+                for cat_label, moves in cat_map.items():
+                    row_frame = ttk.Frame(card)
+                    row_frame.pack(fill="x", pady=4)
+                    ttk.Label(row_frame, text=f"{cat_label}:", width=14).pack(side="left")
+                    ttk.Label(
+                        row_frame,
+                        text=self._summarize_moves(moves),
+                        wraplength=360,
+                        foreground="#0f4c81",
+                        justify="left",
+                    ).pack(side="left", fill="x", expand=True, padx=6)
+            else:
+                ttk.Label(card, text="No moves cached for this slot.", foreground="#64748b").pack(
+                    anchor="w", padx=2, pady=4
+                )
+
+            col += 1
+            if col >= cols:
+                col = 0
+                row += 1
+
+    def _get_cached_move_options(self, idx, member):
+        """Cache move blocks per slot; movelist is static for payloads."""
+        if 0 <= idx < len(self.cached_move_blocks) and self.cached_move_blocks[idx] is not None:
+            return self.cached_move_blocks[idx]
+        block = self._get_move_options(idx, member)
+        if 0 <= idx < len(self.cached_move_blocks):
+            self.cached_move_blocks[idx] = block
+        return block
+
+    def _summarize_moves(self, moves):
+        if not moves:
+            return "No moves cached."
+        parts = []
+        for m in moves[:4]:
+            name = (m.get("name") or "(open slot)").replace("-", " ").title()
+            mtype = m.get("type", "-")
+            cat = m.get("cat", "")
+            parts.append(f"{name} [{mtype}/{cat}]")
+        return "; ".join(parts)
+
+    def _get_move_options(self, idx, member):
+        """Return ordered category->moves for UI flipping."""
+        cat_data = member.get("suggested_by_category") or (self.payload_by_cat[idx] if idx < len(self.payload_by_cat) else {})
+        moves = member.get("suggested_moves") or (self.payload_moves[idx] if idx < len(self.payload_moves) else [])
+        limit = 4
+        # Derive categories if missing
+        if not cat_data:
+            stab = []
+            coverage = []
+            utility = []
+            types = set(member.get("types") or [])
+            for m in moves:
+                if m.get("cat") == "status":
+                    utility.append(m)
+                elif m.get("type") in types:
+                    stab.append(m)
+                else:
+                    coverage.append(m)
+            cat_data = {"stab": stab[:limit], "coverage": coverage[:limit], "utility": utility[:limit]}
+        ordered = []
+        label_map = {"stab": "STAB", "coverage": "Coverage", "utility": "Utility"}
+        for key in ("stab", "coverage", "utility"):
+            mv_list = list(cat_data.get(key) or [])
+            mv_list = mv_list[:limit]
+            while len(mv_list) < limit and moves:
+                # pull extras from the overall move list to fill slots
+                extra = moves[len(mv_list) % len(moves)]
+                mv_list.append(extra)
+            while len(mv_list) < limit:
+                mv_list.append({"name": "(open slot)", "type": "-", "cat": "", "method": "choose"})
+            if mv_list:
+                ordered.append((label_map.get(key, key.title()), mv_list))
+        # If we still have nothing, fall back to the raw moves list
+        if not ordered and moves:
+            trimmed = list(moves[:limit])
+            while len(trimmed) < limit:
+                trimmed.append({"name": "(open slot)", "type": "-", "cat": "", "method": "choose"})
+            ordered.append(("Moves", trimmed))
+        return dict(ordered)
+def _apply_tracing():
+    """Wrap module-level functions with trace_call for entry/exit visibility."""
+    if not TRACE_FUNCTIONS:
+        return
+    skip = {"trace_call", "_apply_tracing"}
+    for name, fn in list(globals().items()):
+        if callable(fn) and getattr(fn, "__module__", None) == __name__ and not name.startswith("_") and name not in skip:
+            globals()[name] = trace_call(fn)
+
+
+_apply_tracing()
+
+
+def main():
+    root = tk.Tk()
+    App(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()

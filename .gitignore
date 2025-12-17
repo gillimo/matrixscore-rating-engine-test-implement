@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
+
+# Logs and other generated files
+*.log
+*.txt
+# *.json # Uncomment if cache files are not meant to be committed
