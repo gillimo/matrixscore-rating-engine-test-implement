@@ -55,6 +55,8 @@ To run the tool in a non-interactive, test-like mode, execute the `team_cli_v5.p
 *   **Piped Input for Interactive Mode Simulation:**
     `echo "gengar\nnext\ndone" | python team_cli_v5.py`
     *   This simulates typing "gengar", then "next", then "done".
+*   **Finalize Harness (see output directly):**
+    `python test_harness.py` streams a single `finalize` command into `team_cli_v5.py` and shows stdout. Override input with `--commands "gengar\nfinalize"` or `--input-file demo_input.txt`. Uses the current interpreter by default.
 *   **Log Review:** Always review the latest `logs/run_*.log` file to check the output of any run. Single-mon runs should auto-fill to 6 before moves.
 
 ---
