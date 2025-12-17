@@ -1,958 +1,633 @@
 {
   "team": [
     {
-      "name": "gengar",
+      "name": "scizor",
       "types": [
-        "ghost",
-        "poison"
+        "bug",
+        "steel"
       ],
-      "role": "balanced",
-      "weaknesses": [
-        [
-          "ground",
-          2.0
-        ],
-        [
-          "ghost",
-          2.0
-        ],
-        [
-          "psychic",
-          2.0
-        ],
-        [
-          "dark",
-          2.0
-        ]
-      ],
-      "coverage_priority": [
-        [
-          "bug",
-          2
-        ],
-        [
-          "ghost",
-          2
-        ],
-        [
-          "dark",
-          2
-        ],
-        [
-          "fighting",
-          1
-        ],
-        [
-          "water",
-          1
-        ],
-        [
-          "grass",
-          1
-        ],
-        [
-          "ice",
-          1
-        ],
-        [
-          "fairy",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "fire",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
+      "level_cap": null,
       "suggested_moves": [
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         }
       ],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "utility": []
-      },
       "draft_board": [
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "hard-press",
+          "type": "steel",
+          "cat": "physical",
+          "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         }
-      ],
-      "alignment_score": 27
-    },
-    {
-      "name": "yveltal",
-      "types": [
-        "dark",
-        "flying"
-      ],
-      "role": "balanced",
-      "weaknesses": [
-        [
-          "rock",
-          2.0
-        ],
-        [
-          "electric",
-          2.0
-        ],
-        [
-          "ice",
-          2.0
-        ],
-        [
-          "fairy",
-          2.0
-        ]
       ],
       "coverage_priority": [
         [
-          "steel",
-          3
-        ],
-        [
-          "fighting",
-          2
-        ],
-        [
           "ground",
-          2
-        ],
-        [
-          "poison",
           1
         ],
         [
           "rock",
-          1
-        ],
-        [
-          "fire",
           1
         ],
         [
@@ -960,15 +635,19 @@
           1
         ],
         [
-          "grass",
-          1
-        ],
-        [
           "normal",
           0
         ],
         [
+          "fighting",
+          0
+        ],
+        [
           "flying",
+          0
+        ],
+        [
+          "poison",
           0
         ],
         [
@@ -977,6 +656,18 @@
         ],
         [
           "ghost",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "fire",
+          0
+        ],
+        [
+          "grass",
           0
         ],
         [
@@ -1008,553 +699,1755 @@
           0
         ]
       ],
-      "suggested_moves": [
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        }
+      "move_types": [
+        "steel"
       ],
-      "suggested_by_category": {
-        "stab": [
-          {
-            "name": "dual-wingbeat",
-            "type": "flying",
-            "cat": "physical",
-            "power": 40,
-            "acc": 90,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dual-wingbeat",
-            "type": "flying",
-            "cat": "physical",
-            "power": 40,
-            "acc": 90,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dual-wingbeat",
-            "type": "flying",
-            "cat": "physical",
-            "power": 40,
-            "acc": 90,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dual-wingbeat",
-            "type": "flying",
-            "cat": "physical",
-            "power": 40,
-            "acc": 90,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "coverage": [],
-        "utility": []
-      },
-      "draft_board": [
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dual-wingbeat",
-          "type": "flying",
-          "cat": "physical",
-          "power": 40,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        }
+      "se_hits": [
+        "ground",
+        "rock",
+        "water"
       ],
-      "alignment_score": 33
+      "role": "tank",
+      "alignment_score": 20,
+      "moves_fetched": true
     },
     {
-      "name": "xerneas",
+      "name": "shelgon",
+      "types": [
+        "dragon"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "temper-flare",
+          "type": "fire",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "coverage_priority": [
+        [
+          "steel",
+          2
+        ],
+        [
+          "fighting",
+          1
+        ],
+        [
+          "poison",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "ice",
+          1
+        ],
+        [
+          "dragon",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "flying",
+          0
+        ],
+        [
+          "ground",
+          0
+        ],
+        [
+          "bug",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "fire"
+      ],
+      "se_hits": [
+        "steel",
+        "fighting",
+        "poison",
+        "rock",
+        "fire",
+        "ice",
+        "dragon",
+        "fairy"
+      ],
+      "role": "tank",
+      "alignment_score": 30,
+      "moves_fetched": true
+    },
+    {
+      "name": "vaporeon",
+      "types": [
+        "water"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "coverage_priority": [
+        [
+          "flying",
+          1
+        ],
+        [
+          "poison",
+          1
+        ],
+        [
+          "ground",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "ice",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "fighting",
+          0
+        ],
+        [
+          "rock",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "fairy",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "fairy"
+      ],
+      "se_hits": [
+        "flying",
+        "poison",
+        "ground",
+        "bug",
+        "fire",
+        "ice"
+      ],
+      "role": "tank",
+      "alignment_score": 30,
+      "moves_fetched": true
+    },
+    {
+      "name": "florges",
       "types": [
         "fairy"
       ],
-      "role": "balanced",
-      "weaknesses": [
-        [
-          "poison",
-          2.0
-        ],
-        [
-          "steel",
-          2.0
-        ]
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
       ],
       "coverage_priority": [
         [
@@ -1634,3300 +2527,1963 @@
           0
         ]
       ],
+      "move_types": [
+        "psychic"
+      ],
+      "se_hits": [
+        "ground",
+        "fighting",
+        "fire",
+        "psychic"
+      ],
+      "role": "tank",
+      "alignment_score": 30,
+      "moves_fetched": true
+    },
+    {
+      "name": "lopunny",
+      "types": [
+        "normal"
+      ],
+      "level_cap": null,
       "suggested_moves": [
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         }
       ],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [
-          {
-            "name": "terrain-pulse",
-            "type": "normal",
-            "cat": "special",
-            "power": 50,
-            "acc": 100,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "terrain-pulse",
-            "type": "normal",
-            "cat": "special",
-            "power": 50,
-            "acc": 100,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "terrain-pulse",
-            "type": "normal",
-            "cat": "special",
-            "power": 50,
-            "acc": 100,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "terrain-pulse",
-            "type": "normal",
-            "cat": "special",
-            "power": 50,
-            "acc": 100,
-            "method": "tutor",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "utility": []
-      },
       "draft_board": [
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "terrain-pulse",
-          "type": "normal",
-          "cat": "special",
-          "power": 50,
-          "acc": 100,
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
           "method": "tutor",
           "level": 0,
           "priority": 0
         }
       ],
-      "alignment_score": 27
+      "coverage_priority": [
+        [
+          "flying",
+          1
+        ],
+        [
+          "psychic",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "fighting",
+          0
+        ],
+        [
+          "poison",
+          0
+        ],
+        [
+          "ground",
+          0
+        ],
+        [
+          "rock",
+          0
+        ],
+        [
+          "bug",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "fire",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "ice",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "ice"
+      ],
+      "se_hits": [
+        "flying",
+        "psychic",
+        "fairy"
+      ],
+      "role": "balanced",
+      "alignment_score": 27,
+      "moves_fetched": true
     },
     {
       "name": "mewtwo",
       "types": [
         "psychic"
       ],
-      "role": "sweeper",
-      "weaknesses": [
-        [
-          "bug",
-          2.0
-        ],
-        [
-          "ghost",
-          2.0
-        ],
-        [
-          "dark",
-          2.0
-        ]
-      ],
-      "coverage_priority": [
-        [
-          "fighting",
-          1
-        ],
-        [
-          "flying",
-          1
-        ],
-        [
-          "rock",
-          1
-        ],
-        [
-          "bug",
-          1
-        ],
-        [
-          "ghost",
-          1
-        ],
-        [
-          "fire",
-          1
-        ],
-        [
-          "dark",
-          1
-        ],
-        [
-          "fairy",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "ice",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "suggested_moves": [],
-      "suggested_by_category": {
-        "stab": [
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "psychic-noise",
-            "type": "psychic",
-            "cat": "special",
-            "power": 75,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "coverage": [],
-        "utility": []
-      },
-      "draft_board": [
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "alignment_score": 100
-    },
-    {
-      "name": "garchomp",
-      "types": [
-        "dragon",
-        "ground"
-      ],
-      "role": "balanced",
-      "weaknesses": [
-        [
-          "ice",
-          4.0
-        ],
-        [
-          "dragon",
-          2.0
-        ],
-        [
-          "fairy",
-          2.0
-        ]
-      ],
-      "coverage_priority": [
-        [
-          "steel",
-          2
-        ],
-        [
-          "fighting",
-          1
-        ],
-        [
-          "poison",
-          1
-        ],
-        [
-          "rock",
-          1
-        ],
-        [
-          "fire",
-          1
-        ],
-        [
-          "ice",
-          1
-        ],
-        [
-          "dragon",
-          1
-        ],
-        [
-          "fairy",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "bug",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
+      "level_cap": null,
       "suggested_moves": [
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         }
       ],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [],
-        "utility": [
-          {
-            "name": "dragon-cheer",
-            "type": "dragon",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dragon-cheer",
-            "type": "dragon",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dragon-cheer",
-            "type": "dragon",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dragon-cheer",
-            "type": "dragon",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ]
-      },
       "draft_board": [
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "dragon-cheer",
-          "type": "dragon",
-          "cat": "status",
-          "power": 0,
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         }
       ],
-      "alignment_score": 16
-    },
-    {
-      "name": "scizor",
-      "types": [
+      "coverage_priority": [
+        [
+          "fighting",
+          1
+        ],
+        [
+          "flying",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "ghost",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "dark",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "poison",
+          0
+        ],
+        [
+          "ground",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "ice",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "psychic"
+      ],
+      "se_hits": [
+        "fighting",
+        "flying",
+        "rock",
         "bug",
-        "steel"
+        "ghost",
+        "fire",
+        "dark",
+        "fairy"
       ],
-      "role": "tank",
-      "weaknesses": [
-        [
-          "fire",
-          4.0
-        ]
-      ],
-      "coverage_priority": [
-        [
-          "ground",
-          1
-        ],
-        [
-          "rock",
-          1
-        ],
-        [
-          "water",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "fighting",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "bug",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "fire",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "ice",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "fairy",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "suggested_moves": [
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "suggested_by_category": {
-        "stab": [
-          {
-            "name": "hard-press",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hard-press",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hard-press",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hard-press",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "coverage": [],
-        "utility": []
-      },
-      "draft_board": [
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "alignment_score": 20
+      "role": "sweeper",
+      "alignment_score": 100,
+      "moves_fetched": true
     }
   ],
   "role_move_mix": {

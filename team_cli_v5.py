@@ -36,7 +36,7 @@ TYPE_POKEMON_CACHE_PATH = Path(__file__).with_name("type_pokemon_cache.json")
 FINAL_FORMS_CACHE_PATH = Path(__file__).with_name("final_forms_cache.json")
 LOG_FOOTER = "Permissions: full access to OneDrive/Desktop/teambuilder_v2 granted by user on 2025-12-12. Signed: Atlas"
 VERBOSE = False  # enable for detailed loop progress during test runs
-TRACE_FUNCTIONS = True  # tracing enabled for detailed logs
+TRACE_FUNCTIONS = False  # tracing disabled by default; enable for detailed logs
 HARNESS_SMOKE = os.environ.get("TEAM_HARNESS_SMOKE", "0") == "1" or "--harness-smoke" in sys.argv
 TYPE_CACHE_STATS = {"hit": 0, "miss": 0}
 ZA_POKEDEX = [
@@ -212,11 +212,12 @@ def progress(msg: str):
     print(f"[progress] {msg}")
 
 
-def loop_progress(context: str, count: int, freq: int = 25, total: int = None):
-    """Print an occasional progress update for long-running loops."""
+def loop_progress(context: str, count: int, freq: int = 25, total: int = None, current: str = None):
+    """Print an occasional progress update for long-running loops, including the current candidate name when helpful."""
     if count % freq == 0 or count == 1:
         total_hint = f" / {total}" if total else ""
-        progress(f"[{context}] processed {count}{total_hint} candidates")
+        name_hint = f" (current {current})" if current else ""
+        progress(f"[{context}] processed {count}{total_hint} candidates{name_hint}")
 
 
 def board_cache_key(name: str, level_cap=None, version_group=VERSION_GROUP):
@@ -512,7 +513,7 @@ def get_final_forms():
     return FINAL_FORMS_CACHE
 
 def fetch_single_type_candidates(t, current_team=None, version_group: str = VERSION_GROUP, chart=None, attack_types=None, stat_sort_key=None):
-    """Return up to 6 final-form/single-stage Pokemon that are pure type t (and not already on team), scored by projected overall."""
+    """Return all final-form/single-stage Pokemon that are pure type t (and not already on team), scored by simple stats."""
     type_cache = _load_type_pokemon_cache()
     names = type_cache.get(t)
     if not names:
@@ -540,7 +541,7 @@ def fetch_single_type_candidates(t, current_team=None, version_group: str = VERS
     # Legacy fast path if we don't have scoring context
     if chart is None or attack_types is None:
         finals = []
-        for n in candidates[:30]:
+        for n in candidates:
             try:
                 if not pokemon_in_version(n, version_group=version_group):
                     continue
@@ -549,9 +550,7 @@ def fetch_single_type_candidates(t, current_team=None, version_group: str = VERS
                     finals.append(n)
             except Exception:
                 continue
-            if len(finals) >= 6:
-                break
-        return sorted(finals)[:6]
+        return sorted(finals)
 
     # New logic for when chart and attack_types are available, but without nested predict_overall
     stat_total_fn = _get_pokemon_stat_total_fn(stat_sort_key)
@@ -569,7 +568,7 @@ def fetch_single_type_candidates(t, current_team=None, version_group: str = VERS
             continue
     # Sort by stat_total (descending) to get the "best" candidates in a simple way
     valid_candidates.sort(key=lambda x: x[0], reverse=True)
-    return [n for _, n in valid_candidates[:6]] # Return only the names
+    return [n for _, n in valid_candidates]  # Return all names, highest stats first
 
 def fetch_species_info(name: str):
     res = requests.get(f"{POKEAPI_BASE}/pokemon-species/{name.lower()}", timeout=15)
@@ -612,8 +611,8 @@ def fetch_dual_candidates(type_a, type_b, current_team=None, version_group: str 
         inter = [p for p in inter if p in finals_set]
     # Legacy fast path without scoring context
     if chart is None or attack_types is None:
-        finals = [p for p in sorted(inter) if pokemon_in_version(p, version_group=version_group)][:20]
-        return finals[:6]
+        finals = [p for p in sorted(inter) if pokemon_in_version(p, version_group=version_group)]
+        return finals
 
     # New logic for when chart and attack_types are available, but without nested predict_overall
     stat_total_fn = _get_pokemon_stat_total_fn(stat_sort_key)
@@ -631,7 +630,7 @@ def fetch_dual_candidates(type_a, type_b, current_team=None, version_group: str 
         except Exception:
             continue
     valid_candidates.sort(key=lambda x: x[0], reverse=True)
-    return [n for _, n in valid_candidates[:6]] # Return only the names
+    return [n for _, n in valid_candidates]  # Return all names, highest stats first
 def list_final_forms():
     # Cache in memory
     url = f"{POKEAPI_BASE}/pokemon?limit=20000"
@@ -851,68 +850,235 @@ def best_defensive_improvement(team, chart, attack_types):
     return f"Defensive improvement suggestion: {label} -> {opts_str}"
 
 
-def pick_defensive_addition(team, chart, attack_types):
-    """Return best defensive addition as (scores, label, pname, types) or None."""
+
+def get_best_defensive_candidates(team, chart, attack_types):
+    """Find the typing(s) that yield the best defensive delta and return their candidate pools."""
     base_cov = compute_coverage(team, chart, attack_types)
     base_score = typing_score(base_cov)
-    base_infos = team_infos_from_cache(team)
-    try:
-        base_overall, _ = predict_overall(team, base_infos, chart, attack_types)
-    except Exception:
-        base_overall = 0
-    best = None  # (delta, uplift, label, pname, types)
+    base_overlap = stack_overlap_penalty(base_cov)
+
+    best_key = None  # tuple for ordering
+    best_choices = []  # list of dicts for ties
+
+    def consider(add_types, opts, label):
+        nonlocal best_key, best_choices
+        if not opts:
+            return
+        sim_cov = compute_coverage(team + [{"name": "sim", "types": add_types, "source": "sim"}], chart, attack_types)
+        delta = typing_score(sim_cov) - base_score
+        overlap = stack_overlap_penalty(sim_cov)
+        exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
+        key = (delta, -(overlap - base_overlap), -exposed)
+        choice = {"delta": delta, "label": label, "types": add_types, "candidates": opts, "overlap": overlap, "exposed": exposed}
+        if best_key is None or key > best_key:
+            best_key = key
+            best_choices = [choice]
+        elif key == best_key:
+            best_choices.append(choice)
+
+    # Singles
     for t in TYPE_POOL:
         opts = fetch_single_type_candidates(
-            t, current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key=" total )
- # Consider top 3 candidates per type for breadth and stat tie-breaks
- count_single = 0
- for pname in (opts or [])[:3]:
- count_single += 1
- loop_progress(\overall single candidates\, count_single, freq=25)
- try:
- ptypes = fetch_pokemon_typing(pname)
- except Exception:
- ptypes = [t]
- consider(pname, ptypes)
+            t,
+            current_team=team,
+            version_group=VERSION_GROUP,
+            chart=chart,
+            attack_types=attack_types,
+            stat_sort_key="defense",
+        )
+        consider([t], opts or [], f"Single-type ({t})")
 
- seen_pairs = set()
- count_dual = 0
- for i in range(len(TYPE_POOL)):
- for j in range(i + 1, len(TYPE_POOL)):
- pair = tuple(sorted((TYPE_POOL[i], TYPE_POOL[j])))
- if pair in seen_pairs:
- continue
- seen_pairs.add(pair)
- opts = fetch_dual_candidates(
- pair[0], pair[1], current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key=	otal )
- for pname in (opts or [])[:3]:
- count_dual += 1
- loop_progress(\overall dual candidates\, count_dual, freq=25)
- try:
- ptypes = fetch_pokemon_typing(pname)
- except Exception:
- ptypes = list(pair)
- consider(pname, ptypes)
-    if not best_strategic_pick:
-        return (0.0, 0.0, 0.0), None, None, None, None, None, None
+    # Duals
+    seen_pairs = set()
+    for i in range(len(TYPE_POOL)):
+        for j in range(i + 1, len(TYPE_POOL)):
+            pair = tuple(sorted((TYPE_POOL[i], TYPE_POOL[j])))
+            if pair in seen_pairs:
+                continue
+            seen_pairs.add(pair)
+            opts = fetch_dual_candidates(
+                pair[0],
+                pair[1],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            consider(list(pair), opts or [], f"Dual-type ({pair[0]} + {pair[1]})")
 
-    # Now, compare the best_strategic_pick with highest_bst_candidate
-    highest_bst_loser_name = None
-    highest_bst_loser_bst = 0
+    if not best_choices:
+        return None
 
-    if highest_bst_candidate is not None and best_strategic_pick[4] != highest_bst_candidate[1]: # If different Pokémon are chosen
-        highest_bst_loser_name = highest_bst_candidate[1]
-        highest_bst_loser_bst = highest_bst_candidate[0]
-            
-    _ranked_gain, _sim_offense, _stat_total, label, pname, types = best_strategic_pick
+    # Use the first choice as the primary, but keep all ties
+    primary = best_choices[0]
+    return {
+        "delta": primary["delta"],
+        "label": primary["label"],
+        "types": primary["types"],
+        "candidates": primary["candidates"],
+        "overlap": primary["overlap"],
+        "exposed": primary["exposed"],
+        "choices": best_choices,
+    }
+
+
+def pick_defensive_addition(team, chart, attack_types):
+    """Select the best defensive typing and return its strongest defensive candidate."""
+    best = get_best_defensive_candidates(team, chart, attack_types)
+    if not best or not best["candidates"]:
+        return None
+
+    choices = best.get("choices") or [best]
+    labels = [c["label"] for c in choices]
+    print(f"[Best Defensive Delta] {best['delta']:+.0f} via {', '.join(labels)}")
+
+    def stat_key(name):
+        return pokemon_defense_stat_total(name)
+
+    pname = max(best["candidates"], key=stat_key)
+    try:
+        ptypes = fetch_pokemon_typing(pname)
+    except Exception:
+        ptypes = best["types"]
+    label = f"{best['label']} delta {best['delta']:+.0f}"
     return (
-        (0.0, _ranked_gain, _sim_offense),
+        (0.0, best["delta"], 0.0),
         label,
         pname,
-        types,
+        ptypes,
+        None,
+        None,
+        f"Best defensive typing {best['label']} (delta {best['delta']:+.0f})",
+    )
+
+
+def pick_offense_addition(team, chart, attack_types, defense_choice=None):
+    """Pick the best offensive addition within the best defensive typing pool."""
+    if defense_choice is None:
+        defense_choice = get_best_defensive_candidates(team, chart, attack_types)
+    if not defense_choice or not defense_choice.get("choices"):
+        return None
+
+    base_infos = team_infos_from_cache(team)
+    cov = compute_coverage(team, chart, attack_types)
+    base_offense = offense_score_with_bonuses(base_infos, cov, chart, attack_types)
+    base_cov_map = {c["attack"]: c for c in cov}
+
+    def current_move_types():
+        mts = set()
+        for info in base_infos:
+            for m in info.get("suggested_moves", []):
+                if m.get("type"):
+                    mts.add(m["type"])
+        return mts
+
+    base_move_types = current_move_types()
+
+    best_pick = None  # (compare_tuple, label, pname, ptypes, ranked_gain, sim_offense, stat_total, reason, base_bst)
+    highest_bst_candidate = None  # (base_bst, name, ranked_gain)
+
+    def consider_offense(def_opt):
+        nonlocal best_pick, highest_bst_candidate
+        for pname in def_opt["candidates"]:
+            try:
+                ptypes = fetch_pokemon_typing(pname)
+            except Exception:
+                ptypes = def_opt.get("types") or []
+
+        try:
+            cached = cache_draft_board(pname)
+            _populate_move_data(cached["info"], cached_entry=cached)
+            info = cached["info"]
+        except Exception:
+            info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
+
+        candidate_move_types = set(info.get("move_types") or [])
+        if not info.get("suggested_moves") and candidate_move_types:
+            info = dict(info)
+            limited_types = []
+            for t in candidate_move_types:
+                if t not in limited_types:
+                    limited_types.append(t)
+                if len(limited_types) >= 3:
+                    break
+            info["suggested_moves"] = [{"name": f"{t}-coverage", "type": t} for t in limited_types]
+
+        move_types = base_move_types | {m["type"] for m in info.get("suggested_moves", []) if m.get("type")}
+        sim_infos = base_infos + [info]
+        sim_team = team + [{"name": pname, "types": ptypes, "source": "sim"}]
+        sim_cov = compute_coverage(sim_team, chart, attack_types)
+        sim_offense = offense_score_with_bonuses(sim_infos, sim_cov, chart, attack_types)
+        gain = sim_offense - base_offense
+
+        neutral, se_types = offense_projection(move_types, chart, attack_types)
+        closed_weak = 0.0
+        for sc in sim_cov:
+            base_c = base_cov_map.get(sc["attack"])
+            if not base_c:
+                continue
+            base_exposed = base_c["weak"] > (base_c["resist"] + base_c["immune"])
+            sim_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
+            if base_exposed and not sim_exposed:
+                closed_weak += 1.0
+            elif base_exposed and sc["weak"] < base_c["weak"]:
+                closed_weak += 0.5
+        new_types = move_types - base_move_types
+        stat_total = pokemon_offense_stat_total(pname)
+        base_bst = pokemon_base_stat_total(pname)
+        # Heavier weighting on base stats; also penalize very low offense totals.
+        bst_factor = max(0.65, min(1.8, 0.5 + stat_total / 250.0))
+        gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
+        se_factor = 1.0 + 0.08 * min(6, len(se_types))
+        coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
+        low_stat_penalty = 0.0
+        if stat_total < 180:
+            low_stat_penalty = 14.0
+        elif stat_total < 220:
+            low_stat_penalty = 7.0
+        ranked_gain = (gain * gain_factor * bst_factor * se_factor * coverage_penalty) - low_stat_penalty
+
+        reason = (
+            f"{def_opt['label']} -> offense {pname}: offense {sim_offense:.0f}/100 "
+            f"(gain {gain:+.0f}); closes {closed_weak:.1f} weaknesses; new types: {len(new_types)}"
+        )
+        compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst)
+        if best_pick is None or compare_tuple > best_pick[0]:
+            best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst)
+
+        if highest_bst_candidate is None or base_bst > highest_bst_candidate[0]:
+            highest_bst_candidate = (base_bst, pname, ranked_gain)
+
+    for def_opt in defense_choice.get("choices", []):
+        consider_offense(def_opt)
+
+    if not best_pick:
+        return None
+
+    compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst = best_pick
+    highest_bst_loser_name = None
+    highest_bst_loser_bst = 0
+    highest_bst_loser_gain = None
+    if highest_bst_candidate and highest_bst_candidate[1] != pname:
+        highest_bst_loser_name = highest_bst_candidate[1]
+        highest_bst_loser_bst = highest_bst_candidate[0]
+        highest_bst_loser_gain = highest_bst_candidate[2]
+
+    if highest_bst_loser_name:
+        reason = (
+            f"{reason}; top BST option was {highest_bst_loser_name} (BST {highest_bst_loser_bst}, "
+            f"ranked gain {highest_bst_loser_gain:+.1f})"
+        )
+
+    label = f"{defense_choice['label']} -> best offense {pname} (gain {ranked_gain:+.0f})"
+    return (
+        (0.0, defense_choice["delta"], ranked_gain),
+        label,
+        pname,
+        ptypes,
         highest_bst_loser_name,
         highest_bst_loser_bst,
-        best_reason_line,
+        reason,
     )
 
 
@@ -1194,7 +1360,7 @@ def suggestion_buckets(team, cov, chart, attack_types):
 
         return lines, best_defensive_delta_available
 
-def coverage_report(team, chart, attack_types):
+def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     # Pre-cache draft boards for current team to avoid re-fetching later and surface offense hints early
     for member in team:
         try:
@@ -1219,8 +1385,11 @@ def coverage_report(team, chart, attack_types):
         report_lines.append(" - None (no net exposure)")
 
     # Rating engine: already computed suggestion buckets; use returned best_defensive_delta_available for rating
-    suggestion_lines, best_defensive_delta_available = suggestion_buckets(team, cov, chart, attack_types)
-    report_lines.extend(suggestion_lines)
+    if show_suggestions:
+        suggestion_lines, best_defensive_delta_available = suggestion_buckets(team, cov, chart, attack_types)
+        report_lines.extend(suggestion_lines)
+    else:
+        best_defensive_delta_available = compute_best_defensive_delta(team, chart, attack_types)
 
     # Typing rating (defense only here)
     total_weak = sum(c["weak"] for c in cov)
@@ -1631,6 +1800,7 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
     base_move_types = collect_move_types(base_infos)
     
     best_strategic_pick = None  # (compare_tuple, uplift, line, pname, ptypes, sim_score)
+    best_reason_line = None
     highest_bst_candidate = None # (stat_total, pname) - for pure BST comparison
 
     def sim_overall(pname, ptypes):
@@ -1709,6 +1879,7 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
         nonlocal best_strategic_pick, highest_bst_candidate
         if best_strategic_pick is None or compare_tuple > best_strategic_pick[0]:
             best_strategic_pick = (compare_tuple, uplift, line, pname, ptypes, sim_score)
+            best_reason_line = line
         
         # Update highest_bst_candidate
         if highest_bst_candidate is None or stat_total > highest_bst_candidate[0]:
@@ -1718,9 +1889,8 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
         opts = fetch_single_type_candidates(
             t, current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key="total"
         )
-        # Consider top 3 candidates per type for breadth and stat tie-breaks
-        for idx, pname in enumerate((opts or [])[:3], start=1):
-            loop_progress("overall single candidates", idx, freq=25, total=3)
+        for idx, pname in enumerate((opts or []), start=1):
+            loop_progress("overall single candidates", idx, freq=25, current=pname)
             try:
                 ptypes = fetch_pokemon_typing(pname)
             except Exception:
@@ -1738,9 +1908,9 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
             opts = fetch_dual_candidates(
                 pair[0], pair[1], current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key="total"
             )
-            for pname in (opts or [])[:3]:
+            for pname in (opts or []):
                 dual_count += 1
-                loop_progress("overall dual candidates", dual_count, freq=25)
+                loop_progress("overall dual candidates", dual_count, freq=25, current=pname)
                 try:
                     ptypes = fetch_pokemon_typing(pname)
                 except Exception:
@@ -1801,17 +1971,16 @@ def autofill_team(team, chart, attack_types, max_size=6):
         progress(f"Autofill iteration {iteration} (team size {len(team)})")
 
         best = None
-        defensive_pick = pick_defensive_addition(team, chart, attack_types)
-        offensive_pick = pick_offense_addition(team, chart, attack_types)
+        defense_choice = get_best_defensive_candidates(team, chart, attack_types)
+        offensive_pick = pick_offense_addition(team, chart, attack_types, defense_choice=defense_choice)
         overall_pick = pick_overall_addition(team, chart, attack_types, allow_overlap=True)
 
-        # Prioritize defensive pick if it offers any positive gain
-        if defensive_pick and (defensive_pick[0][0] > 0 or defensive_pick[0][1] > 0 or defensive_pick[0][2] > 0):
-            best = defensive_pick
-        # Else, prioritize offensive pick if it offers any positive gain
-        elif offensive_pick and (offensive_pick[0][0] > 0 or offensive_pick[0][1] > 0 or offensive_pick[0][2] > 0):
+        if offensive_pick:
             best = offensive_pick
-        # Else, try the overall pick. If overall_pick is None, it means no valid Pokemon at all.
+        elif defense_choice and defense_choice.get("delta", 0) > 0 and defense_choice.get("candidates"):
+            # If we couldn't pick offense, fall back to a pure defensive fill
+            defensive_pick = pick_defensive_addition(team, chart, attack_types)
+            best = defensive_pick
         elif overall_pick:
             best = overall_pick
         
@@ -1844,8 +2013,8 @@ def autofill_team(team, chart, attack_types, max_size=6):
             and winner_bst < loser_bst
         ):
             print(
-                f"[Low Stat Win] {pname} (BST {winner_bst}) chosen over {loser_name} (BST {loser_bst}) "
-                f"because {label} offered better gain."
+                f"[Low Stat Win] {pname} (BST {winner_bst}) chosen over {loser_name} (BST {loser_bst}). "
+                f"Reason: {label}."
             )
 
         if reason_line:
@@ -2132,7 +2301,7 @@ def main():
                             f"\033[32mAdded {name} via {label} "
                             f"(shared {shared_gain:+.0f}, def {def_gain:+.0f}, overall {overall_gain:+.0f})\033[0m"
                         )
-                    report, cov = coverage_report(team, chart, attack_types)
+                    report, cov = coverage_report(team, chart, attack_types, show_suggestions=False)
                     print(report)
                 else:
                     print("No positive additions available to auto-fill.")
@@ -2152,7 +2321,7 @@ def main():
             if raw.lower() == "next":
                 # If we have a full team, show checkpoint summary
                 if team:
-                    report, cov = coverage_report(team, chart, attack_types)
+                    report, cov = coverage_report(team, chart, attack_types, show_suggestions=True)
                     print("\n=== Typing checkpoint ===")
                     print(report)
                 break
@@ -2201,7 +2370,7 @@ def main():
             except Exception as exc:
                 if VERBOSE:
                     print(f"Draft cache failed for {name}: {exc}")
-            report, cov = coverage_report(team, chart, attack_types)
+            report, cov = coverage_report(team, chart, attack_types, show_suggestions=True)
             print(report)
             if len(team) >= 6:
                 print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
@@ -2220,7 +2389,7 @@ def main():
                         f"\033[32mAdded {name} via {label} "
                         f"(shared {shared_gain:+.0f}, def {def_gain:+.0f}, overall {overall_gain:+.0f})\033[0m"
                     )
-                report, cov = coverage_report(team, chart, attack_types)
+                report, cov = coverage_report(team, chart, attack_types, show_suggestions=False)
                 print(report)
             else:
                 print("Auto-fill skipped: no positive additions available.")
@@ -2518,3 +2687,4 @@ _apply_tracing()
 
 if __name__ == "__main__":
     main()
+
