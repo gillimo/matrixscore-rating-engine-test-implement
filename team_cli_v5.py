@@ -194,9 +194,10 @@ def trace_call(fn):
     def wrapper(*args, **kwargs):
         name = fn.__name__
         arg_str = ", ".join([repr(a) for a in args] + [f"{k}={repr(v)}" for k, v in kwargs.items()])
-        log_verbose(f"[TRACE] Calling {name}({arg_str})")
+        # Print trace lines regardless of VERBOSE to ensure visibility in logs.
+        print(f"[TRACE] Calling {name}({arg_str})")
         result = fn(*args, **kwargs)
-        log_verbose(f"[TRACE] {name} -> {repr(result)}")
+        print(f"[TRACE] {name} -> {repr(result)}")
         return result
     return wrapper
 
