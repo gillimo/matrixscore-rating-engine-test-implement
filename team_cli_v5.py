@@ -2903,7 +2903,7 @@ def main():
         wheel_path = Path(__file__).with_name("tk_team_builder.py")
         if wheel_path.exists():
             # Only launch once per run; guard with a flag
-            if not getattr(main, "_wheel_launched", False):
+            if team_infos and "scores" in locals() and not getattr(main, "_wheel_launched", False):
                 # Build metrics payload for Tk
                 exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
                 role_counts = {}
@@ -2918,6 +2918,8 @@ def main():
                 }
                 launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
                 main._wheel_launched = True
+            elif not team_infos:
+                log_verbose("Skipping GUI launch: no team data to show.")
         else:
             print("Wheel GUI not found; skipping GUI launch.")
     finally:

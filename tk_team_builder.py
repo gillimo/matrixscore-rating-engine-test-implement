@@ -49,6 +49,7 @@ SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
 TYPE_ICON_CACHE = {}
 TYPE_ICON_CACHE_DIM = {}
 STATS_CACHE = {}
+STYLE_CACHE = {}
 
 
 def trace_call(fn):
@@ -178,8 +179,46 @@ def fetch_type_icon(t: str):
         return icon
     except Exception:
         TYPE_ICON_CACHE[t] = None
-        TYPE_ICON_CACHE_DIM[t] = None
+TYPE_ICON_CACHE_DIM[t] = None
         return None
+
+def _hex_to_rgb(hex_color: str):
+    hex_color = hex_color.lstrip("#")
+    return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+def _rgb_to_hex(rgb):
+    r, g, b = rgb
+    return f"#{int(r):02X}{int(g):02X}{int(b):02X}"
+
+def _contrast_color(hex_color: str):
+    r, g, b = _hex_to_rgb(hex_color)
+    # relative luminance
+    lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    return "#0b0d14" if lum > 0.6 else "#f8fafc"
+
+def type_gradient(types):
+    if not types:
+        return ["#e2e8f0", "#e2e8f0"]
+    if len(types) == 1:
+        c = TYPE_COLORS.get(types[0], "#e2e8f0")
+        return [c, c]
+    c1 = TYPE_COLORS.get(types[0], "#e2e8f0")
+    c2 = TYPE_COLORS.get(types[1], "#cbd5e1")
+    return [c1, c2]
+
+def _get_card_style(style: ttk.Style, types, key_prefix="Card"):
+    """Return a ttk style name tinted by typing; cache per type combo."""
+    tkey = ",".join(types) if types else "none"
+    cache_key = f"{key_prefix}.{tkey}"
+    if cache_key in STYLE_CACHE:
+        return STYLE_CACHE[cache_key]
+    colors = type_gradient(types)
+    base = colors[0]
+    text_color = _contrast_color(base)
+    style_name = f"{key_prefix}.{tkey}.TFrame"
+    style.configure(style_name, background=base)
+    STYLE_CACHE[cache_key] = (style_name, text_color, base)
+    return STYLE_CACHE[cache_key]
 
 def defensive_multiplier(attack_type: str, defense_types, matrix):
     base = matrix.get(attack_type)
@@ -372,12 +411,14 @@ class App:
         self.root.minsize(900, 720)
 
     def _build_ui(self):
-        style = ttk.Style()
-        style.theme_use("default")
-        style.configure("TFrame", background="#e8f2ff")
-        style.configure("TLabel", background="#e8f2ff", foreground="#0f172a")
-        style.configure("Glass.TLabelframe", background="#f7fbff", bordercolor="#cbd5e1")
-        style.configure("Glass.TLabelframe.Label", background="#f7fbff")
+        self.style = ttk.Style()
+        self.style.theme_use("default")
+        self.style.configure("TFrame", background="#e8f2ff")
+        self.style.configure("TLabel", background="#e8f2ff", foreground="#0f172a")
+        self.style.configure("Glass.TLabelframe", background="#f7fbff", bordercolor="#cbd5e1")
+        self.style.configure("Glass.TLabelframe.Label", background="#f7fbff")
+        self.style.configure("CardHeader.TLabel", background="#f7fbff", foreground="#0b0d14", font=("Segoe UI", 11, "bold"))
+        self.style.configure("Tag.TLabel", background="#0f172a", foreground="#f8fafc", font=("Segoe UI", 8, "bold"))
 
         wrapper = ttk.Frame(self.root)
         wrapper.pack(fill="both", expand=True, padx=16, pady=12)
@@ -495,8 +536,9 @@ class App:
             role_label = role.title() if role else "Unassigned"
             mix_text = self.role_move_mix.get(role, self.role_move_mix.get("balanced", DEFAULT_ROLE_MOVE_MIX))
             cat_map = self._get_cached_move_options(idx, member)
+            card_style, text_color, bg_color = _get_card_style(self.style, types)
 
-            card = ttk.Frame(self.final_panel_inner, padding=12, style="Glass.TLabelframe")
+            card = ttk.Frame(self.final_panel_inner, padding=12, style=card_style)
             card.grid(row=row, column=col, sticky="nsew", padx=10, pady=10)
             self.final_panel_inner.rowconfigure(row, weight=1)
 
@@ -509,56 +551,58 @@ class App:
                     img = fetch_sprite_image(member["name"])
                     self.sprite_cache[member["name"]] = img
             if img:
-                lbl_img = ttk.Label(header, image=img)
+                lbl_img = ttk.Label(header, image=img, background=bg_color)
                 lbl_img.image = img
                 lbl_img.pack(side="left", padx=(0, 10), pady=4)
-            ttk.Label(header, text=name.title(), font=("Segoe UI", 11, "bold")).pack(
-                anchor="w", pady=2, padx=2
-            )
+            ttk.Label(header, text=name.title(), style="CardHeader.TLabel").pack(anchor="w", pady=2, padx=2)
 
-            ttk.Label(card, text=f"Role: {role_label}", foreground="#334155").pack(
-                anchor="w", padx=2, pady=(0, 2)
-            )
+            role_tag = ttk.Label(card, text=f"Role: {role_label}", style="Tag.TLabel")
+            role_tag.configure(background=bg_color, foreground=_contrast_color(bg_color))
+            role_tag.pack(anchor="w", padx=2, pady=(0, 2))
             ttk.Label(
                 card,
                 text=mix_text,
                 wraplength=360,
-                foreground="#0f172a",
+                foreground=text_color,
                 justify="left",
             ).pack(anchor="w", padx=2, pady=(0, 6))
 
-            type_frame = ttk.Frame(card)
+            type_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
             type_frame.pack(anchor="w", pady=(2, 8))
             if types:
                 for t in types:
                     color = TYPE_COLORS.get(t, "#94a3b8")
                     icon = fetch_type_icon(t)
                     if icon:
-                        lbl = ttk.Label(type_frame, image=icon)
-                        lbl.image = icon
-                        lbl.pack(side="left", padx=2)
-                    else:
-                        lbl = tk.Label(type_frame, text=t.upper(), bg=color, fg="#0b0d14", padx=6, pady=2)
-                        lbl.pack(side="left", padx=2)
+                    lbl = ttk.Label(type_frame, image=icon, background=bg_color)
+                    lbl.image = icon
+                    lbl.pack(side="left", padx=2)
+                else:
+                    lbl = tk.Label(type_frame, text=t.upper(), bg=color, fg=_contrast_color(color), padx=6, pady=2)
+                    lbl.pack(side="left", padx=2)
             else:
-                ttk.Label(type_frame, text="Types: --", foreground="#64748b").pack(anchor="w")
+                ttk.Label(type_frame, text="Types: --", foreground="#64748b", background=bg_color).pack(anchor="w")
 
             if cat_map:
                 for cat_label, moves in cat_map.items():
-                    row_frame = ttk.Frame(card)
+                    row_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
                     row_frame.pack(fill="x", pady=4)
-                    ttk.Label(row_frame, text=f"{cat_label}:", width=14).pack(side="left")
+                    ttk.Label(row_frame, text=f"{cat_label}:", width=14, background=bg_color).pack(side="left")
                     ttk.Label(
                         row_frame,
                         text=self._summarize_moves(moves),
                         wraplength=360,
-                        foreground="#0f4c81",
+                        foreground=text_color,
                         justify="left",
+                        background=bg_color,
                     ).pack(side="left", fill="x", expand=True, padx=6)
             else:
-                ttk.Label(card, text="No moves cached for this slot.", foreground="#64748b").pack(
-                    anchor="w", padx=2, pady=4
-                )
+                ttk.Label(
+                    card,
+                    text="No moves cached for this slot.",
+                    foreground="#64748b",
+                    background=bg_color,
+                ).pack(anchor="w", padx=2, pady=4)
             btn_row = ttk.Frame(card)
             btn_row.pack(fill="x", pady=(6, 0))
             ttk.Button(btn_row, text="More details", command=lambda m=member: self._show_details(m)).pack(
@@ -637,21 +681,72 @@ class App:
         win = tk.Toplevel(self.root)
         win.title("Team Breakdown")
         win.configure(bg="#f7fbff")
-        txt = tk.Text(win, wrap="word", width=80, height=25, bg="#f7fbff", relief="flat")
+        txt = tk.Text(win, wrap="word", width=90, height=28, bg="#f7fbff", relief="flat")
         txt.pack(fill="both", expand=True, padx=10, pady=10)
-        if getattr(self, "metrics", None):
-            txt.insert("1.0", json.dumps(self.metrics, indent=2))
-        else:
-            txt.insert("1.0", "No metrics available in payload.")
+        metrics = getattr(self, "metrics", {}) or {}
+        lines = []
+        scores = metrics.get("scores") or {}
+        if scores:
+            lines.append("Scores:")
+            lines.append(
+                f" - Overall {scores.get('overall','?')}/100 (Def {scores.get('defense','?')}, Off {scores.get('offense','?')}, Delta headroom {scores.get('delta_headroom','?')})"
+            )
+            if scores.get("role_penalty"):
+                lines.append(f" - Role balance penalty: -{scores['role_penalty']}")
+            if scores.get("bst_penalty"):
+                lines.append(f" - BST penalty: -{scores['bst_penalty']}")
+        exposures = metrics.get("exposures") or []
+        if exposures:
+            lines.append("\nExposed types (weak > resist+immune):")
+            for c in exposures:
+                lines.append(
+                    f" - {c.get('attack')}: weak {c.get('weak')} vs resist {c.get('resist')} immune {c.get('immune')}"
+                )
+        roles = metrics.get("role_counts") or {}
+        if roles:
+            lines.append("\nRole mix:")
+            for r, cnt in roles.items():
+                lines.append(f" - {r}: {cnt}")
+        upgrades = metrics.get("upgrades") or []
+        if upgrades:
+            lines.append("\nTop upgrade ideas:")
+            for line in upgrades:
+                lines.append(f" - {line}")
+        if not lines:
+            lines.append("No metrics available in payload.")
+        txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
     def _show_details(self, member):
         win = tk.Toplevel(self.root)
         win.title(f"Details: {member.get('name','(empty)')}")
         win.configure(bg="#f7fbff")
-        txt = tk.Text(win, wrap="word", width=70, height=20, bg="#f7fbff", relief="flat")
+        txt = tk.Text(win, wrap="word", width=80, height=26, bg="#f7fbff", relief="flat")
         txt.pack(fill="both", expand=True, padx=10, pady=10)
-        txt.insert("1.0", json.dumps(member, indent=2))
+        name = member.get("name", "(empty)")
+        types = member.get("types", [])
+        role = member.get("role", "balanced")
+        bst = fetch_base_stat_total(name) if name else 0
+        lines = [f"{name.title()} ({'/'.join(types) or '—'})", f"Role: {role.title()} | BST: {bst}"]
+        if member.get("coverage_priority"):
+            prio = ", ".join(f"{t} ({w})" for t, w in member["coverage_priority"][:6])
+            lines.append(f"Coverage priority: {prio}")
+        if member.get("weaknesses"):
+            weak = ", ".join(f"{w} x{mult}" for w, mult in member["weaknesses"][:6])
+            lines.append(f"Weaknesses: {weak}")
+        moves = member.get("suggested_moves", [])
+        if moves:
+            lines.append("\nMoves:")
+            for mv in moves[:8]:
+                lines.append(f" - {mv.get('name','?')} [{mv.get('type','-')}/{mv.get('cat','')}]")
+        cats = member.get("suggested_by_category") or {}
+        if cats:
+            lines.append("\nBy category:")
+            for key, mv_list in cats.items():
+                nice = key.title()
+                mv_txt = ", ".join(m.get("name", "?") for m in mv_list[:4])
+                lines.append(f" - {nice}: {mv_txt or '—'}")
+        txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
     def _mark_unavailable(self, member):
