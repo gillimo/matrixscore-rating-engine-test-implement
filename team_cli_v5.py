@@ -2830,6 +2830,18 @@ def main():
                 concise.append(f"{nm} [{role}] ({types})")
             print("\n=== Team at a glance ===")
             print("; ".join(concise))
+            # Include per-member metrics in payload for Tk breakdown
+            per_member = []
+            for info in team_infos:
+                per_member.append(
+                    {
+                        "name": info.get("name", ""),
+                        "role": info.get("role", "n/a"),
+                        "alignment_score": info.get("alignment_score", 0),
+                        "move_types": info.get("move_types", []),
+                        "se_hits": info.get("se_hits", []),
+                    }
+                )
             # Coverage blueprint: per member, which exposed types they can/should cover
             exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
             exposed_types = [c["attack"] for c in exposures]
@@ -3073,12 +3085,13 @@ def main():
                     for info in team_infos:
                         role = (info.get("role") or "balanced").lower()
                         role_counts[role] = role_counts.get(role, 0) + 1
-                    team_metrics = {
-                        "scores": scores,
-                        "exposures": exposures,
-                        "role_counts": role_counts,
-                        "upgrades": upgrade_lines if contrib_lines else [],
-                    }
+                team_metrics = {
+                    "scores": scores,
+                    "exposures": exposures,
+                    "role_counts": role_counts,
+                    "upgrades": upgrade_lines if contrib_lines else [],
+                    "team": per_member,
+                }
                     wheel_proc = launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
                     main._wheel_launched = True
                 elif not team_infos:

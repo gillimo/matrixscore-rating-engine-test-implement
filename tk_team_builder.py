@@ -711,6 +711,10 @@ class App:
                 lines.append(f" - Role balance penalty: -{scores['role_penalty']}")
             if scores.get("bst_penalty"):
                 lines.append(f" - BST penalty: -{scores['bst_penalty']}")
+            lines.append(
+                f" - Stack overlap: {scores.get('stack_overlap','?')} | Shared score: {scores.get('shared','?')} | Best defensive delta: {scores.get('best_defensive_delta','?')}"
+            )
+            lines.append(f" - Base stat total: {scores.get('stat_total','?')}")
         exposures = metrics.get("exposures") or []
         if exposures:
             lines.append("\nExposed types (weak > resist+immune):")
@@ -728,6 +732,17 @@ class App:
             lines.append("\nTop upgrade ideas:")
             for line in upgrades:
                 lines.append(f" - {line}")
+        # Per-Pokemon metrics if present
+        team_entries = metrics.get("team", [])
+        if team_entries:
+            lines.append("\nPer-Pokémon metrics:")
+            for entry in team_entries:
+                nm = entry.get("name", "").title()
+                role = entry.get("role", "n/a")
+                align = entry.get("alignment_score", 0)
+                stack = entry.get("stack_contrib", "?")
+                move_types = ", ".join(entry.get("move_types") or [])
+                lines.append(f" - {nm} [{role}]: align {align}/100; stack contrib {stack}; move types: {move_types}")
         if not lines:
             lines.append("No metrics available in payload.")
         txt.insert("1.0", "\n".join(lines))
