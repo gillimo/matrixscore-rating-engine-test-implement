@@ -2581,6 +2581,7 @@ def main():
                 else:
                     print("No positive additions available to auto-fill.")
             # Optional drop/replace loop before moves
+            drop_exclude = set()
             while True:
                 print("\nDrop & replace (pre-moves):")
                 for idx, member in enumerate(team):
@@ -2593,8 +2594,9 @@ def main():
                     if 1 <= num <= len(team):
                         drop_name = team[num - 1]["name"]
                         team.pop(num - 1)
+                        drop_exclude.add(drop_name.lower())
                         print(f"Dropped {drop_name}. Refilling...")
-                        added = autofill_team(team, chart, attack_types, max_size=6, exclude={drop_name})
+                        added = autofill_team(team, chart, attack_types, max_size=6, exclude=drop_exclude)
                         if added:
                             for name, label, score_tuple in added:
                                 shared_gain, def_gain, overall_gain = score_tuple
