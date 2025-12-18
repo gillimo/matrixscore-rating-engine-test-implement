@@ -1321,7 +1321,15 @@ def fetch_move_detail(name: str):
     MOVE_CACHE[key] = data
     return data
 
-def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, version_group="legends-za"):
+def pick_moves(
+    name: str,
+    level_cap=None,
+    exclude_moves=None,
+    used_moves=None,
+    version_group="legends-za",
+    exposed_types=None,
+    needed_offense=None,
+):
     _load_pokemon_cache()
     chart = fetch_type_chart()
     poke = fetch_pokemon(name)
@@ -1337,6 +1345,8 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
     )
     exclude_moves = set((exclude_moves or []))
     used_moves = set((used_moves or []))
+    exposed_types = set(exposed_types or [])
+    needed_offense = set(needed_offense or [])
 
     # Score moves lazily: fetch details only for candidates
     stab_types = set(types)
@@ -1346,16 +1356,25 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
         def_type_hits[atk_type] = hit_count
     coverage_priority = sorted(def_type_hits.items(), key=lambda x: x[1], reverse=True)
 
-    # Grab moves with detail (full pool; Emboar coverage like thunder-punch should appear)
+    # Grab moves with detail (full pool; Emboar coverage like thunder-punch should appear). Allow duplicate names if they come from different methods/levels; dedupe later by name.
     candidate_moves = []
     eligible_pool = [(mv, method, lvl) for mv, method, lvl in move_pool if mv not in exclude_moves and mv not in used_moves]
-    total_moves = len(eligible_pool)
-    missing_moves = []
-    for mv, _, _ in eligible_pool:
-        if normalize_move_name(mv) not in MOVE_CACHE:
-            missing_moves.append(mv)
-
-        for mv, method, lvl in tqdm_iter(eligible_pool, total=total_moves, desc=f"{name} moves"):        md = fetch_move_detail(mv)
+    # Cap pool size to limit network fetch; prioritize unique names
+    seen_mv = set()
+    limited_pool = []
+    for mv, method, lvl in eligible_pool:
+        if mv in seen_mv:
+            continue
+        seen_mv.add(mv)
+        limited_pool.append((mv, method, lvl))
+        if len(limited_pool) >= 120:
+            break
+    total_moves = len(limited_pool)
+    for mv, method, lvl in limited_pool:
+        try:
+            md = fetch_move_detail(mv)
+        except Exception:
+            continue
         mtype = md["type"]["name"]
         category = md["damage_class"]["name"]
         power = md.get("power") or 0
@@ -1372,9 +1391,6 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
                 "priority": md.get("priority", 0),
             }
         )
-    if total_moves:
-        # progress(f"{name}: move detail fetch complete.") # Removed for consolidated progress
-        pass 
 
     physical = stats["attack"] >= stats["special-attack"]
 
@@ -1388,6 +1404,20 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
         if cat_match:
             score += 15
         score += def_type_hits[m["type"]] * 25  # weight coverage count higher
+        # Coverage bonus for exposed/needed types
+        coverage_bonus = 0
+        for t in exposed_types:
+            mult = chart[m["type"]].get(t, 1.0)
+            if mult >= 2.0:
+                coverage_bonus += 40
+            elif mult >= 1.0:
+                coverage_bonus += 15
+        # Light bonus for broader offense needs
+        for t in needed_offense:
+            mult = chart[m["type"]].get(t, 1.0)
+            if mult >= 2.0:
+                coverage_bonus += 5
+        score += coverage_bonus
         score += m["priority"] * 10
         return score
 
@@ -1412,6 +1442,13 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
             base += 70
         if m.get("priority", 0) > 0:
             base += 10
+        # Coverage utility bonus
+        for t in exposed_types:
+            mult = chart[m["type"]].get(t, 1.0)
+            if mult >= 2.0:
+                base += 25
+            elif mult >= 1.0:
+                base += 8
         return base
 
     stab_sorted = sorted(stab_moves, key=move_score, reverse=True)
@@ -1570,7 +1607,7 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
                 if m not in suggestions:
                     suggestions.append(m)
 
-    # Deduplicate while preserving order
+    # Deduplicate while preserving order; keep up to 4
     seen = set()
     final_moves = []
     for m in suggestions:
@@ -1580,13 +1617,28 @@ def pick_moves(name: str, level_cap=None, exclude_moves=None, used_moves=None, v
         final_moves.append(m)
         if len(final_moves) >= 4:
             break
+    # If still short, fill from best coverage/STAB/utility
+    if len(final_moves) < 4:
+        for m in cov_sorted + stab_sorted + stat_sorted:
+            if m["name"] in seen:
+                continue
+            seen.add(m["name"])
+            final_moves.append(m)
+            if len(final_moves) >= 4:
+                break
 
-    # Draft board: all candidates sorted by score
-    draft_board = sorted(
-        stab_sorted + cov_sorted + stat_sorted,
-        key=move_score,
-        reverse=True,
-    )
+    # Draft board: top 12 unique moves favoring coverage/STAB/utility
+    draft_board = []
+    seen_board = set()
+    for m in cov_sorted + stab_sorted + stat_sorted:
+        if m["name"] in seen_board:
+            continue
+        draft_board.append(m)
+        seen_board.add(m["name"])
+        if len(draft_board) >= 12:
+            break
+    if not draft_board:
+        draft_board = final_moves[:]
 
     # Alignment score: how well moves fit role priorities
     role_weights = {

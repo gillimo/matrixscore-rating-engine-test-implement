@@ -9,11 +9,41 @@
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
+          "name": "protect",
+          "type": "normal",
+          "cat": "status",
           "power": 0,
           "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 4
+        },
+        {
+          "name": "light-screen",
+          "type": "psychic",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "scary-face",
+          "type": "normal",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -21,600 +51,120 @@
       ],
       "draft_board": [
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "giga-impact",
+          "type": "normal",
           "cat": "physical",
-          "power": 0,
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "close-combat",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 120,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "double-edge",
+          "type": "normal",
           "cat": "physical",
-          "power": 0,
+          "power": 120,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "brick-break",
+          "type": "fighting",
           "cat": "physical",
-          "power": 0,
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "take-down",
+          "type": "normal",
           "cat": "physical",
-          "power": 0,
+          "power": 90,
+          "acc": 85,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "wing-attack",
+          "type": "flying",
+          "cat": "physical",
+          "power": 60,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0
+        },
+        {
+          "name": "knock-off",
+          "type": "dark",
+          "cat": "physical",
+          "power": 65,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "aerial-ace",
+          "type": "flying",
           "cat": "physical",
-          "power": 0,
+          "power": 60,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
+          "name": "air-slash",
+          "type": "flying",
+          "cat": "special",
+          "power": 75,
+          "acc": 95,
+          "method": "level-up",
+          "level": 1,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "slash",
+          "type": "normal",
           "cat": "physical",
-          "power": 0,
+          "power": 70,
           "acc": 100,
-          "method": "machine",
-          "level": 0,
+          "method": "level-up",
+          "level": 24,
           "priority": 0
         },
         {
-          "name": "hard-press",
-          "type": "steel",
+          "name": "thief",
+          "type": "dark",
           "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hard-press",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
+          "power": 60,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -700,7 +250,10 @@
         ]
       ],
       "move_types": [
-        "steel"
+        "normal",
+        "fighting",
+        "flying",
+        "dark"
       ],
       "se_hits": [
         "ground",
@@ -708,21 +261,60 @@
         "water"
       ],
       "role": "tank",
-      "alignment_score": 20,
-      "moves_fetched": true
+      "alignment_score": 70,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     },
     {
-      "name": "shelgon",
+      "name": "garchomp",
       "types": [
-        "dragon"
+        "dragon",
+        "ground"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "temper-flare",
-          "type": "fire",
+          "name": "outrage",
+          "type": "dragon",
           "cat": "physical",
-          "power": 75,
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "stealth-rock",
+          "type": "rock",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "swords-dance",
+          "type": "normal",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -731,8 +323,78 @@
       ],
       "draft_board": [
         {
-          "name": "temper-flare",
+          "name": "iron-head",
+          "type": "steel",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "metal-claw",
+          "type": "steel",
+          "cat": "physical",
+          "power": 50,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "stone-edge",
+          "type": "rock",
+          "cat": "physical",
+          "power": 100,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "rock-slide",
+          "type": "rock",
+          "cat": "physical",
+          "power": 75,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "power-gem",
+          "type": "rock",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "rock-tomb",
+          "type": "rock",
+          "cat": "physical",
+          "power": 60,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "fire-blast",
           "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "brick-break",
+          "type": "fighting",
           "cat": "physical",
           "power": 75,
           "acc": 100,
@@ -741,441 +403,41 @@
           "priority": 0
         },
         {
-          "name": "temper-flare",
-          "type": "fire",
+          "name": "poison-jab",
+          "type": "poison",
           "cat": "physical",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "temper-flare",
+          "name": "flamethrower",
           "type": "fire",
-          "cat": "physical",
-          "power": 75,
+          "cat": "special",
+          "power": 90,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "temper-flare",
+          "name": "fire-fang",
           "type": "fire",
           "cat": "physical",
-          "power": 75,
-          "acc": 100,
+          "power": 65,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "temper-flare",
-          "type": "fire",
+          "name": "giga-impact",
+          "type": "normal",
           "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "temper-flare",
-          "type": "fire",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -1260,7 +522,12 @@
         ]
       ],
       "move_types": [
-        "fire"
+        "steel",
+        "rock",
+        "fire",
+        "fighting",
+        "poison",
+        "normal"
       ],
       "se_hits": [
         "steel",
@@ -1272,22 +539,60 @@
         "dragon",
         "fairy"
       ],
-      "role": "tank",
-      "alignment_score": 30,
-      "moves_fetched": true
+      "role": "balanced",
+      "alignment_score": 40,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     },
     {
-      "name": "vaporeon",
+      "name": "blastoise",
       "types": [
         "water"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "alluring-voice",
-          "type": "fairy",
+          "name": "haze",
+          "type": "ice",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "blizzard",
+          "type": "ice",
           "cat": "special",
-          "power": 80,
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-beam",
+          "type": "ice",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -1296,9 +601,39 @@
       ],
       "draft_board": [
         {
-          "name": "alluring-voice",
-          "type": "fairy",
+          "name": "blizzard",
+          "type": "ice",
           "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-beam",
+          "type": "ice",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "dig",
+          "type": "ground",
+          "cat": "physical",
           "power": 80,
           "acc": 100,
           "method": "machine",
@@ -1306,9 +641,9 @@
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
+          "name": "ice-spinner",
+          "type": "ice",
+          "cat": "physical",
           "power": 80,
           "acc": 100,
           "method": "machine",
@@ -1316,561 +651,71 @@
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
+          "name": "ice-punch",
+          "type": "ice",
+          "cat": "physical",
+          "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
+          "name": "mud-shot",
+          "type": "ground",
           "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "power": 55,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
+          "name": "icy-wind",
+          "type": "ice",
           "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "power": 55,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
+          "name": "avalanche",
+          "type": "ice",
+          "cat": "physical",
+          "power": 60,
           "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": -4
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
+          "name": "focus-blast",
+          "type": "fighting",
           "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "power": 120,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "alluring-voice",
-          "type": "fairy",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -1955,7 +800,10 @@
         ]
       ],
       "move_types": [
-        "fairy"
+        "ice",
+        "ground",
+        "normal",
+        "fighting"
       ],
       "se_hits": [
         "flying",
@@ -1966,22 +814,60 @@
         "ice"
       ],
       "role": "tank",
-      "alignment_score": 30,
-      "moves_fetched": true
+      "alignment_score": 70,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     },
     {
-      "name": "florges",
+      "name": "xerneas",
       "types": [
         "fairy"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "psychic-noise",
+          "name": "reflect",
           "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "cat": "status",
+          "power": 0,
           "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "play-rough",
+          "type": "fairy",
+          "cat": "physical",
+          "power": 90,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "close-combat",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 75,
+          "priority": 0
+        },
+        {
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -1989,463 +875,123 @@
       ],
       "draft_board": [
         {
-          "name": "psychic-noise",
+          "name": "close-combat",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 75,
+          "priority": 0
+        },
+        {
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "zen-headbutt",
+          "type": "psychic",
+          "cat": "physical",
+          "power": 80,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic",
           "type": "psychic",
           "cat": "special",
-          "power": 75,
+          "power": 90,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
+          "name": "psyshock",
           "type": "psychic",
           "cat": "special",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
+          "method": "level-up",
+          "level": 85,
+          "priority": 0
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
           "cat": "special",
-          "power": 75,
-          "acc": 100,
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "megahorn",
+          "type": "bug",
+          "cat": "physical",
+          "power": 120,
+          "acc": 85,
+          "method": "level-up",
+          "level": 70,
+          "priority": 0
+        },
+        {
+          "name": "outrage",
+          "type": "dragon",
+          "cat": "physical",
+          "power": 120,
           "acc": 100,
+          "method": "level-up",
+          "level": 80,
+          "priority": 0
+        },
+        {
+          "name": "thunder",
+          "type": "electric",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
+          "name": "rock-slide",
+          "type": "rock",
+          "cat": "physical",
           "power": 75,
-          "acc": 100,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
+          "name": "take-down",
+          "type": "normal",
+          "cat": "physical",
+          "power": 90,
+          "acc": 85,
+          "method": "level-up",
+          "level": 50,
           "priority": 0
         }
       ],
@@ -2528,7 +1074,13 @@
         ]
       ],
       "move_types": [
-        "psychic"
+        "fighting",
+        "psychic",
+        "normal",
+        "bug",
+        "dragon",
+        "electric",
+        "rock"
       ],
       "se_hits": [
         "ground",
@@ -2536,726 +1088,184 @@
         "fire",
         "psychic"
       ],
-      "role": "tank",
-      "alignment_score": 30,
-      "moves_fetched": true
+      "role": "balanced",
+      "alignment_score": 37,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     },
     {
-      "name": "lopunny",
+      "name": "kangaskhan",
       "types": [
         "normal"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "rest",
+          "type": "psychic",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "hammer-arm",
+          "type": "fighting",
           "cat": "physical",
-          "power": 20,
+          "power": 100,
           "acc": 90,
-          "method": "tutor",
+          "method": "egg",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
           "level": 0,
           "priority": 0
         }
       ],
       "draft_board": [
         {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "earthquake",
+          "type": "ground",
           "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "outrage",
+          "type": "dragon",
           "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
-          "level": 0,
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 48,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "hammer-arm",
+          "type": "fighting",
           "cat": "physical",
-          "power": 20,
+          "power": 100,
           "acc": 90,
-          "method": "tutor",
+          "method": "egg",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
+          "name": "blizzard",
           "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "iron-tail",
+          "type": "steel",
           "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "power": 100,
+          "acc": 75,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "name": "hydro-pump",
+          "type": "water",
+          "cat": "special",
+          "power": 110,
+          "acc": 80,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
-          "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "name": "thunder",
+          "type": "electric",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "dig",
+          "type": "ground",
           "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "triple-axel",
-          "type": "ice",
+          "name": "brick-break",
+          "type": "fighting",
           "cat": "physical",
-          "power": 20,
-          "acc": 90,
-          "method": "tutor",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
           "level": 0,
           "priority": 0
         }
@@ -3339,7 +1349,15 @@
         ]
       ],
       "move_types": [
-        "ice"
+        "fighting",
+        "ground",
+        "dragon",
+        "grass",
+        "ice",
+        "fire",
+        "steel",
+        "water",
+        "electric"
       ],
       "se_hits": [
         "flying",
@@ -3347,8 +1365,16 @@
         "fairy"
       ],
       "role": "balanced",
-      "alignment_score": 27,
-      "moves_fetched": true
+      "alignment_score": 31,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     },
     {
       "name": "mewtwo",
@@ -3358,11 +1384,41 @@
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "psychic-noise",
+          "name": "future-sight",
           "type": "psychic",
           "cat": "special",
-          "power": 75,
+          "power": 120,
           "acc": 100,
+          "method": "level-up",
+          "level": 88,
+          "priority": 0
+        },
+        {
+          "name": "double-edge",
+          "type": "normal",
+          "cat": "physical",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "focus-punch",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 150,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": -3
+        },
+        {
+          "name": "hurricane",
+          "type": "flying",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -3370,1019 +1426,119 @@
       ],
       "draft_board": [
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "focus-blast",
+          "type": "fighting",
           "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
+          "power": 120,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "fire-blast",
+          "type": "fire",
           "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
+          "power": 110,
+          "acc": 85,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "focus-punch",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 150,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": -3
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "hurricane",
+          "type": "flying",
           "cat": "special",
-          "power": 75,
-          "acc": 100,
+          "power": 110,
+          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "flamethrower",
+          "type": "fire",
           "cat": "special",
-          "power": 75,
+          "power": 90,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "aura-sphere",
+          "type": "fighting",
           "cat": "special",
-          "power": 75,
+          "power": 80,
           "acc": 100,
-          "method": "machine",
-          "level": 0,
+          "method": "level-up",
+          "level": 40,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
-          "acc": 100,
+          "name": "stone-edge",
+          "type": "rock",
+          "cat": "physical",
+          "power": 100,
+          "acc": 80,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "power-gem",
+          "type": "rock",
           "cat": "special",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "shadow-ball",
+          "type": "ghost",
           "cat": "special",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
+          "name": "dark-pulse",
+          "type": "dark",
           "cat": "special",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
-          "power": 75,
+          "name": "foul-play",
+          "type": "dark",
+          "cat": "physical",
+          "power": 95,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic-noise",
-          "type": "psychic",
-          "cat": "special",
+          "name": "brick-break",
+          "type": "fighting",
+          "cat": "physical",
           "power": 75,
           "acc": 100,
           "method": "machine",
@@ -4469,7 +1625,12 @@
         ]
       ],
       "move_types": [
-        "psychic"
+        "fighting",
+        "fire",
+        "flying",
+        "rock",
+        "ghost",
+        "dark"
       ],
       "se_hits": [
         "fighting",
@@ -4482,13 +1643,22 @@
         "fairy"
       ],
       "role": "sweeper",
-      "alignment_score": 100,
-      "moves_fetched": true
+      "alignment_score": 81,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "autofill"
     }
   ],
   "role_move_mix": {
     "sweeper": "Prefers strong STAB and coverage moves to maximize offensive pressure.",
     "tank": "Prefers defensive moves, status effects, and moves that allow it to pivot or absorb damage.",
     "balanced": "Prefers a balanced mix of STAB, coverage, and utility tuned to the team."
-  }
+  },
+  "metrics": {}
 }
