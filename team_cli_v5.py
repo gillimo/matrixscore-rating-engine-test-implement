@@ -2830,6 +2830,27 @@ def main():
                 concise.append(f"{nm} [{role}] ({types})")
             print("\n=== Team at a glance ===")
             print("; ".join(concise))
+            # Coverage blueprint: per member, which exposed types they can/should cover
+            exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+            exposed_types = [c["attack"] for c in exposures]
+            if exposed_types:
+                print("\n=== Coverage blueprint (what to build on each mon) ===")
+                for info in team_infos:
+                    move_types = set(info.get("move_types") or [])
+                    se_hits = set(info.get("se_hits") or [])
+                    name = info.get("name", "").title()
+                    suggestions = []
+                    for t in exposed_types:
+                        if t in se_hits:
+                            suggestions.append(f"{t} (already SE)")
+                        elif t in move_types:
+                            suggestions.append(f"{t} (neutral now; aim for SE move)")
+                        else:
+                            suggestions.append(f"{t} (add a {t}-type coverage move)")
+                    print(f" - {name}: " + "; ".join(suggestions))
+            else:
+                print("\n=== Coverage blueprint ===")
+                print("Team has no net exposures; fill remaining move slots flexibly (STAB/utility).")
             print("\n=== Team Scores (final) ===")
             print(f" - Defense: {scores['defense']}/100")
             print(f" - Offense: {scores['offense']}/100")
