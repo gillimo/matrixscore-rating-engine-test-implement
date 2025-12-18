@@ -783,6 +783,11 @@ class App:
                 can_cover = t in se_hits or t in move_types or t in types
                 status = "already covered" if can_cover else "add a move of this type"
                 lines.append(f" - {t}: team need {need:.1f} -> {status}")
+            # Required elements for delta gains: expose what move types would most improve deltas
+            lines.append("Delta boosters (move types that help most):")
+            # Rank exposures by need; suggest adding move types that hit those SE
+            for t, need in needed_types[:4]:
+                lines.append(f" - Add {t}-hitting move to reduce team exposure (need {need:.1f})")
         moves = member.get("suggested_moves", [])
         if moves:
             lines.append("\nMoves:")
