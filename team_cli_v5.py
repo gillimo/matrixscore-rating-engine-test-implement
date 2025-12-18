@@ -2700,6 +2700,15 @@ def main():
                 attack_types,
             )
             summary_text, scores = final_team_rating(team_infos, cov, chart, attack_types)
+            # Concise roster line for quick scan
+            concise = []
+            for info in team_infos:
+                nm = info.get("name", "").title()
+                role = info.get("role", "n/a")
+                types = "/".join(info.get("types", []))
+                concise.append(f"{nm} [{role}] ({types})")
+            print("\n=== Team at a glance ===")
+            print("; ".join(concise))
             print("\n=== Team Scores (final) ===")
             print(f" - Defense: {scores['defense']}/100")
             print(f" - Offense: {scores['offense']}/100")
