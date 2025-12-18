@@ -12,6 +12,8 @@ from pathlib import Path
 from PIL import Image, ImageTk
 
 import requests
+import subprocess
+import sys
 
 POKEAPI_BASE = "https://pokeapi.co/api/v2"
 EXCLUDED_TYPES = {"shadow", "unknown"}
@@ -785,17 +787,78 @@ class App:
     def _mark_unavailable_idx(self, idx):
         if 0 <= idx < len(self.team):
             name = self.team[idx].get("name", "(empty)")
-            # Remove current slot, then attempt to auto-replace using parsed upgrades
-            self.team[idx] = {"name": "", "types": [], "source": "unavailable"}
-            self.cached_move_blocks[idx] = None
-            replaced = self._auto_replace(idx, dropped=name)
+            # Invoke CLI finalize with a drop of this name, then reload payload
+            replaced = self._run_finalize_with_drop(name)
             if replaced:
-                self.status_var.set(f"Replaced {name} with {replaced}.")
+                self.status_var.set(f"Dropped {name}; replaced with {replaced}.")
             else:
-                self.status_var.set(f"Marked unavailable: {name}. Slot cleared; rerun finalize to replace.")
+                self.status_var.set(f"Dropped {name}; no replacement found.")
             self._refresh_metrics_and_ui()
         else:
             self.status_var.set("Invalid slot to mark unavailable.")
+
+    def _run_finalize_with_drop(self, drop_name):
+        """Run a background finalize with the current team minus drop_name, reload payload, and return replacement name."""
+        wheel_path = Path(__file__).with_name("team_cli_v5.py")
+        if not wheel_path.exists():
+            return None
+        # Build input: current team names, drop command, finalize
+        lines = []
+        for m in self.team:
+            nm = m.get("name")
+            if nm and nm.lower() != drop_name.lower():
+                lines.append(nm)
+        lines.append(f"drop {drop_name}")
+        lines.append("finalize")
+        input_str = "\n".join(lines) + "\n"
+        env = os.environ.copy()
+        env["SKIP_TK"] = "1"
+        try:
+            subprocess.run([sys.executable, str(wheel_path)], input=input_str, text=True, env=env, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            return None
+        # Reload payload
+        payload_path = Path(__file__).with_name("team_payload.json")
+        if not payload_path.exists():
+            return None
+        try:
+            payload = json.loads(payload_path.read_text())
+        except Exception:
+            return None
+        team_data = payload.get("team", [])
+        self.team = []
+        self.payload_moves = []
+        self.payload_by_cat = []
+        for entry in team_data[:6]:
+            self.team.append(
+                {
+                    "name": entry.get("name", ""),
+                    "types": entry.get("types", []),
+                    "source": entry.get("source", "finalize"),
+                    "role": entry.get("role", ""),
+                    "suggested_moves": entry.get("suggested_moves", []),
+                    "suggested_by_category": entry.get("suggested_by_category", {}),
+                    "move_types": entry.get("move_types", []),
+                    "se_hits": entry.get("se_hits", []),
+                    "alignment_score": entry.get("alignment_score", 0),
+                    "coverage_priority": entry.get("coverage_priority", []),
+                    "weaknesses": entry.get("weaknesses", []),
+                }
+            )
+            self.payload_moves.append(entry.get("suggested_moves", []))
+            self.payload_by_cat.append(entry.get("suggested_by_category", {}))
+        while len(self.team) < 6:
+            self.team.append({"name": "", "types": [], "source": ""})
+            self.payload_moves.append([])
+            self.payload_by_cat.append({})
+        self.metrics = payload.get("metrics", self.metrics)
+        self.upgrades_raw = payload.get("metrics", {}).get("upgrades", []) or []
+        self.parsed_upgrades = self._parse_upgrades(self.upgrades_raw)
+        self.cached_move_blocks = [None] * 6
+        self._render_payload_panel()
+        # Return the newly added name if any
+        new_names = [m.get("name", "") for m in self.team]
+        return next((nm for nm in new_names if nm and nm.lower() != drop_name.lower()), None)
 
     def _parse_upgrades(self, lines):
         """Parse upgrade lines into candidate names in order."""
