@@ -812,20 +812,34 @@ class App:
         return names
 
     def _auto_replace(self, idx, dropped=None):
-        """Fill a cleared slot with the best upgrade candidate not already on the team."""
+        """Fill a cleared slot with the best upgrade candidate not already on the team (re-evaluated each click)."""
         current_names = {m.get("name", "").lower() for m in self.team if m.get("name")}
-        # Rebuild upgrade list fresh each time from raw to avoid running out
-        available = [c for c in self._parse_upgrades(self.upgrades_raw) if c not in current_names and c != (dropped or "").lower()]
+        available = [
+            c for c in self._parse_upgrades(self.upgrades_raw) if c not in current_names and c != (dropped or "").lower()
+        ]
         if not available:
             return None
-        cand = available[0]
-        try:
-            types = fetch_pokemon_typing(cand)
-        except Exception:
-            types = []
-        self.team[idx] = {"name": cand, "types": types, "source": "upgrade"}
-        self.cached_move_blocks[idx] = None
-        return cand.title()
+        self._ensure_types()
+        chart = getattr(self, "matrix", {})
+        best = None  # (score, bst, name, types)
+        for cand in available:
+            try:
+                types = fetch_pokemon_typing(cand)
+            except Exception:
+                types = []
+            sim_team = list(self.team)
+            sim_team[idx] = {"name": cand, "types": types, "source": "upgrade"}
+            cov = compute_coverage(sim_team, chart)
+            score = typing_score(cov)
+            bst = fetch_base_stat_total(cand)
+            if best is None or (score, bst) > (best[0], best[1]):
+                best = (score, bst, cand, types)
+        if best:
+            _, _, name, types = best
+            self.team[idx] = {"name": name, "types": types, "source": "upgrade"}
+            self.cached_move_blocks[idx] = None
+            return name.title()
+        return None
 
     def _ensure_types(self):
         if getattr(self, "matrix", None):
