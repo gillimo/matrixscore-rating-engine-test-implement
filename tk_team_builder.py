@@ -808,14 +808,16 @@ class App:
         if moves:
             lines.append("\nMoves:")
             for mv in moves[:8]:
-                lines.append(f" - {mv.get('name','?')} [{mv.get('type','-')}/{mv.get('cat','')}]")
+                cat = mv.get("cat", "")
+                cat_label = "Phys" if cat == "physical" else ("Spec" if cat == "special" else "Status")
+                lines.append(f" - {mv.get('name','?')} [{mv.get('type','-')}/{cat_label}]")
         cats = member.get("suggested_by_category") or {}
         if cats:
             lines.append("\nBy category:")
             for key, mv_list in cats.items():
                 nice = key.title()
-                mv_txt = ", ".join(m.get("name", "?") for m in mv_list[:4]) or "—"
-                lines.append(f" - {nice}: {mv_txt}")
+                mv_txt = ", ".join(f\"{m.get('name','?')} ({'Phys' if m.get('cat')=='physical' else 'Spec' if m.get('cat')=='special' else 'Status'})\" for m in mv_list[:4]) or \"—\"
+                lines.append(f\" - {nice}: {mv_txt}\")
         txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
