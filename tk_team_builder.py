@@ -722,6 +722,23 @@ class App:
                 lines.append(
                     f" - {c.get('attack')}: weak {c.get('weak')} vs resist {c.get('resist')} immune {c.get('immune')}"
                 )
+            # Unique coverage map: which types only one mon covers
+            if metrics.get("team"):
+                unique = []
+                for c in exposures:
+                    t = c.get("attack")
+                    coverers = []
+                    for entry in metrics["team"]:
+                        mt = set(entry.get("move_types") or [])
+                        se = set(entry.get("se_hits") or [])
+                        if t in se or t in mt:
+                            coverers.append(entry.get("name", ""))
+                    if len(coverers) == 1:
+                        unique.append(f"{t} -> {coverers[0]}")
+                if unique:
+                    lines.append("Unique coverage:")
+                    for u in unique:
+                        lines.append(f" - {u}")
         roles = metrics.get("role_counts") or {}
         if roles:
             lines.append("\nRole mix:")
