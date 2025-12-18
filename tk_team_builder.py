@@ -43,6 +43,7 @@ POKEDEX_BLUE = "#3B4CCA"
 POKEDEX_RED = "#EE1515"
 POKEDEX_DARK = "#1D1E2C"
 POKEDEX_LIGHT = "#FFF7D6"
+POKEDEX_GRAY = "#E2E4E8"
 ROLE_MOVE_MIX = {
     "sweeper": "Prefers 1 STAB, 2 coverage hitting team weaknesses, and 1 priority/recoil or setup flex slot.",
     "tank": "Prefers heal/screen/hazard control first, plus 1 STAB and 1 coverage; utility takes priority.",
@@ -211,7 +212,11 @@ def type_gradient(types):
         return [c, c]
     c1 = TYPE_COLORS.get(types[0], "#e2e8f0")
     c2 = TYPE_COLORS.get(types[1], "#cbd5e1")
-    return [c1, c2]
+    # Simple blend for dual types to mimic dual tint
+    r1, g1, b1 = _hex_to_rgb(c1)
+    r2, g2, b2 = _hex_to_rgb(c2)
+    blend = _rgb_to_hex(((r1 + r2) / 2, (g1 + g2) / 2, (b1 + b2) / 2))
+    return [blend, blend]
 
 def _get_card_style(style: ttk.Style, types, key_prefix="Card"):
     """Return a ttk style name tinted by typing; cache per type combo."""
@@ -434,6 +439,23 @@ class App:
         self.style.configure("Glass.TLabelframe.Label", background="#f7fbff")
         self.style.configure("CardHeader.TLabel", background="#f7fbff", foreground=POKEDEX_DARK, font=("Segoe UI", 11, "bold"))
         self.style.configure("Tag.TLabel", background="#0f172a", foreground="#f8fafc", font=("Segoe UI", 8, "bold"))
+        # Button palette: primary = red, secondary = blue
+        self.style.configure(
+            "Primary.TButton",
+            background=POKEDEX_RED,
+            foreground="#f8fafc",
+            bordercolor=POKEDEX_RED,
+            focusthickness=3,
+        )
+        self.style.map("Primary.TButton", background=[("active", "#c01010")])
+        self.style.configure(
+            "Secondary.TButton",
+            background=POKEDEX_BLUE,
+            foreground="#f8fafc",
+            bordercolor=POKEDEX_BLUE,
+            focusthickness=3,
+        )
+        self.style.map("Secondary.TButton", background=[("active", "#2a3799")])
 
         wrapper = ttk.Frame(self.root)
         wrapper.pack(fill="both", expand=True, padx=16, pady=12)
@@ -453,7 +475,8 @@ class App:
         self.metrics = getattr(self, "metrics", {})
         metrics_frame = ttk.Frame(wrapper, padding=(6, 4))
         metrics_frame.pack(fill="x", pady=(0, 6))
-        ttk.Label(metrics_frame, text="Team Score:", font=("Segoe UI", 10, "bold")).pack(side="left", padx=(0, 6))
+        metrics_frame.configure(style="TFrame")
+        tk.Label(metrics_frame, text="Team Score:", font=("Segoe UI", 10, "bold"), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left", padx=(0, 6))
         if self.metrics.get("scores"):
             sc = self.metrics["scores"]
             score_text = f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100"
@@ -461,10 +484,11 @@ class App:
                 score_text += f" (role -{sc['role_penalty']})"
             if sc.get("bst_penalty"):
                 score_text += f" (BST -{sc['bst_penalty']})"
-            ttk.Label(metrics_frame, text=score_text, font=("Segoe UI", 10)).pack(side="left")
+            tk.Label(metrics_frame, text=score_text, font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
         else:
-            ttk.Label(metrics_frame, text="No metrics in payload", font=("Segoe UI", 10)).pack(side="left")
-        ttk.Button(metrics_frame, text="Tell me more", command=self._show_team_breakdown).pack(side="right")
+            tk.Label(metrics_frame, text="No metrics in payload", font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
+        ttk.Button(metrics_frame, text="Tell me more", style="Secondary.TButton", command=self._show_team_breakdown).pack(side="right")
+        metrics_frame.configure(bg=POKEDEX_BLUE)
 
         self.final_panel = ttk.Labelframe(wrapper, text="Team (6 slots)", style="Glass.TLabelframe")
         self.final_panel.pack(fill="both", expand=True)
@@ -476,10 +500,11 @@ class App:
 
         status_bar = ttk.Frame(wrapper)
         status_bar.pack(fill="x", pady=(8, 0))
-        ttk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic")).pack(
-            anchor="w"
-        )
         status_bar.configure(style="TFrame")
+        tk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic"), fg="#f8fafc", bg=POKEDEX_DARK).pack(
+            anchor="w", fill="x"
+        )
+        status_bar.configure(background=POKEDEX_DARK)
 
     def _load_types(self):
         try:
