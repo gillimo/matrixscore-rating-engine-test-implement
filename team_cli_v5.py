@@ -1768,9 +1768,14 @@ def predict_overall(team, team_infos, chart, attack_types):
         chart,
         attack_types,
     )
-    defensive_delta_headroom = max(0, min(100, 100 - best_defensive_delta))
     off_score = offense_score_with_bonuses(team_infos, cov, chart, attack_types)
     best_offense_gap = compute_best_offense_gain(team, chart, attack_types)
+    # If defense or offense already scored perfect, treat delta as closed to avoid perpetual small headroom.
+    if def_score == 100:
+        best_defensive_delta = 0
+    if off_score == 100:
+        best_offense_gap = 0
+    defensive_delta_headroom = max(0, min(100, 100 - best_defensive_delta))
     overall = overall_score(
         best_defensive_delta,
         best_offense_gap,
@@ -2202,8 +2207,13 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         chart,
         attack_types,
     )
+    # Clamp deltas to zero when scores are already perfect
+    if def_score == 100:
+        best_defensive_delta = 0
+    if coverage_off == 100:
+        best_offense_gap = 0
     defensive_delta_headroom = max(0, min(100, 100 - best_defensive_delta))
-    
+
     offensive_delta = best_offense_gap
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     overall = overall_score(
@@ -2212,6 +2222,19 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         shared_score,
         stack_overlap=stack_overlap,
     )
+    # Role balance penalty (soft): discourage 3+ of a role
+    role_counts = defaultdict(int)
+    for info in team_infos:
+        role = (info.get("role") or "balanced").lower()
+        role_counts[role] += 1
+    role_penalty = 0.0
+    for role, cnt in role_counts.items():
+        if role == "balanced":
+            continue  # allow multiple balanced slots without penalty
+        if cnt >= 3:
+            role_penalty += 0.5 * (cnt - 2)
+    if role_penalty:
+        overall = max(0, min(100, overall - role_penalty))
 
     scores = {
         "defense": def_score,
@@ -2233,6 +2256,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         "headroom_offense": headroom_off,
         "stack_overlap": stack_overlap,
         "stat_total": stat_total,
+        "role_penalty": role_penalty,
     }
     summary = [
         perfect_def,
