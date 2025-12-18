@@ -559,12 +559,15 @@ class App:
             role_tag = ttk.Label(card, text=f"Role: {role_label}", style="Tag.TLabel")
             role_tag.configure(background=bg_color, foreground=_contrast_color(bg_color))
             role_tag.pack(anchor="w", padx=2, pady=(0, 2))
-            ttk.Label(
+            tk.Label(
                 card,
                 text=mix_text,
                 wraplength=360,
-                foreground=text_color,
+                fg=text_color,
+                bg=bg_color,
                 justify="left",
+                anchor="w",
+                padx=2,
             ).pack(anchor="w", padx=2, pady=(0, 6))
 
             type_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
@@ -588,13 +591,14 @@ class App:
                     row_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
                     row_frame.pack(fill="x", pady=4)
                     ttk.Label(row_frame, text=f"{cat_label}:", width=14, background=bg_color).pack(side="left")
-                    ttk.Label(
+                    tk.Label(
                         row_frame,
                         text=self._summarize_moves(moves),
                         wraplength=360,
-                        foreground=text_color,
+                        fg=text_color,
+                        bg=bg_color,
                         justify="left",
-                        background=bg_color,
+                        anchor="w",
                     ).pack(side="left", fill="x", expand=True, padx=6)
             else:
                 ttk.Label(
@@ -608,7 +612,7 @@ class App:
             ttk.Button(btn_row, text="More details", command=lambda m=member: self._show_details(m)).pack(
                 side="left", padx=(0, 6)
             )
-            ttk.Button(btn_row, text="I don't have this", command=lambda m=member: self._mark_unavailable(m)).pack(
+            ttk.Button(btn_row, text="I don't have this", command=lambda idx=idx: self._mark_unavailable_idx(idx)).pack(
                 side="left"
             )
 
@@ -749,8 +753,15 @@ class App:
         txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
-    def _mark_unavailable(self, member):
-        self.status_var.set(f"Marked unavailable: {member.get('name','(empty)')} (rerun in CLI to replace)")
+    def _mark_unavailable_idx(self, idx):
+        if 0 <= idx < len(self.team):
+            name = self.team[idx].get("name", "(empty)")
+            self.team[idx] = {"name": "", "types": [], "source": "unavailable"}
+            self.cached_move_blocks[idx] = None
+            self.status_var.set(f"Marked unavailable: {name}. Slot cleared; rerun finalize to replace.")
+            self._render_payload_panel()
+        else:
+            self.status_var.set("Invalid slot to mark unavailable.")
 def _apply_tracing():
     """Wrap module-level functions with trace_call for entry/exit visibility."""
     if not TRACE_FUNCTIONS:
