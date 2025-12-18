@@ -2566,7 +2566,36 @@ def main():
                     print(report)
                 else:
                     print("No positive additions available to auto-fill.")
-
+            # Optional drop/replace loop before moves
+            while True:
+                print("\nDrop & replace (pre-moves):")
+                for idx, member in enumerate(team):
+                    print(f" {idx+1}) {member['name'].title()} ({'/'.join(member['types'])})")
+                choice = input("Enter number to drop, or 'done' to continue: ").strip().lower()
+                if choice == "done":
+                    break
+                if choice.isdigit():
+                    num = int(choice)
+                    if 1 <= num <= len(team):
+                        drop_name = team[num - 1]["name"]
+                        team.pop(num - 1)
+                        print(f"Dropped {drop_name}. Refilling...")
+                        added = autofill_team(team, chart, attack_types, max_size=6)
+                        if added:
+                            for name, label, score_tuple in added:
+                                shared_gain, def_gain, overall_gain = score_tuple
+                                print(
+                                    f"\033[32mAdded {name} via {label} "
+                                    f"(shared {shared_gain:+.0f}, def {def_gain:+.0f}, overall {overall_gain:+.0f})\033[0m"
+                                )
+                        else:
+                            print("No replacement found.")
+                    else:
+                        print("Invalid number.")
+                else:
+                    # If user just pressed enter with a number, treat it as invalid unless it's 'done'
+                    if choice:
+                        print("Enter a valid number or 'done'.")
             infos = team_infos_from_cache(team)
             return True
 
