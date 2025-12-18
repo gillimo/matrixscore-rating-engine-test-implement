@@ -632,6 +632,30 @@ class App:
                 trimmed.append({"name": "(open slot)", "type": "-", "cat": "", "method": "choose"})
             ordered.append(("Moves", trimmed))
         return dict(ordered)
+
+    def _show_team_breakdown(self):
+        win = tk.Toplevel(self.root)
+        win.title("Team Breakdown")
+        win.configure(bg="#f7fbff")
+        txt = tk.Text(win, wrap="word", width=80, height=25, bg="#f7fbff", relief="flat")
+        txt.pack(fill="both", expand=True, padx=10, pady=10)
+        if getattr(self, "metrics", None):
+            txt.insert("1.0", json.dumps(self.metrics, indent=2))
+        else:
+            txt.insert("1.0", "No metrics available in payload.")
+        txt.config(state="disabled")
+
+    def _show_details(self, member):
+        win = tk.Toplevel(self.root)
+        win.title(f"Details: {member.get('name','(empty)')}")
+        win.configure(bg="#f7fbff")
+        txt = tk.Text(win, wrap="word", width=70, height=20, bg="#f7fbff", relief="flat")
+        txt.pack(fill="both", expand=True, padx=10, pady=10)
+        txt.insert("1.0", json.dumps(member, indent=2))
+        txt.config(state="disabled")
+
+    def _mark_unavailable(self, member):
+        self.status_var.set(f"Marked unavailable: {member.get('name','(empty)')} (rerun in CLI to replace)")
 def _apply_tracing():
     """Wrap module-level functions with trace_call for entry/exit visibility."""
     if not TRACE_FUNCTIONS:
