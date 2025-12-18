@@ -1534,6 +1534,16 @@ def launch_wheel(team_data, wheel_path, metrics=None):
     if WHEEL_LAUNCHED:
         print("Wheel GUI already launched; skipping duplicate launch.")
         return
+
+    def _sanitize(obj):
+        if isinstance(obj, set):
+            return sorted(obj)
+        if isinstance(obj, dict):
+            return {k: _sanitize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_sanitize(v) for v in obj]
+        return obj
+
     # Write team to a temp json for the Tk app to load
     tmp_path = Path(wheel_path).with_name("team_payload.json")
     payload = {
@@ -1541,6 +1551,7 @@ def launch_wheel(team_data, wheel_path, metrics=None):
         "role_move_mix": ROLE_MOVE_MIX,
         "metrics": metrics or {},  # populated by CLI when available (team scores, exposures, upgrade suggestions)
     }
+    payload = _sanitize(payload)
     tmp_path.write_text(json.dumps(payload, indent=2))
     # launch Tk app with env var for payload
     env = os.environ.copy()
@@ -1812,10 +1823,11 @@ def predict_overall(team, team_infos, chart, attack_types):
 def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_overlap=0):
     """
     Overall score: 100 if both deltas are zero and no stacked weaknesses,
-    then lose 0.5 point per remaining delta point and 5 points per stacked weakness.
+    then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
+    (defensive score already captures heavy stacking impact).
     """
     delta_penalty = 0.5 * (best_defensive_delta + best_offense_gap)
-    stack_penalty = 5.0 * stack_overlap
+    stack_penalty = 2.0 * stack_overlap
     overall = 100 - delta_penalty - stack_penalty
     return int(max(0, min(100, overall)))
 
