@@ -214,24 +214,22 @@ def type_gradient(types):
         return [c, c]
     c1 = TYPE_COLORS.get(types[0], "#e2e8f0")
     c2 = TYPE_COLORS.get(types[1], "#cbd5e1")
-    # Simple blend for dual types to mimic dual tint
-    r1, g1, b1 = _hex_to_rgb(c1)
-    r2, g2, b2 = _hex_to_rgb(c2)
-    blend = _rgb_to_hex(((r1 + r2) / 2, (g1 + g2) / 2, (b1 + b2) / 2))
-    return [blend, blend]
+    # Use both type colors for dual-types
+    return [c1, c2]
 
 def _get_card_style(style: ttk.Style, types, key_prefix="Card"):
-    """Return a ttk style name tinted by typing; cache per type combo."""
+    """Return a style tuple tinted by typing; cache per type combo."""
     tkey = ",".join(types) if types else "none"
     cache_key = f"{key_prefix}.{tkey}"
     if cache_key in STYLE_CACHE:
         return STYLE_CACHE[cache_key]
     colors = type_gradient(types)
     base = colors[0]
+    accent = colors[1]
     text_color = _contrast_color(base)
     style_name = f"{key_prefix}.{tkey}.TFrame"
     style.configure(style_name, background=base)
-    STYLE_CACHE[cache_key] = (style_name, text_color, base)
+    STYLE_CACHE[cache_key] = (style_name, text_color, base, accent)
     return STYLE_CACHE[cache_key]
 
 def defensive_multiplier(attack_type: str, defense_types, matrix):
@@ -582,13 +580,22 @@ class App:
             types = member.get("types") or []
             role = (member.get("role") or "").lower() or "balanced"
             role_label = role.title() if role else "Unassigned"
-            card_style, text_color, bg_color = _get_card_style(self.style, types)
+            card_style, text_color, bg_color, accent_color = _get_card_style(self.style, types)
 
-            card = ttk.Frame(self.final_panel_inner, padding=12, style=card_style)
+            card = tk.Frame(
+                self.final_panel_inner,
+                padx=12,
+                pady=12,
+                bg=bg_color,
+                highlightbackground=accent_color,
+                highlightcolor=accent_color,
+                highlightthickness=1,
+                bd=0,
+            )
             card.grid(row=row, column=col, sticky="nsew", padx=10, pady=10)
             self.final_panel_inner.rowconfigure(row, weight=1)
 
-            header = ttk.Frame(card)
+            header = tk.Frame(card, bg=bg_color)
             header.pack(fill="x")
             img = None
             if member.get("name"):
@@ -597,13 +604,14 @@ class App:
                     img = fetch_sprite_image(member["name"])
                     self.sprite_cache[member["name"]] = img
             if img:
-                lbl_img = ttk.Label(header, image=img, background=bg_color)
+                lbl_img = tk.Label(header, image=img, bg=bg_color)
                 lbl_img.image = img
                 lbl_img.pack(side="left", padx=(0, 10), pady=4)
-            ttk.Label(header, text=name.title(), style="CardHeader.TLabel").pack(anchor="w", pady=2, padx=2)
+            tk.Label(header, text=name.title(), font=("Segoe UI", 11, "bold"), fg=text_color, bg=bg_color).pack(
+                anchor="w", pady=2, padx=2
+            )
 
-            role_tag = ttk.Label(card, text=f"Role: {role_label}", style="Tag.TLabel")
-            role_tag.configure(background=bg_color, foreground=_contrast_color(bg_color))
+            role_tag = tk.Label(card, text=f"Role: {role_label}", fg=_contrast_color(bg_color), bg=bg_color, font=("Segoe UI", 8, "bold"))
             role_tag.pack(anchor="w", padx=2, pady=(0, 2))
 
             type_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
@@ -623,8 +631,15 @@ class App:
                 ttk.Label(type_frame, text="Types: --", foreground="#64748b", background=bg_color).pack(anchor="w")
             btn_row = ttk.Frame(card, style=card_style)
             btn_row.pack(fill="x", pady=(6, 0))
-            ttk.Button(
-                btn_row, text="More details", style="Secondary.TButton", command=lambda m=member: self._show_details(m)
+            tk.Button(
+                btn_row,
+                text="More details",
+                bg=POKEDEX_BLUE,
+                fg="#f8fafc",
+                activebackground="#2a3799",
+                activeforeground="#f8fafc",
+                relief="flat",
+                command=lambda m=member: self._show_details(m),
             ).pack(side="left", padx=(0, 6))
             # "I don't have this" handled in CLI finalize phase; hide button in UI
 
