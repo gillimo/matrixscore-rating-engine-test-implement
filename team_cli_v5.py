@@ -3085,13 +3085,13 @@ def main():
                     for info in team_infos:
                         role = (info.get("role") or "balanced").lower()
                         role_counts[role] = role_counts.get(role, 0) + 1
-                team_metrics = {
-                    "scores": scores,
-                    "exposures": exposures,
-                    "role_counts": role_counts,
-                    "upgrades": upgrade_lines if contrib_lines else [],
-                    "team": per_member,
-                }
+                    team_metrics = {
+                        "scores": scores,
+                        "exposures": exposures,
+                        "role_counts": role_counts,
+                        "upgrades": upgrade_lines if contrib_lines else [],
+                        "team": per_member,
+                    }
                     wheel_proc = launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
                     main._wheel_launched = True
                 elif not team_infos:
