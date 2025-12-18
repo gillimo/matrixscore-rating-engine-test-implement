@@ -854,7 +854,7 @@ def best_defensive_improvement(team, chart, attack_types):
 
 
 
-def get_best_defensive_candidates(team, chart, attack_types):
+def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
     """Find the typing(s) that yield the best defensive delta and return their candidate pools."""
     base_cov = compute_coverage(team, chart, attack_types)
     base_score = typing_score(base_cov)
@@ -889,6 +889,8 @@ def get_best_defensive_candidates(team, chart, attack_types):
             attack_types=attack_types,
             stat_sort_key="defense",
         )
+        if exclude:
+            opts = [o for o in opts if o.lower() not in exclude]
         consider([t], opts or [], f"Single-type ({t})")
 
     # Duals
@@ -908,6 +910,8 @@ def get_best_defensive_candidates(team, chart, attack_types):
                 attack_types=attack_types,
                 stat_sort_key="defense",
             )
+            if exclude:
+                opts = [o for o in opts if o.lower() not in exclude]
             consider(list(pair), opts or [], f"Dual-type ({pair[0]} + {pair[1]})")
 
     if not best_choices:
@@ -957,10 +961,10 @@ def pick_defensive_addition(team, chart, attack_types):
     )
 
 
-def pick_offense_addition(team, chart, attack_types, defense_choice=None):
+def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclude=None):
     """Pick the best offensive addition within the best defensive typing pool."""
     if defense_choice is None:
-        defense_choice = get_best_defensive_candidates(team, chart, attack_types)
+        defense_choice = get_best_defensive_candidates(team, chart, attack_types, exclude=exclude)
     if not defense_choice or not defense_choice.get("choices"):
         return None
 
@@ -990,6 +994,10 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
                 ptypes = fetch_pokemon_typing(pname)
             except Exception:
                 ptypes = def_opt.get("types") or []
+            if exclude and pname.lower() in exclude:
+                continue
+            if exclude and pname.lower() in exclude:
+                continue
 
         info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
         cached = None
@@ -2062,9 +2070,12 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
     )
 
 
-def autofill_team(team, chart, attack_types, max_size=6):
-    """Greedily add best-available overall improvements until team reaches max_size."""
+def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
+    """Greedily add best-available overall improvements until team reaches max_size.
+    exclude: optional set of names to skip (lowercase).
+    """
     added = []
+    exclude = {e.lower() for e in exclude} if exclude else set()
     iteration = 0
     while len(team) < max_size:
         iteration += 1
@@ -2072,11 +2083,11 @@ def autofill_team(team, chart, attack_types, max_size=6):
         progress(f"Autofill iteration {iteration} (team size {len(team)})")
 
         best = None
-        defense_choice = get_best_defensive_candidates(team, chart, attack_types)
+        defense_choice = get_best_defensive_candidates(team, chart, attack_types, exclude=exclude)
         if defense_choice:
             labels = [c["label"] for c in defense_choice.get("choices", [])] or [defense_choice.get("label", "unknown")]
             print(f"[Best Defensive Delta] {defense_choice.get('delta', 0):+.0f} via {', '.join(labels)}")
-        offensive_pick = pick_offense_addition(team, chart, attack_types, defense_choice=defense_choice)
+        offensive_pick = pick_offense_addition(team, chart, attack_types, defense_choice=defense_choice, exclude=exclude)
 
         overall_pick = None
         if not offensive_pick:
