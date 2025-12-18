@@ -1,0 +1,27 @@
+## Bug Log
+
+Last triage: 2025-12-17 by Codex (Git/bookkeeping).
+
+### Active Bugs
+- ID: BUG-2025-12-12-002 | Title: Exposed weakness popup sometimes appears twice | Status: Active | Reported By: Atlas | Date: 2025-12-12 | Notes: Intermittent duplicate trigger from the coverage/exposure prompt path in the Tk flow; needs repro and event de-dupe.
+- ID: BUG-2025-12-12-005 | Title: Demo log shows defense 34/100 despite "Balanced" banner | Status: Active | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Typing checkpoint prints "Balanced (no defensive gains left)" but final defense score is 34 (heavy stack penalty); reconcile messages or thresholds.
+- ID: BUG-2025-12-13-014 | Title: Logs remain 0 bytes / runs hang | Status: Active | Reported By: Orion | Date: 2025-12-13 | Notes: Harness runs produce empty/tiny logs (e.g., run_20251213_015557.log); likely PS/Python child hang or flush/close failure. Flushing added to `log_verbose`/`progress` on 2025-12-15 but needs verification.  
+  - Update 2025-12-13 (Comet): Multiple runs (021612/021210/021209/021045/015557 and demo_20251213_020312) end at first prompt or cache step with tiny/empty logs; also saw duplicated payload blocks and interleaved lines in 013523/012608 logs, suggesting stream corruption or stuck child process.
+- ID: BUG-2025-12-15-023 | Title: Typing delta prefers new exposures (emolga stacking rock) | Status: Active | Reported By: Nova | Date: 2025-12-15 | Notes: Added penalty for new exposed types and stack delta in typing_delta; needs re-run validation to confirm fixed.
+- ID: BUG-2025-12-15-024 | Title: Defensive delta overvalues flying/electric despite stack (emolga vs scizor/skarmory) | Status: Active | Reported By: Nova | Date: 2025-12-15 | Notes: Even with exposure immunity bonus, picks emolga as best DEF; need stronger penalty for introducing new 4x/2x stacks and better weighting of immunizing top exposed types.
+- ID: BUG-2025-12-15-029 | Title: Confusing Log Output | Status: Active | Reported By: Cygnus | Date: 2025-12-15 | Notes: Logs are overly verbose/repetitive; clean up progress/output noise for clarity.
+- ID: BUG-2025-12-15-034 | Title: Enhance Autofill Selection Explanation | Status: Active | Reported By: Gemini | Date: 2025-12-15 | Notes: Provide concise explanations for autofill selections, especially when weaker/non-obvious picks win (identify key factors like move types, uplift, synergy).
+- ID: BUG-2025-12-15-035 | Title: Enhance Autofill Selection Explanation (Low-Stat/Diamond in the Rough) | Status: Active | Reported By: Gemini | Date: 2025-12-15 | Notes: When lower-BST picks win, explain the decisive defensive/offensive contribution (covering weaknesses, unique coverage, etc.).
+- ID: BUG-2025-12-15-036 | Title: Defense Score of 0 in Aurorus/Talonflame Run | Status: Active (Confirmed) | Reported By: Gemini | Date: 2025-12-15 | Notes: Confirmed in run_20251215_195551.log (Overall 0/100); indicates defensive scoring breakdown for that composition.
+- ID: BUG-2025-12-15-037 | Title: Xerneas Offensive Delta of 145 | Status: Active (Confirmed) | Reported By: Gemini | Date: 2025-12-15 | Notes: Confirmed in run_20251215_195551.log (best remaining offensive delta +289); likely miscalculation or presentation bug in offensive delta.
+- ID: BUG-2025-12-15-039 | Title: Refactor Autofill: Two-Stage Selection (Defensive First, then Offensive Optimization) | Status: Active | Reported By: Gemini | Date: 2025-12-15 | Notes: Offensive picks must come from the top overall defensive delta pool (not per-type `[:3]` shortcuts); apply to both autofill and finalize flows.
+
+### Closed / Moot
+- ID: BUG-2025-12-12-003 | Title: PowerShell piping/here-string errors abort demo runs and leave logs empty | Status: Moot | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Environment/usage issue; use clean echo/apply_patch workflows instead of brittle here-strings.
+- ID: BUG-2025-12-12-008 | Title: PS/inline edits brittle (quoting/escapes) | Status: Moot | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Process problem (PowerShell inline editing); standardize on apply_patch/simple scripts on this system.
+- ID: BUG-2025-12-12-009 | Title: One-mon run not logging beyond prompt | Status: Closed | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Addressed by adding flushes to `log_verbose` and `progress` (Gemini, 2025-12-15); reopen if reproduction surfaces.
+- ID: BUG-2025-12-15-030 | Title: Missing GUI Documentation | Status: Closed | Reported By: Cygnus | Date: 2025-12-15 | Notes: Tkinter GUI is now documented in HOW_TO_OPERATE.md (updated 2025-12-17).
+
+### Feature Tickets (tracked in V2_TICKETS)
+- ID: FT-2025-12-17-002 (formerly BUG-2025-12-15-038) | Title: GUI reroll a slot when unavailable | Status: Open | Reported By: Gemini | Date: 2025-12-15 | Notes: Click sprite/name in a slot to rerun selection for that slot using the current team (exclude the existing mon) instead of a 1:1 swap; covers the "drop and rerun whole team" request.
+- ID: FT-2025-12-17-001 | Title: Coverage-aware move selection | Status: Open (In Progress) | Reported By: Gemini | Date: 2025-12-17 | Notes: Feed exposed/needed types into move selection; rank moves by coverage per role; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last resort. pick_moves now accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.

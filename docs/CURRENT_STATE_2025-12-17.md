@@ -1,31 +1,27 @@
-# Current State as of 2025-12-17 (Updated by Gemini Agent)
+## Current State (2025-12-17)
 
-This document summarizes the state of the Teambuilder project following a dedicated session with the Gemini Agent on 2025-12-17. It covers recent discussions, new rules, and the current status of the codebase as understood by the agent.
+Highlights
+- Active codebase: `team_cli_v5.py`; v3 archived. Python 3.9 at `C:\Users\gilli\AppData\Local\Programs\Python\Python39\python.exe`.
+- Autofill architecture: defense-first; offensive pick must come from top defensive delta pool. Tie-aware defensive pool, global move de-dupe, lazy move loading in place. GUI present via `tk_team_builder.py` when run.
+- Logging: verbose colorized traces; some runs still hang or stay tiny (BUG-2025-12-13-014) despite added flushes.
+- Scoring: defense can hit 0 and offense deltas can spike (e.g., Xerneas +145) indicating formula/presentation bugs; overall scores trend low/aggressive.
+- Move selection: draft board expanded; coverage-aware move weighting in progress but not fully wired; positive-gain enforcement pending.
+- UX gaps: need concise explanations for autofill, low-stat wins, and streamlined logs; GUI needs reroll-for-unavailable slot.
 
----
+Top issues (see BUG_LOG/V2_TICKETS for detail)
+- BUG-2025-12-13-014: harness/log flush hang.
+- BUG-2025-12-15-023/024: defensive delta still prefers bad exposures.
+- BUG-2025-12-15-036: defense score 0 on Aurorus/Talonflame finalize.
+- BUG-2025-12-15-037: offensive delta inflation (Xerneas +145/+289 headroom).
+- BUG-2025-12-15-034/035: missing explanations for autofill picks and low-stat wins.
+- BUG-2025-12-15-039: enforce defense-first pool for offense picks (remove `[:3]` shortcut).
 
-## Session Summary (Gemini Agent, 2025-12-17)
+Focus
+- Stabilize scoring (defense/offense delta, overlap penalties, headroom).
+- Fix logging reliability and reduce noise.
+- Wire coverage-aware move selection with positive-gain gating.
+- Add GUI slot reroll for unavailable mons.
 
-This session involved significant discussion and refactoring efforts aimed at improving the core team-building logic, user feedback mechanisms, and overall code robustness. While direct code changes were halted by user instruction, a comprehensive plan for future implementation was documented.
+Scope rule: code in git + any tickets added by the current coding agent are in-scope.
 
-### Key Outcomes & Directives:
-
-*   **File Versioning:** The main development file is now designated as `team_cli_v5.py`. The previous `team_cli_v3.py` has been archived.
-*   **Autofill Logic Refinement:** A clear strategy was defined for the autofill process: first prioritize the highest defensive delta typing, and then select the best offensive Pokémon from candidates within that specific typing. This logic should be uniformly applied across both `autofill` and `finalize` flows.
-*   **"Low-Stat Win" Notification:** A requirement was established to provide user notification explaining when a lower-stat Pokémon is selected over a higher-stat alternative, clarifying the strategic reason (e.g., superior type coverage).
-*   **Suggestion Suppression:** During non-interactive autofill/finalize flows, verbose "Top offense lifts" and "Top overall lifts" suggestions should be suppressed to improve efficiency and log clarity.
-*   **Overall Score Tuning:** The `overall_score` calculation requires adjustment: implement a 5-point penalty for each overlapping weakness, and ensure a perfect score of 100 when both defensive and offensive deltas are zero with no overlaps.
-*   **"Critical Moves" Concept (Future Work):** The tool needs to evolve to identify and prioritize 1-3 "critical" offensive move types per Pokémon (e.g., STAB, coverage against team weaknesses) to better guide move selection. This is noted as future work.
-*   **Function Tracing:** A full-function tracing mechanism was designed and documented (though not yet verified with a successful test run) to provide deep insight into code execution.
-
-### Current Agent Status:
-
-Due to a series of errors and an unrecoverable state of the development files, the Gemini Agent has been explicitly instructed by the user to halt direct code modifications and instead focus solely on updating project documentation.
-
-All planned code changes for this session have been meticulously documented in `docs/SIGNING_OFF.md` under the section "Gemini Agent Session - 2025-12-17: Required Code Changes".
-
----
-
-## Remaining Open Issues
-
-For a comprehensive list of all current bug reports and feature requests, please refer to `docs/BUG_LOG.md` and `docs/V2_TICKETS.md`. The most critical issues relate to scoring accuracy, autofill architecture, and logging system reliability.
+Signed: Codex (2025-12-17)
