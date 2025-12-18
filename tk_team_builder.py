@@ -816,8 +816,11 @@ class App:
             lines.append("\nBy category:")
             for key, mv_list in cats.items():
                 nice = key.title()
-                mv_txt = ", ".join(f\"{m.get('name','?')} ({'Phys' if m.get('cat')=='physical' else 'Spec' if m.get('cat')=='special' else 'Status'})\" for m in mv_list[:4]) or \"—\"
-                lines.append(f\" - {nice}: {mv_txt}\")
+                mv_txt = ", ".join(
+                    f"{m.get('name','?')} ({'Phys' if m.get('cat')=='physical' else 'Spec' if m.get('cat')=='special' else 'Status'})"
+                    for m in mv_list[:4]
+                ) or "—"
+                lines.append(f" - {nice}: {mv_txt}")
         txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
