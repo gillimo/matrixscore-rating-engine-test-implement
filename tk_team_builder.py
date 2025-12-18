@@ -513,7 +513,10 @@ class App:
         tk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic"), fg="#f8fafc", bg=POKEDEX_DARK).pack(
             anchor="w", fill="x"
         )
-        status_bar.configure(background=POKEDEX_DARK)
+        try:
+            status_bar.configure(style="TFrame", padding=2)
+        except Exception:
+            pass
 
     def _load_types(self):
         try:
