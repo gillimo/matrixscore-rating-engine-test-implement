@@ -814,7 +814,7 @@ class App:
     def _auto_replace(self, idx):
         """Fill a cleared slot with the first upgrade candidate not already on the team."""
         current_names = {m.get("name", "").lower() for m in self.team if m.get("name")}
-        for cand in self.parsed_upgrades:
+        for cand in list(self.parsed_upgrades):
             if cand in current_names:
                 continue
             try:
@@ -823,6 +823,8 @@ class App:
                 types = []
             self.team[idx] = {"name": cand, "types": types, "source": "upgrade"}
             self.cached_move_blocks[idx] = None
+            # consume this candidate so future drops re-evaluate from remaining list
+            self.parsed_upgrades = [c for c in self.parsed_upgrades if c != cand]
             return cand.title()
         return None
 
@@ -839,6 +841,13 @@ class App:
 
     def _refresh_metrics_and_ui(self, initial=False):
         """Recompute simple metrics locally and refresh top banner/status."""
+        # If we already have scores from payload and it's the initial render, prefer those
+        if initial and self.metrics.get("scores"):
+            sc = self.metrics["scores"]
+            self.score_text_var.set(
+                f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100"
+            )
+            return
         self._ensure_types()
         chart = getattr(self, "matrix", {})
         attack_types = list(chart.keys())
@@ -848,7 +857,17 @@ class App:
         cov = compute_coverage(self.team, chart)
         def_score = typing_score(cov)
         stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
-        off_score = offense_score_with_bonuses(self.team, cov, chart, attack_types)
+        # Use available move data if present
+        team_infos = []
+        for m in self.team:
+            info = dict(m)
+            info.setdefault("suggested_moves", info.get("suggested_moves", []))
+            info.setdefault("suggested_by_category", info.get("suggested_by_category", {}))
+            info.setdefault("move_types", info.get("move_types", []))
+            info.setdefault("se_hits", info.get("se_hits", []))
+            info.setdefault("role", info.get("role", "balanced"))
+            team_infos.append(info)
+        off_score = offense_score_with_bonuses(team_infos, cov, chart, attack_types)
         overall = int(min(100, max(0, (def_score + off_score) / 2 - 2.0 * stack_overlap)))
         exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
         role_counts = {}
@@ -861,7 +880,16 @@ class App:
                 "defense": def_score,
                 "offense": off_score,
                 "stack_overlap": stack_overlap,
-                "delta_headroom": max(0, min(100, 100 - max((c["weak"] - (c["resist"] + c["immune"])) for c in cov + [{"weak":0,"resist":0,"immune":0}]))),
+                "delta_headroom": max(
+                    0,
+                    min(
+                        100,
+                        100
+                        - max(
+                            (c["weak"] - (c["resist"] + c["immune"])) for c in cov + [{"weak": 0, "resist": 0, "immune": 0}]
+                        ),
+                    ),
+                ),
             },
             "exposures": exposures,
             "role_counts": role_counts,
