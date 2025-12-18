@@ -2130,7 +2130,7 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
             if defense_choice and defense_choice.get("candidates"):
                 candidates = defense_choice["candidates"]
                 for cand in candidates:
-                    if cand in {m["name"] for m in team}:
+                    if cand in {m["name"] for m in team} or cand.lower() in exclude:
                         continue
                     try:
                         c_types = fetch_pokemon_typing(cand)
@@ -2188,7 +2188,7 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
                 # pick highest BST final form not already on team
                 team_names = {m["name"] for m in team}
                 finals = list(get_final_forms() or [])
-                finals = [f for f in finals if f not in team_names]
+                finals = [f for f in finals if f not in team_names and f.lower() not in exclude]
                 if finals:
                     fallback_name = max(finals, key=pokemon_base_stat_total)
                     try:
@@ -2221,7 +2221,7 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
             log_verbose(f"Failed to fetch typing for {pname}: {e}")
             continue
 
-        if pname in {m["name"] for m in team}:
+        if pname in {m["name"] for m in team} or pname.lower() in exclude:
             log_verbose(f"[autofill] {pname} is already in the team (size {len(team)}), skipping addition.")
             continue
 
