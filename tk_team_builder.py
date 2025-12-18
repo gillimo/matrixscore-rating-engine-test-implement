@@ -575,8 +575,6 @@ class App:
             types = member.get("types") or []
             role = (member.get("role") or "").lower() or "balanced"
             role_label = role.title() if role else "Unassigned"
-            mix_text = self.role_move_mix.get(role, self.role_move_mix.get("balanced", DEFAULT_ROLE_MOVE_MIX))
-            cat_map = self._get_cached_move_options(idx, member)
             card_style, text_color, bg_color = _get_card_style(self.style, types)
 
             card = ttk.Frame(self.final_panel_inner, padding=12, style=card_style)
@@ -600,16 +598,6 @@ class App:
             role_tag = ttk.Label(card, text=f"Role: {role_label}", style="Tag.TLabel")
             role_tag.configure(background=bg_color, foreground=_contrast_color(bg_color))
             role_tag.pack(anchor="w", padx=2, pady=(0, 2))
-            tk.Label(
-                card,
-                text=mix_text,
-                wraplength=360,
-                fg=text_color,
-                bg=bg_color,
-                justify="left",
-                anchor="w",
-                padx=2,
-            ).pack(anchor="w", padx=2, pady=(0, 6))
 
             type_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
             type_frame.pack(anchor="w", pady=(2, 8))
@@ -626,28 +614,6 @@ class App:
                         lbl.pack(side="left", padx=2)
             else:
                 ttk.Label(type_frame, text="Types: --", foreground="#64748b", background=bg_color).pack(anchor="w")
-
-            if cat_map:
-                for cat_label, moves in cat_map.items():
-                    row_frame = tk.Frame(card, bg=bg_color, highlightthickness=0, bd=0)
-                    row_frame.pack(fill="x", pady=4)
-                    ttk.Label(row_frame, text=f"{cat_label}:", width=14, background=bg_color).pack(side="left")
-                    tk.Label(
-                        row_frame,
-                        text=self._summarize_moves(moves),
-                        wraplength=360,
-                        fg=text_color,
-                        bg=bg_color,
-                        justify="left",
-                        anchor="w",
-                    ).pack(side="left", fill="x", expand=True, padx=6)
-            else:
-                ttk.Label(
-                    card,
-                    text="No moves cached for this slot.",
-                    foreground="#64748b",
-                    background=bg_color,
-                ).pack(anchor="w", padx=2, pady=4)
             btn_row = ttk.Frame(card)
             btn_row.pack(fill="x", pady=(6, 0))
             ttk.Button(btn_row, text="More details", command=lambda m=member: self._show_details(m)).pack(
@@ -779,6 +745,20 @@ class App:
         if member.get("weaknesses"):
             weak = ", ".join(f"{w} x{mult}" for w, mult in member["weaknesses"][:6])
             lines.append(f"Weaknesses: {weak}")
+        # Coverage vs team exposures
+        exposures = set()
+        try:
+            exposures = {c.get("attack") for c in (self.metrics.get("exposures") or [])}
+        except Exception:
+            exposures = set()
+        move_types = set(member.get("move_types") or [])
+        se_hits = set(member.get("se_hits") or [])
+        if exposures:
+            hits = exposures & se_hits
+            neutral = {t for t in exposures if t not in hits and move_types}
+            lines.append("\nTeam exposures this mon helps with:")
+            lines.append(f" - Super-effective: {', '.join(sorted(hits)) or '—'}")
+            lines.append(f" - Neutral: {', '.join(sorted(neutral)) or '—'}")
         moves = member.get("suggested_moves", [])
         if moves:
             lines.append("\nMoves:")
