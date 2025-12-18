@@ -2919,6 +2919,7 @@ def main():
                 chart,
                 attack_types,
             )
+            base_exposed_count = sum(1 for c in core_cov if c["weak"] > (c["resist"] + c["immune"]))
             base_infos_core = team_infos_from_cache(core_team)
             base_overall_core, _ = predict_overall(core_team, base_infos_core, chart, attack_types)
             upgrades = []
@@ -2932,6 +2933,17 @@ def main():
                     return
                 sim_team = core_team + [{"name": pname, "types": ptypes, "source": "sim"}]
                 sim_infos = base_infos_core + [info]
+                sim_cov = compute_coverage(
+                    [{"name": i.get("name", ""), "types": i.get("types", []), "source": i.get("source", "")} for i in sim_team],
+                    chart,
+                    attack_types,
+                )
+                sim_exposed_count = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
+                if sim_exposed_count > base_exposed_count:
+                    log_verbose(
+                        f"[upgrade] skip {pname} because exposed types would increase ({sim_exposed_count} > {base_exposed_count})"
+                    )
+                    return
                 sim_overall, comps = predict_overall(sim_team, sim_infos, chart, attack_types)
                 uplift = sim_overall - base_overall_core
                 align = info.get("alignment_score", 0) or 0
