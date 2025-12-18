@@ -961,7 +961,7 @@ def pick_defensive_addition(team, chart, attack_types):
     )
 
 
-def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclude=None):
+def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclude=None, prefer_alignment=False):
     """Pick the best offensive addition within the best defensive typing pool."""
     if defense_choice is None:
         defense_choice = get_best_defensive_candidates(team, chart, attack_types, exclude=exclude)
@@ -984,7 +984,7 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
 
     base_move_types = current_move_types()
 
-    best_pick = None  # (compare_tuple, label, pname, ptypes, ranked_gain, sim_offense, stat_total, reason, base_bst)
+    best_pick = None  # (compare_tuple, label, pname, ptypes, ranked_gain, sim_offense, stat_total, reason, base_bst, align)
     highest_bst_candidate = None  # (base_bst, name, ranked_gain)
 
     def consider_offense(def_opt):
@@ -994,8 +994,6 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
                 ptypes = fetch_pokemon_typing(pname)
             except Exception:
                 ptypes = def_opt.get("types") or []
-            if exclude and pname.lower() in exclude:
-                continue
             if exclude and pname.lower() in exclude:
                 continue
 
@@ -1089,8 +1087,11 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
             if coverage_gains:
                 reason += f" [covers exposed: {', '.join(coverage_gains)}]"
             compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst)
+            align_score = info.get("alignment_score", 0)
+            if prefer_alignment:
+                compare_tuple = (ranked_gain, align_score, sim_offense, stat_total, base_bst)
             if ranked_gain > 0 and (best_pick is None or compare_tuple > best_pick[0]):
-                best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst)
+                best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst, align_score)
 
         if highest_bst_candidate is None or base_bst > highest_bst_candidate[0]:
             highest_bst_candidate = (base_bst, pname, ranked_gain)
@@ -1108,7 +1109,7 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
             return def_fallback
         return None
 
-    compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst = best_pick
+    compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst, align_score = best_pick
     highest_bst_loser_name = None
     highest_bst_loser_bst = 0
     highest_bst_loser_gain = None
