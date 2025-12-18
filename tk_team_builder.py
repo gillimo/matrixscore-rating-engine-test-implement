@@ -384,6 +384,7 @@ class App:
 
         self.status_var = tk.StringVar(value="Team view ready.")
         self.metrics = {}
+        self.score_text_var = tk.StringVar(value="No metrics")
         payload_team, role_move_mix = load_payload_team()
         self.role_move_mix = role_move_mix or ROLE_MOVE_MIX
         self.upgrades_raw = []
@@ -414,6 +415,7 @@ class App:
 
         self._build_ui()
         self._render_payload_panel()
+        self._refresh_metrics_and_ui(initial=True)
 
     def _set_initial_geometry(self):
         # Size window relative to screen, with sensible bounds
@@ -476,16 +478,7 @@ class App:
         metrics_frame = tk.Frame(wrapper, bg=POKEDEX_BLUE, padx=8, pady=6, highlightthickness=0, bd=0)
         metrics_frame.pack(fill="x", pady=(0, 6))
         tk.Label(metrics_frame, text="Team Score:", font=("Segoe UI", 10, "bold"), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left", padx=(0, 6))
-        if self.metrics.get("scores"):
-            sc = self.metrics["scores"]
-            score_text = f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100"
-            if sc.get("role_penalty"):
-                score_text += f" (role -{sc['role_penalty']})"
-            if sc.get("bst_penalty"):
-                score_text += f" (BST -{sc['bst_penalty']})"
-            tk.Label(metrics_frame, text=score_text, font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
-        else:
-            tk.Label(metrics_frame, text="No metrics in payload", font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
+        tk.Label(metrics_frame, textvariable=self.score_text_var, font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
         tk.Button(
             metrics_frame,
             text="Tell me more",
@@ -800,7 +793,7 @@ class App:
                 self.status_var.set(f"Replaced {name} with {replaced}.")
             else:
                 self.status_var.set(f"Marked unavailable: {name}. Slot cleared; rerun finalize to replace.")
-            self._render_payload_panel()
+            self._refresh_metrics_and_ui()
         else:
             self.status_var.set("Invalid slot to mark unavailable.")
 
@@ -832,6 +825,51 @@ class App:
             self.cached_move_blocks[idx] = None
             return cand.title()
         return None
+
+    def _ensure_types(self):
+        if getattr(self, "matrix", None):
+            return
+        try:
+            details = fetch_types()
+            self.types = [d["name"] for d in details]
+            self.matrix = build_matrix(details)
+        except Exception:
+            self.types = []
+            self.matrix = {}
+
+    def _refresh_metrics_and_ui(self, initial=False):
+        """Recompute simple metrics locally and refresh top banner/status."""
+        self._ensure_types()
+        chart = getattr(self, "matrix", {})
+        attack_types = list(chart.keys())
+        if not attack_types:
+            self.score_text_var.set("No metrics")
+            return
+        cov = compute_coverage(self.team, chart)
+        def_score = typing_score(cov)
+        stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+        off_score = offense_score_with_bonuses(self.team, cov, chart, attack_types)
+        overall = int(min(100, max(0, (def_score + off_score) / 2 - 2.0 * stack_overlap)))
+        exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+        role_counts = {}
+        for info in self.team:
+            role = (info.get("role") or "balanced").lower()
+            role_counts[role] = role_counts.get(role, 0) + 1
+        self.metrics = {
+            "scores": {
+                "overall": overall,
+                "defense": def_score,
+                "offense": off_score,
+                "stack_overlap": stack_overlap,
+                "delta_headroom": max(0, min(100, 100 - max((c["weak"] - (c["resist"] + c["immune"])) for c in cov + [{"weak":0,"resist":0,"immune":0}]))),
+            },
+            "exposures": exposures,
+            "role_counts": role_counts,
+            "upgrades": self.upgrades_raw,
+        }
+        self.score_text_var.set(f"Overall {overall}/100 | Def {def_score}/100 | Off {off_score}/100")
+        if not initial:
+            self._render_payload_panel()
 def _apply_tracing():
     """Wrap module-level functions with trace_call for entry/exit visibility."""
     if not TRACE_FUNCTIONS:
