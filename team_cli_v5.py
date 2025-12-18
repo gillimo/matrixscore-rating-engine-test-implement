@@ -1831,8 +1831,8 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     """
     delta_penalty = 0.5 * (best_defensive_delta + best_offense_gap)
     stack_penalty = 2.0 * stack_overlap
-        overall = 100 - delta_penalty - stack_penalty
-        return int(max(0, min(100, overall)))
+    overall = 100 - delta_penalty - stack_penalty
+    return int(max(0, min(100, overall)))
 
 
 def coverage_totals(cov):
@@ -2966,36 +2966,37 @@ def main():
 
         # Launch wheel GUI preloaded with team
         wheel_path = Path(__file__).with_name("tk_team_builder.py")
-        if wheel_path.exists():
-            # Only launch once per run; guard with a flag
-            if team_infos and "scores" in locals() and not getattr(main, "_wheel_launched", False):
-                # Build metrics payload for Tk
-                exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
-                role_counts = {}
-                for info in team_infos:
-                    role = (info.get("role") or "balanced").lower()
-                    role_counts[role] = role_counts.get(role, 0) + 1
-                team_metrics = {
-                    "scores": scores,
-                    "exposures": exposures,
-                    "role_counts": role_counts,
-                    "upgrades": upgrade_lines if contrib_lines else [],
-                }
-                wheel_proc = launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
-                main._wheel_launched = True
-            elif not team_infos:
-                log_verbose("Skipping GUI launch: no team data to show.")
-        else:
-            print("Wheel GUI not found; skipping GUI launch.")
-        # Keep CLI alive until Tk closes; then exit after 60s idle window
-        if wheel_proc:
-            print("Waiting for Tk window to close...")
-            try:
-                wheel_proc.wait()
-                print("Tk window closed. Keeping CLI alive for 60s idle grace period...")
-                time.sleep(60)
-            except Exception:
-                pass
+        if not os.environ.get("SKIP_TK"):
+            if wheel_path.exists():
+                # Only launch once per run; guard with a flag
+                if team_infos and "scores" in locals() and not getattr(main, "_wheel_launched", False):
+                    # Build metrics payload for Tk
+                    exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+                    role_counts = {}
+                    for info in team_infos:
+                        role = (info.get("role") or "balanced").lower()
+                        role_counts[role] = role_counts.get(role, 0) + 1
+                    team_metrics = {
+                        "scores": scores,
+                        "exposures": exposures,
+                        "role_counts": role_counts,
+                        "upgrades": upgrade_lines if contrib_lines else [],
+                    }
+                    wheel_proc = launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
+                    main._wheel_launched = True
+                elif not team_infos:
+                    log_verbose("Skipping GUI launch: no team data to show.")
+            else:
+                print("Wheel GUI not found; skipping GUI launch.")
+            # Keep CLI alive until Tk closes; then exit after 60s idle window
+            if wheel_proc:
+                print("Waiting for Tk window to close...")
+                try:
+                    wheel_proc.wait()
+                    print("Tk window closed. Keeping CLI alive for 60s idle grace period...")
+                    time.sleep(60)
+                except Exception:
+                    pass
     finally:
         print(LOG_FOOTER)
         _save_draft_cache()
