@@ -965,6 +965,7 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
     cov = compute_coverage(team, chart, attack_types)
     base_offense = offense_score_with_bonuses(base_infos, cov, chart, attack_types)
     base_cov_map = {c["attack"]: c for c in cov}
+    exposed_types = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
 
     def current_move_types():
         mts = set()
@@ -987,13 +988,24 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
             except Exception:
                 ptypes = def_opt.get("types") or []
 
+        info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
+        cached = None
         try:
             cached = cache_draft_board(pname)
             info = cached["info"]
+            # Refresh move data so offense sim uses real moves, not stale/synthetic
+            _populate_move_data(
+                info,
+                cached_entry=cached,
+                exposed_types=set(exposed_types),
+                needed_offense=set(attack_types),
+                force=True,
+            )
         except Exception:
-            info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
+            pass
 
         candidate_move_types = set(info.get("move_types") or [])
+        synthetic_cover = False
         if not info.get("suggested_moves") and candidate_move_types:
             info = dict(info)
             limited_types = []
@@ -1003,6 +1015,7 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
                 if len(limited_types) >= 4:
                     break
             info["suggested_moves"] = [{"name": f"{t}-coverage", "type": t} for t in limited_types]
+            synthetic_cover = True
 
         move_types = base_move_types | {m["type"] for m in info.get("suggested_moves", []) if m.get("type")}
         sim_infos = base_infos + [info]
@@ -1031,6 +1044,8 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
         gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
         se_factor = 1.0 + 0.08 * min(6, len(se_types))
         coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
+        if synthetic_cover:
+            coverage_penalty *= 0.75  # discount inferred coverage vs real moves
         low_stat_penalty = 0.0
         if stat_total < 180:
             low_stat_penalty = 14.0
@@ -1038,7 +1053,6 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
             low_stat_penalty = 7.0
         ranked_gain = (gain * gain_factor * bst_factor * se_factor * coverage_penalty) - low_stat_penalty
         # Identify coverage gains against currently exposed types
-        exposed_types = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
         coverage_gains = []
         for t in exposed_types:
             before = max(chart[atk].get(t, 1.0) for atk in base_move_types) if base_move_types else 1.0
@@ -1047,9 +1061,9 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None):
                 coverage_gains.append(f"{t} (neutral)")
             elif before < 2.0 and after >= 2.0:
                 coverage_gains.append(f"{t} (SE)")
-        # BST floor: skip very low BST picks unless they deliver strong gains or unique coverage
-        bst_floor = 520
-        gain_threshold_for_low_bst = 25.0
+        # BST floor: skip low BST picks unless they deliver strong gains or unique coverage
+        bst_floor = 540
+        gain_threshold_for_low_bst = 35.0
         skip_candidate = base_bst < bst_floor and ranked_gain < gain_threshold_for_low_bst and not coverage_gains
         # If defensive delta is 0, require positive gain or coverage to proceed
         delta_zero = def_opt.get("delta", 0) <= 0
@@ -1696,7 +1710,7 @@ def shared_weak_score(cov):
 
 
 def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
-    """Offense score: start from a strong offense baseline and subtract gaps from neutral/SE coverage."""
+    """Offense score: prioritize covering our exposed weaknesses with SE hits; ignore global breadth beyond that."""
     move_types = set()
     for info in team_infos:
         for m in info.get("suggested_moves", []):
@@ -1705,34 +1719,33 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
     if not move_types:
         return 0
 
-    total_types = len(attack_types)
-    neutral, se_types = offense_projection(move_types, chart, attack_types)
-    se_target = 16  # tougher SE breadth target
-
-    neutral_gap = max(0, total_types - neutral)
-    se_gap = max(0, se_target - len(se_types))
-
-    # Extra penalty if a currently exposed defensive type is not covered at least neutral.
-    exposed_types = {c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])}
-    uncovered_exposed = 0
+    # Identify defensive exposures
+    exposed_types = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    penalties = 0.0
     for t in exposed_types:
         best = max(chart[atk_type].get(t, 1.0) for atk_type in move_types)
-        if best < 1.0:
-            uncovered_exposed += 1
+        if best >= 2.0:
+            continue  # SE hit closes this exposure offensively
+        if best >= 1.0:
+            penalties += 8.0  # neutral only
+        else:
+            penalties += 14.0  # cannot hit effectively
 
-    # Penalize limited type breadth to avoid easy 100 saturation
-    breadth_penalty = max(0, 4 - len(move_types)) * 3.0
+    # Lightly discourage ultra-thin move_type sets
+    breadth_penalty = max(0, 2 - len(move_types)) * 3.0
 
-    # Penalize low offensive stats (Atk + SpA)
-    off_stats_total = 0
-    for info in team_infos:
-        off_stats_total += pokemon_offense_stat_total(info.get("name", ""))
-    avg_off_stats = off_stats_total / max(1, len(team_infos))
-    off_stat_penalty = max(0, 180 - avg_off_stats) * 0.15  # small nudge; typical strong attacker ~220-260
+    base_score = max(0, min(100, 100 - penalties - breadth_penalty))
 
-    penalty = neutral_gap * 3.5 + se_gap * 4.0 + uncovered_exposed * 6.0 + breadth_penalty + off_stat_penalty
-    off_score = max(0, min(100, 100 - penalty))
-    return int(off_score)
+    # If exposures are covered (penalties == 0), reward broader neutral/SE reach as a secondary bonus
+    if penalties == 0:
+        total_types = len(attack_types)
+        neutral, se_types = offense_projection(move_types, chart, attack_types)
+        neutral_ratio = neutral / max(1, total_types)
+        se_ratio = len(se_types) / max(1, total_types)
+        breadth_bonus = min(10.0, 6.0 * neutral_ratio + 6.0 * se_ratio)  # cap to keep 100 ceiling
+        base_score = min(100, base_score + breadth_bonus)
+
+    return int(base_score)
 
 
 def predict_overall(team, team_infos, chart, attack_types):
