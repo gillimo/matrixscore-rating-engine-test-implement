@@ -2792,9 +2792,45 @@ def main():
             base_overall_core, _ = predict_overall(core_team, base_infos_core, chart, attack_types)
             upgrades = []
             best_any = None  # track best even if uplift <= 0
-            # singles (overall uplift)
+            weakest_bst = min((pokemon_base_stat_total(m.get("name", "")) for m in core_team if m.get("name")), default=0)
+            core_names = {m.get("name") for m in core_team}
+
+            def consider_candidate(pname: str, ptypes: list, info: dict, origin: str):
+                nonlocal best_any
+                if pname in core_names:
+                    return
+                sim_team = core_team + [{"name": pname, "types": ptypes, "source": "sim"}]
+                sim_infos = base_infos_core + [info]
+                sim_overall, comps = predict_overall(sim_team, sim_infos, chart, attack_types)
+                uplift = sim_overall - base_overall_core
+                align = info.get("alignment_score", 0) or 0
+                bst = pokemon_base_stat_total(pname)
+                eligible = uplift > 0 or (sim_overall >= base_overall_core and bst > weakest_bst)
+                line = (
+                    f"\u001b[36mOverall {pname}: {sim_overall:.0f}/100 (uplift {uplift:+.0f}; "
+                    f"def {comps.get('defense','?')}, off {comps.get('offense','?')}, shared {comps.get('shared','?')}, "
+                    f"delta {comps.get('delta','?')}; align {align}, bst {bst})\u001b[0m"
+                )
+                if eligible:
+                    upgrades.append((uplift, align, bst, line, info))
+                if (
+                    best_any is None
+                    or sim_overall > best_any[0]
+                    or (sim_overall == best_any[0] and bst > best_any[2])
+                ):
+                    best_any = (sim_overall, uplift, bst, info, pname, comps)
+                log_verbose(
+                    f"[upgrade] {origin} candidate {pname} overall {sim_overall:.0f} uplift {uplift:+.0f} "
+                    f"align {align} bst {bst} vs base {base_overall_core:.0f} "
+                    f"(def {comps.get('defense','?')} off {comps.get('offense','?')} "
+                    f"shared {comps.get('shared','?')} delta {comps.get('delta','?')})"
+                )
+
+            # singles (overall uplift or higher BST tie)
             for t in TYPE_POOL:
-                opts = fetch_single_type_candidates(t, current_team=core_team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types)
+                opts = fetch_single_type_candidates(
+                    t, current_team=core_team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types
+                )
                 for pname in opts:
                     try:
                         ptypes = fetch_pokemon_typing(pname)
@@ -2805,27 +2841,8 @@ def main():
                         info = cached["info"]
                     except Exception:
                         info = {"name": pname, "types": ptypes, "suggested_moves": []}
-                    sim_team = core_team + [{"name": pname, "types": ptypes, "source": "sim"}]
-                    sim_infos = base_infos_core + [info]
-                    sim_overall, comps = predict_overall(sim_team, sim_infos, chart, attack_types)
-                    uplift = sim_overall - base_overall_core
-                    if uplift > 0:
-                        upgrades.append(
-                            (
-                                uplift,
-                                f"\u001b[36mOverall {pname}: {sim_overall:.0f}/100 (uplift {uplift:+.0f}; def {comps.get('defense','?')}, off {comps.get('offense','?')}, shared {comps.get('shared','?')}, delta {comps.get('delta','?')})\u001b[0m",
-                                info,
-                            )
-                        )
-                    if best_any is None or sim_overall > best_any[0]:
-                        best_any = (sim_overall, uplift, info, pname, comps)
-                    log_verbose(
-                        f"[upgrade] single candidate {pname} overall {sim_overall:.0f} uplift {uplift:+.0f} "
-                        f"vs base {base_overall_core:.0f} (def {comps.get('defense','?')} off {comps.get('offense','?')} "
-                        f"shared {comps.get('shared','?')} delta {comps.get('delta','?')})"
-                    )
-                    break
-            # duals (overall uplift)
+                    consider_candidate(pname, ptypes, info, "single")
+            # duals (overall uplift or higher BST tie)
             seen_pairs = set()
             for i in range(len(TYPE_POOL)):
                 for j in range(i + 1, len(TYPE_POOL)):
@@ -2833,7 +2850,14 @@ def main():
                     if pair in seen_pairs:
                         continue
                     seen_pairs.add(pair)
-                    opts = fetch_dual_candidates(pair[0], pair[1], current_team=core_team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types)
+                    opts = fetch_dual_candidates(
+                        pair[0],
+                        pair[1],
+                        current_team=core_team,
+                        version_group=VERSION_GROUP,
+                        chart=chart,
+                        attack_types=attack_types,
+                    )
                     for pname in opts:
                         try:
                             ptypes = fetch_pokemon_typing(pname)
@@ -2844,35 +2868,16 @@ def main():
                             info = cached["info"]
                         except Exception:
                             info = {"name": pname, "types": ptypes, "suggested_moves": []}
-                        sim_team = core_team + [{"name": pname, "types": ptypes, "source": "sim"}]
-                        sim_infos = base_infos_core + [info]
-                        sim_overall, comps = predict_overall(sim_team, sim_infos, chart, attack_types)
-                        uplift = sim_overall - base_overall_core
-                        if uplift > 0:
-                            upgrades.append(
-                                (
-                                    uplift,
-                                    f"\u001b[36mOverall {pname}: {sim_overall:.0f}/100 (uplift {uplift:+.0f}; def {comps.get('defense','?')}, off {comps.get('offense','?')}, shared {comps.get('shared','?')}, delta {comps.get('delta','?')})\u001b[0m",
-                                    info,
-                                )
-                            )
-                        if best_any is None or sim_overall > best_any[0]:
-                            best_any = (sim_overall, uplift, info, pname, comps)
-                        log_verbose(
-                            f"[upgrade] dual candidate {pname} overall {sim_overall:.0f} uplift {uplift:+.0f} "
-                            f"vs base {base_overall_core:.0f} (def {comps.get('defense','?')} off {comps.get('offense','?')} "
-                            f"shared {comps.get('shared','?')} delta {comps.get('delta','?')})"
-                        )
-                        break
-            upgrades.sort(key=lambda x: x[0], reverse=True)
+                        consider_candidate(pname, ptypes, info, "dual")
+            upgrades.sort(key=lambda x: (x[0], x[1], x[2]), reverse=True)
             picks = upgrades[:3]
             if picks:
-                for _, line, _info in picks:
+                for _, _, _, line, _info in picks:
                     print(line)
                     upgrade_lines.append(line)
                 if demo_mode:
                     top = picks[0]
-                    replacement = top[2]
+                    replacement = top[4]
                     if drop_available:
                         print(f"\nDemo mode: applying swap -> add {replacement.get('name','new')} (drop {weakest_name})")
                         team_infos.pop(weakest_idx)
@@ -2882,8 +2887,11 @@ def main():
             elif demo_mode and best_any is not None:
                 # fallback: apply best overall even if uplift <= 0 to honor auto-swap requirement
                 if drop_available:
-                    replacement = best_any[2]
-                    print(f"\nDemo mode: applying fallback swap -> add {replacement.get('name','new')} (drop {weakest_name}); uplift {best_any[1]:+.0f}")
+                    replacement = best_any[3]
+                    print(
+                        f"\nDemo mode: applying fallback swap -> add {replacement.get('name','new')} "
+                        f"(drop {weakest_name}); uplift {best_any[1]:+.0f}"
+                    )
                     team_infos.pop(weakest_idx)
                     team_infos.append(replacement)
                 else:
