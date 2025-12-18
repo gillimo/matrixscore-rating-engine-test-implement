@@ -2236,6 +2236,16 @@ def final_team_rating(team_infos, cov, chart, attack_types):
             role_penalty += 0.5 * (cnt - 2)
     if role_penalty:
         overall = max(0, min(100, overall - role_penalty))
+    # Light BST floor: penalize low average BST so filler glue doesn't overrate
+    try:
+        total_bst = sum(pokemon_base_stat_total(m.get("name", "")) for m in team_infos)
+        avg_bst = total_bst / max(1, len(team_infos))
+    except Exception:
+        avg_bst = 999
+    bst_penalty = 0.0
+    if avg_bst < 520:
+        bst_penalty = min(10.0, (520 - avg_bst) / 10.0)  # up to -10 when very low
+        overall = max(0, min(100, overall - bst_penalty))
 
     scores = {
         "defense": def_score,
@@ -2258,6 +2268,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         "stack_overlap": stack_overlap,
         "stat_total": stat_total,
         "role_penalty": role_penalty,
+        "bst_penalty": bst_penalty,
     }
     summary = [
         perfect_def,
