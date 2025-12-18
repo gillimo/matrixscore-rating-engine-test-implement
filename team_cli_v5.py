@@ -1529,7 +1529,7 @@ def parse_name_level(raw):
     return name, level_cap
 
 
-def launch_wheel(team_data, wheel_path):
+def launch_wheel(team_data, wheel_path, metrics=None):
     global WHEEL_LAUNCHED
     if WHEEL_LAUNCHED:
         print("Wheel GUI already launched; skipping duplicate launch.")
@@ -1539,6 +1539,7 @@ def launch_wheel(team_data, wheel_path):
     payload = {
         "team": team_data,
         "role_move_mix": ROLE_MOVE_MIX,
+        "metrics": metrics or {},  # populated by CLI when available (team scores, exposures, upgrade suggestions)
     }
     tmp_path.write_text(json.dumps(payload, indent=2))
     # launch Tk app with env var for payload
@@ -2708,6 +2709,8 @@ def main():
             )
             print(f" - Stack overlap: {scores.get('stack_overlap', 0)} (penalty applied in overall)")
             print(f" - Overall: {scores['overall']}/100")
+            if scores.get("role_penalty"):
+                print(f" - Role balance penalty applied: -{scores['role_penalty']:.1f}")
             # Per-member defensive contribution
             baseline_def = scores["defense"]
             for idx, info in enumerate(team_infos):
@@ -2731,6 +2734,7 @@ def main():
             if len(team_infos) < 6:
                 print("Team not full; skipping drop/upgrade until 6 members are set.")
         if contrib_lines and len(team_infos) >= 6:
+            upgrade_lines = []
             impacts = []
             for idx, info in enumerate(team_infos):
                 variant = [dict(m) for m in team_infos]
@@ -2845,6 +2849,7 @@ def main():
             if picks:
                 for _, line, _info in picks:
                     print(line)
+                    upgrade_lines.append(line)
                 if demo_mode:
                     top = picks[0]
                     replacement = top[2]
@@ -2871,7 +2876,19 @@ def main():
         if wheel_path.exists():
             # Only launch once per run; guard with a flag
             if not getattr(main, "_wheel_launched", False):
-                launch_wheel(team_infos, str(wheel_path))
+                # Build metrics payload for Tk
+                exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+                role_counts = {}
+                for info in team_infos:
+                    role = (info.get("role") or "balanced").lower()
+                    role_counts[role] = role_counts.get(role, 0) + 1
+                team_metrics = {
+                    "scores": scores,
+                    "exposures": exposures,
+                    "role_counts": role_counts,
+                    "upgrades": upgrade_lines if contrib_lines else [],
+                }
+                launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
                 main._wheel_launched = True
         else:
             print("Wheel GUI not found; skipping GUI launch.")
