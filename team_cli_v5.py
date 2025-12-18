@@ -2835,19 +2835,38 @@ def main():
             exposed_types = [c["attack"] for c in exposures]
             if exposed_types:
                 print("\n=== Coverage blueprint (what to build on each mon) ===")
+                # map type -> members that can cover (SE or neutral)
+                type_cover_map = {t: [] for t in exposed_types}
+                for info in team_infos:
+                    name = info.get("name", "").title()
+                    move_types = set(info.get("move_types") or [])
+                    se_hits = set(info.get("se_hits") or [])
+                    for t in exposed_types:
+                        if t in se_hits or t in move_types:
+                            type_cover_map[t].append((name, t in se_hits))
                 for info in team_infos:
                     move_types = set(info.get("move_types") or [])
                     se_hits = set(info.get("se_hits") or [])
                     name = info.get("name", "").title()
                     suggestions = []
+                    uniques = []
                     for t in exposed_types:
-                        if t in se_hits:
+                        can_se = t in se_hits
+                        can_neutral = t in move_types and not can_se
+                        if can_se:
                             suggestions.append(f"{t} (already SE)")
-                        elif t in move_types:
+                        elif can_neutral:
                             suggestions.append(f"{t} (neutral now; aim for SE move)")
                         else:
                             suggestions.append(f"{t} (add a {t}-type coverage move)")
-                    print(f" - {name}: " + "; ".join(suggestions))
+                        # unique exposure coverage: only this mon can touch it
+                        cover_list = type_cover_map.get(t, [])
+                        if len(cover_list) == 1 and cover_list[0][0] == name:
+                            uniques.append(f"{t} (unique cover)")
+                    line = f" - {name}: " + "; ".join(suggestions)
+                    if uniques:
+                        line += " | Unique coverage: " + ", ".join(uniques)
+                    print(line)
             else:
                 print("\n=== Coverage blueprint ===")
                 print("Team has no net exposures; fill remaining move slots flexibly (STAB/utility).")
