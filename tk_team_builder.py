@@ -764,6 +764,25 @@ class App:
             lines.append("\nTeam exposures this mon helps with:")
             lines.append(f" - Super-effective: {', '.join(sorted(hits)) or '—'}")
             lines.append(f" - Neutral: {', '.join(sorted(neutral)) or '—'}")
+        # Move synthesis: role plan + needed coverage
+        role_plan = ROLE_MOVE_MIX.get(role, DEFAULT_ROLE_MOVE_MIX)
+        lines.append(f"\nRole plan: {role_plan}")
+        needed_types = []
+        try:
+            raw_exposures = self.metrics.get("exposures") or []
+            for c in raw_exposures:
+                need = c.get("weak", 0) - (c.get("resist", 0) + c.get("immune", 0))
+                if need > 0:
+                    needed_types.append((c.get("attack"), need))
+            needed_types.sort(key=lambda x: x[1], reverse=True)
+        except Exception:
+            needed_types = []
+        if needed_types:
+            lines.append("Suggested coverage to add:")
+            for t, need in needed_types[:4]:
+                can_cover = t in se_hits or t in move_types or t in types
+                status = "already covered" if can_cover else "add a move of this type"
+                lines.append(f" - {t}: team need {need:.1f} -> {status}")
         moves = member.get("suggested_moves", [])
         if moves:
             lines.append("\nMoves:")
