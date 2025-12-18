@@ -332,6 +332,7 @@ class App:
         self.root.configure(bg="#e8f2ff")
 
         self.status_var = tk.StringVar(value="Team view ready.")
+        self.metrics = {}
         payload_team, role_move_mix = load_payload_team()
         self.role_move_mix = role_move_mix or ROLE_MOVE_MIX
         if payload_team:
@@ -341,6 +342,15 @@ class App:
             self.team = base_team
             self.payload_moves = [t.get("suggested_moves", []) for t in payload_team[:6]]
             self.payload_by_cat = [t.get("suggested_by_category", {}) for t in payload_team[:6]]
+            try:
+                # Attempt to load metrics from payload if present
+                import json
+                payload_path = Path(os.environ.get("TEAM_PAYLOAD_PATH", Path(__file__).with_name("team_payload.json")))
+                if payload_path.exists():
+                    payload_json = json.loads(payload_path.read_text())
+                    self.metrics = payload_json.get("metrics", {}) or {}
+            except Exception:
+                self.metrics = {}
         else:
             self.team = [{"name": "", "types": [], "source": ""} for _ in range(6)]
             self.payload_moves = [[] for _ in range(6)]
@@ -382,6 +392,23 @@ class App:
             text="Team cards only: typing, role, and move mix per slot.",
             font=("Segoe UI", 10),
         ).pack(anchor="w")
+
+        # Metrics banner if payload metrics exist
+        self.metrics = getattr(self, "metrics", {})
+        metrics_frame = ttk.Frame(wrapper, padding=(6, 4))
+        metrics_frame.pack(fill="x", pady=(0, 6))
+        ttk.Label(metrics_frame, text="Team Score:", font=("Segoe UI", 10, "bold")).pack(side="left", padx=(0, 6))
+        if self.metrics.get("scores"):
+            sc = self.metrics["scores"]
+            score_text = f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100"
+            if sc.get("role_penalty"):
+                score_text += f" (role -{sc['role_penalty']})"
+            if sc.get("bst_penalty"):
+                score_text += f" (BST -{sc['bst_penalty']})"
+            ttk.Label(metrics_frame, text=score_text, font=("Segoe UI", 10)).pack(side="left")
+        else:
+            ttk.Label(metrics_frame, text="No metrics in payload", font=("Segoe UI", 10)).pack(side="left")
+        ttk.Button(metrics_frame, text="Tell me more", command=self._show_team_breakdown).pack(side="right")
 
         self.final_panel = ttk.Labelframe(wrapper, text="Team (6 slots)", style="Glass.TLabelframe")
         self.final_panel.pack(fill="both", expand=True)
@@ -532,6 +559,14 @@ class App:
                 ttk.Label(card, text="No moves cached for this slot.", foreground="#64748b").pack(
                     anchor="w", padx=2, pady=4
                 )
+            btn_row = ttk.Frame(card)
+            btn_row.pack(fill="x", pady=(6, 0))
+            ttk.Button(btn_row, text="More details", command=lambda m=member: self._show_details(m)).pack(
+                side="left", padx=(0, 6)
+            )
+            ttk.Button(btn_row, text="I don't have this", command=lambda m=member: self._mark_unavailable(m)).pack(
+                side="left"
+            )
 
             col += 1
             if col >= cols:

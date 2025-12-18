@@ -1735,7 +1735,7 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         if best >= 1.0:
             penalties += 8.0  # neutral only
         else:
-            penalties += 14.0  # cannot hit effectively
+            penalties += 18.0  # cannot hit effectively (immune)
 
     # Lightly discourage ultra-thin move_type sets
     breadth_penalty = max(0, 2 - len(move_types)) * 3.0
