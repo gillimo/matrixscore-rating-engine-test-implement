@@ -507,16 +507,16 @@ class App:
         for col in range(3):
             self.final_panel_inner.columnconfigure(col, weight=1, uniform="cards")
 
-        status_bar = ttk.Frame(wrapper)
+        status_bar = tk.Frame(wrapper, bg=POKEDEX_DARK, padx=6, pady=4, highlightthickness=0, bd=0)
         status_bar.pack(fill="x", pady=(8, 0))
-        status_bar.configure(style="TFrame")
-        tk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic"), fg="#f8fafc", bg=POKEDEX_DARK).pack(
-            anchor="w", fill="x"
-        )
-        try:
-            status_bar.configure(style="TFrame", padding=2)
-        except Exception:
-            pass
+        tk.Label(
+            status_bar,
+            textvariable=self.status_var,
+            font=("Segoe UI", 9, "italic"),
+            fg="#f8fafc",
+            bg=POKEDEX_DARK,
+            anchor="w",
+        ).pack(fill="x")
 
     def _load_types(self):
         try:
