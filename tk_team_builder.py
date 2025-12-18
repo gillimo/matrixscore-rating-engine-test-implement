@@ -764,6 +764,28 @@ class App:
             lines.append("\nTeam exposures this mon helps with:")
             lines.append(f" - Super-effective: {', '.join(sorted(hits)) or '—'}")
             lines.append(f" - Neutral: {', '.join(sorted(neutral)) or '—'}")
+            # Unique coverage check
+            exposure_map = {}
+            try:
+                for c in (self.metrics.get("exposures") or []):
+                    exposure_map[c.get("attack")] = c
+            except Exception:
+                exposure_map = {}
+            unique_hits = []
+            for t in exposures:
+                coverers = []
+                try:
+                    for entry in self.metrics.get("team", []):
+                        mt = set(entry.get("move_types") or [])
+                        se = set(entry.get("se_hits") or [])
+                        if t in se or t in mt:
+                            coverers.append(entry.get("name", ""))
+                except Exception:
+                    pass
+                if len(coverers) == 1 and coverers[0].lower() == (member.get("name") or "").lower():
+                    unique_hits.append(t)
+            if unique_hits:
+                lines.append(f" - Unique coverage: {', '.join(sorted(unique_hits))}")
         # Move synthesis: role plan + needed coverage
         role_plan = ROLE_MOVE_MIX.get(role, DEFAULT_ROLE_MOVE_MIX)
         lines.append(f"\nRole plan: {role_plan}")
