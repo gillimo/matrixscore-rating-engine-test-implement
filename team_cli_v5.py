@@ -1386,6 +1386,11 @@ def suggestion_buckets(team, cov, chart, attack_types):
             se_factor = 1.0 + 0.08 * min(6, len(se_types))
             coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
             ranked_gain = gain * gain_factor * bst_factor * se_factor * coverage_penalty
+            # Alignment to exposed types and cached alignment score
+            align_score = info.get("alignment_score", 0) or 0
+            exposed_hits = len(set(se_types) & set(top_exposures))
+            neutral_hits = len(set(move_types) & set(top_exposures)) - exposed_hits
+            ranked_gain += 8 * exposed_hits + 3 * neutral_hits + 0.5 * align_score
             off_top.append(
                 (
                     ranked_gain,
