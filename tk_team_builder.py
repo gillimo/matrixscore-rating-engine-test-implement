@@ -788,6 +788,22 @@ class App:
             # Rank exposures by need; suggest adding move types that hit those SE
             for t, need in needed_types[:4]:
                 lines.append(f" - Add {t}-hitting move to reduce team exposure (need {need:.1f})")
+        # Move build blueprint
+        lines.append("\nMove build blueprint:")
+        slot_needs = []
+        # Always 1 STAB slot
+        stab_types = types or []
+        slot_needs.append(("STAB", f"Use { '/'.join(stab_types) or 'type STAB'} aligned to role"))
+        # Coverage slots: prioritize needed exposures
+        for t, need in needed_types[:2]:
+            slot_needs.append(("Coverage", f"Cover {t} (team need {need:.1f})"))
+        if len(slot_needs) < 3:
+            slot_needs.append(("Coverage", "Cover any remaining exposure or high-SE type"))
+        # Utility slot
+        slot_needs.append(("Utility", "Screen/heal/hazard or status control (per role)"))
+        for label, desc in slot_needs[:4]:
+            lines.append(f" - {label}: {desc}")
+        # Current moves grouped (even if empty)
         moves = member.get("suggested_moves", [])
         if moves:
             lines.append("\nMoves:")
@@ -798,8 +814,8 @@ class App:
             lines.append("\nBy category:")
             for key, mv_list in cats.items():
                 nice = key.title()
-                mv_txt = ", ".join(m.get("name", "?") for m in mv_list[:4])
-                lines.append(f" - {nice}: {mv_txt or '—'}")
+                mv_txt = ", ".join(m.get("name", "?") for m in mv_list[:4]) or "—"
+                lines.append(f" - {nice}: {mv_txt}")
         txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
