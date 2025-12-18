@@ -788,7 +788,7 @@ class App:
             # Remove current slot, then attempt to auto-replace using parsed upgrades
             self.team[idx] = {"name": "", "types": [], "source": "unavailable"}
             self.cached_move_blocks[idx] = None
-            replaced = self._auto_replace(idx)
+            replaced = self._auto_replace(idx, dropped=name)
             if replaced:
                 self.status_var.set(f"Replaced {name} with {replaced}.")
             else:
@@ -811,22 +811,21 @@ class App:
                 continue
         return names
 
-    def _auto_replace(self, idx):
-        """Fill a cleared slot with the first upgrade candidate not already on the team."""
+    def _auto_replace(self, idx, dropped=None):
+        """Fill a cleared slot with the best upgrade candidate not already on the team."""
         current_names = {m.get("name", "").lower() for m in self.team if m.get("name")}
-        for cand in list(self.parsed_upgrades):
-            if cand in current_names:
-                continue
-            try:
-                types = fetch_pokemon_typing(cand)
-            except Exception:
-                types = []
-            self.team[idx] = {"name": cand, "types": types, "source": "upgrade"}
-            self.cached_move_blocks[idx] = None
-            # consume this candidate so future drops re-evaluate from remaining list
-            self.parsed_upgrades = [c for c in self.parsed_upgrades if c != cand]
-            return cand.title()
-        return None
+        # Rebuild upgrade list fresh each time from raw to avoid running out
+        available = [c for c in self._parse_upgrades(self.upgrades_raw) if c not in current_names and c != (dropped or "").lower()]
+        if not available:
+            return None
+        cand = available[0]
+        try:
+            types = fetch_pokemon_typing(cand)
+        except Exception:
+            types = []
+        self.team[idx] = {"name": cand, "types": types, "source": "upgrade"}
+        self.cached_move_blocks[idx] = None
+        return cand.title()
 
     def _ensure_types(self):
         if getattr(self, "matrix", None):
