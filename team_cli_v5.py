@@ -2208,6 +2208,9 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
                 log_verbose("[autofill] no fallback available. Stopping autofill.")
                 break
         score_tuple, label, pname, types, *extra = best
+        if pname and pname.lower() in exclude:
+            log_verbose(f"[autofill] {pname} excluded; searching next option.")
+            continue
         loser_name = extra[0] if len(extra) > 0 else None
         loser_bst = extra[1] if len(extra) > 1 else None
         reason_line = extra[2] if len(extra) > 2 else None
@@ -2591,7 +2594,7 @@ def main():
                         drop_name = team[num - 1]["name"]
                         team.pop(num - 1)
                         print(f"Dropped {drop_name}. Refilling...")
-                        added = autofill_team(team, chart, attack_types, max_size=6)
+                        added = autofill_team(team, chart, attack_types, max_size=6, exclude={drop_name})
                         if added:
                             for name, label, score_tuple in added:
                                 shared_gain, def_gain, overall_gain = score_tuple
