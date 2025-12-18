@@ -1726,24 +1726,30 @@ def format_output(info):
         lines.append("Coverage ranking: " + "; ".join(top_cov))
     lines.append("Suggested moves:")
     for m in info["suggested_moves"]:
-        lvl_txt = f" lvl {m['level']}" if m["method"] == "level-up" and m["level"] else ""
+        method = m.get("method", "unknown")
+        cat = m.get("cat", "")
+        lvl = m.get("level")
+        lvl_txt = f" lvl {lvl}" if method == "level-up" and lvl else ""
         lines.append(
-            f" - {m['name']} [{m['type']}/{m['cat']}] pow={m['power']} acc={m['acc']} via {m['method']}{lvl_txt}"
+            f" - {m.get('name','?')} [{m.get('type','-')}/{cat}] pow={m.get('power','?')} acc={m.get('acc','?')} via {method}{lvl_txt}"
         )
     lines.append("Top by category:")
     for cat_label, moves in (
-        ("STAB", info["suggested_by_category"]["stab"]),
-        ("Coverage", info["suggested_by_category"]["coverage"]),
-        ("Utility", info["suggested_by_category"]["utility"]),
+        ("STAB", info["suggested_by_category"].get("stab", [])),
+        ("Coverage", info["suggested_by_category"].get("coverage", [])),
+        ("Utility", info["suggested_by_category"].get("utility", [])),
     ):
         if not moves:
             lines.append(f" {cat_label}: none")
             continue
         lines.append(f" {cat_label}:")
         for idx, m in enumerate(moves, start=1):
-            lvl_txt = f" lvl {m['level']}" if m["method"] == "level-up" and m["level"] else ""
+            method = m.get("method", "unknown")
+            cat = m.get("cat", "")
+            lvl = m.get("level")
+            lvl_txt = f" lvl {lvl}" if method == "level-up" and lvl else ""
             lines.append(
-                f"   {idx}) {m['name']} [{m['type']}/{m['cat']}] pow={m['power']} acc={m['acc']} via {m['method']}{lvl_txt}"
+                f"   {idx}) {m.get('name','?')} [{m.get('type','-')}/{cat}] pow={m.get('power','?')} acc={m.get('acc','?')} via {method}{lvl_txt}"
             )
     return "\n".join(lines)
 
