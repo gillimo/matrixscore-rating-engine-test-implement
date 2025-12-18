@@ -473,9 +473,8 @@ class App:
 
         # Metrics banner if payload metrics exist
         self.metrics = getattr(self, "metrics", {})
-        metrics_frame = ttk.Frame(wrapper, padding=(6, 4))
+        metrics_frame = tk.Frame(wrapper, bg=POKEDEX_BLUE, padx=8, pady=6, highlightthickness=0, bd=0)
         metrics_frame.pack(fill="x", pady=(0, 6))
-        metrics_frame.configure(style="TFrame")
         tk.Label(metrics_frame, text="Team Score:", font=("Segoe UI", 10, "bold"), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left", padx=(0, 6))
         if self.metrics.get("scores"):
             sc = self.metrics["scores"]
@@ -487,8 +486,18 @@ class App:
             tk.Label(metrics_frame, text=score_text, font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
         else:
             tk.Label(metrics_frame, text="No metrics in payload", font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
-        ttk.Button(metrics_frame, text="Tell me more", style="Secondary.TButton", command=self._show_team_breakdown).pack(side="right")
-        metrics_frame.configure(bg=POKEDEX_BLUE)
+        tk.Button(
+            metrics_frame,
+            text="Tell me more",
+            bg=POKEDEX_RED,
+            fg="#f8fafc",
+            activebackground="#c01010",
+            activeforeground="#f8fafc",
+            relief="flat",
+            command=self._show_team_breakdown,
+            padx=10,
+            pady=4,
+        ).pack(side="right")
 
         self.final_panel = ttk.Labelframe(wrapper, text="Team (6 slots)", style="Glass.TLabelframe")
         self.final_panel.pack(fill="both", expand=True)
@@ -614,14 +623,17 @@ class App:
                         lbl.pack(side="left", padx=2)
             else:
                 ttk.Label(type_frame, text="Types: --", foreground="#64748b", background=bg_color).pack(anchor="w")
-            btn_row = ttk.Frame(card)
+            btn_row = ttk.Frame(card, style=card_style)
             btn_row.pack(fill="x", pady=(6, 0))
-            ttk.Button(btn_row, text="More details", command=lambda m=member: self._show_details(m)).pack(
-                side="left", padx=(0, 6)
-            )
-            ttk.Button(btn_row, text="I don't have this", command=lambda idx=idx: self._mark_unavailable_idx(idx)).pack(
-                side="left"
-            )
+            ttk.Button(
+                btn_row, text="More details", style="Secondary.TButton", command=lambda m=member: self._show_details(m)
+            ).pack(side="left", padx=(0, 6))
+            ttk.Button(
+                btn_row,
+                text="I don't have this",
+                style="Primary.TButton",
+                command=lambda idx=idx: self._mark_unavailable_idx(idx),
+            ).pack(side="left")
 
             col += 1
             if col >= cols:
@@ -794,7 +806,7 @@ class App:
         names = []
         for line in lines:
             try:
-                clean = re.sub(r"\x1b\\[[0-9;]*m", "", line)
+                clean = re.sub(r"\x1b\[[0-9;]*m", "", line)
                 if "Overall " in clean:
                     segment = clean.split("Overall ", 1)[1]
                     cand = segment.split(":")[0].strip()
