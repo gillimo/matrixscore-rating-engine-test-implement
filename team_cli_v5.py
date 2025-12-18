@@ -4,6 +4,7 @@
 Combined CLI: build team typings first, then suggest moves, then launch Tk wheel with final team.
 """
 import json
+from collections import defaultdict
 import inspect
 import os
 import subprocess
@@ -1776,6 +1777,17 @@ def predict_overall(team, team_infos, chart, attack_types):
         shared_score,
         stack_overlap=stack_overlap,
     )
+    # Role balance penalty: gently nudge if we overstack one role (3+)
+    role_counts = defaultdict(int)
+    for info in team_infos:
+        role = (info.get("role") or "balanced").lower()
+        role_counts[role] += 1
+    role_penalty = 0.0
+    for cnt in role_counts.values():
+        if cnt >= 3:
+            role_penalty += 0.5 * (cnt - 2)  # 3 of a kind = -0.5, 4 = -1.0, etc.
+    if role_penalty:
+        overall = max(0, min(100, overall - role_penalty))
     components = {
         "defense": def_score,
         "offense": off_score,
@@ -1786,6 +1798,7 @@ def predict_overall(team, team_infos, chart, attack_types):
         "stack_overlap": stack_overlap,
         "best_defensive_delta": best_defensive_delta,
         "cov": cov,
+        "role_penalty": role_penalty,
     }
     return overall, components
 
