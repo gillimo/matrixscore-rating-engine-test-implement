@@ -11,6 +11,7 @@ import subprocess
 import sys
 import builtins
 import threading
+import time
 from datetime import datetime
 from pathlib import Path
 import json
@@ -939,6 +940,7 @@ def pick_defensive_addition(team, chart, attack_types):
         return pokemon_defense_stat_total(name)
 
     pname = max(best["candidates"], key=stat_key)
+    wheel_proc = None
     try:
         ptypes = fetch_pokemon_typing(pname)
     except Exception:
@@ -1533,7 +1535,7 @@ def launch_wheel(team_data, wheel_path, metrics=None):
     global WHEEL_LAUNCHED
     if WHEEL_LAUNCHED:
         print("Wheel GUI already launched; skipping duplicate launch.")
-        return
+        return None
 
     def _sanitize(obj):
         if isinstance(obj, set):
@@ -1556,9 +1558,10 @@ def launch_wheel(team_data, wheel_path, metrics=None):
     # launch Tk app with env var for payload
     env = os.environ.copy()
     env["TEAM_PAYLOAD_PATH"] = str(tmp_path)
-    subprocess.Popen([sys.executable, wheel_path], env=env)
+    proc = subprocess.Popen([sys.executable, wheel_path], env=env)
     print(f"Launched wheel GUI with team; payload at {tmp_path}")
     WHEEL_LAUNCHED = True
+    return proc
 
 
 def compute_best_defensive_delta(team, chart, attack_types):
@@ -1828,8 +1831,8 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     """
     delta_penalty = 0.5 * (best_defensive_delta + best_offense_gap)
     stack_penalty = 2.0 * stack_overlap
-    overall = 100 - delta_penalty - stack_penalty
-    return int(max(0, min(100, overall)))
+        overall = 100 - delta_penalty - stack_penalty
+        return int(max(0, min(100, overall)))
 
 
 def coverage_totals(cov):
@@ -2978,12 +2981,21 @@ def main():
                     "role_counts": role_counts,
                     "upgrades": upgrade_lines if contrib_lines else [],
                 }
-                launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
+                wheel_proc = launch_wheel(team_infos, str(wheel_path), metrics=team_metrics)
                 main._wheel_launched = True
             elif not team_infos:
                 log_verbose("Skipping GUI launch: no team data to show.")
         else:
             print("Wheel GUI not found; skipping GUI launch.")
+        # Keep CLI alive until Tk closes; then exit after 60s idle window
+        if wheel_proc:
+            print("Waiting for Tk window to close...")
+            try:
+                wheel_proc.wait()
+                print("Tk window closed. Keeping CLI alive for 60s idle grace period...")
+                time.sleep(60)
+            except Exception:
+                pass
     finally:
         print(LOG_FOOTER)
         _save_draft_cache()
