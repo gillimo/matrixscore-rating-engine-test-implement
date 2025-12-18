@@ -2084,25 +2084,80 @@ def autofill_team(team, chart, attack_types, max_size=6):
 
         if not best:
             log_verbose("[autofill] no valid addition found from offense/defense; using high-BST fallback.")
-            # Fallback: highest BST from defensive pool if available; otherwise highest BST final form not on team
+            # Fallback: prefer the strongest aligned option even with 0 uplift
             fallback_name = None
             fallback_types = []
+            base_overall = None
+            base_infos = []
+            try:
+                base_infos = team_infos_from_cache(team)
+                base_overall, _ = predict_overall(team, base_infos, chart, attack_types)
+            except Exception:
+                base_overall = None
+            best_overall = -1
+            best_align = -1
+            best_bst = -1
+            best_info = None
+            best_exposure_hits = -1
+            # favor bruiser/tank-offense roles slightly over pure walls when tied
+            role_bias = {"tank": 0, "balanced": 0.2, "sweeper": 0.4, "bruiser": 0.5}
             if defense_choice and defense_choice.get("candidates"):
                 candidates = defense_choice["candidates"]
-                fallback_name = max(candidates, key=pokemon_base_stat_total)
-                try:
-                    fallback_types = fetch_pokemon_typing(fallback_name)
-                except Exception:
-                    fallback_types = defense_choice.get("types") or []
-                best = (
-                    (0.0, defense_choice.get("delta", 0), 0.0),
-                    "[Fallback BST]",
-                    fallback_name,
-                    fallback_types,
-                    None,
-                    None,
-                    "No positive gain; selected highest BST in defensive pool.",
-                )
+                for cand in candidates:
+                    if cand in {m["name"] for m in team}:
+                        continue
+                    try:
+                        c_types = fetch_pokemon_typing(cand)
+                    except Exception:
+                        c_types = defense_choice.get("types") or []
+                    try:
+                        cached = cache_draft_board(cand)
+                        info = cached["info"]
+                    except Exception:
+                        info = {"name": cand, "types": c_types, "suggested_moves": [], "alignment_score": 0}
+                    cand_bst = pokemon_base_stat_total(cand)
+                    cand_align = info.get("alignment_score", 0) or 0
+                    cand_role = (info.get("role") or "tank").lower()
+                    role_boost = role_bias.get(cand_role, 0)
+                    # count exposed types this mon can hit SE based on cached se_hits
+                    exposure_hits = 0
+                    try:
+                        base_cov = compute_coverage(team, chart)
+                        exposed = {c["attack"] for c in base_cov if c["weak"] > (c["resist"] + c["immune"])}
+                    except Exception:
+                        exposed = set()
+                    se_hits = set(info.get("se_hits") or [])
+                    exposure_hits = len(exposed & se_hits) if exposed else 0
+                    cand_overall = -1
+                    if base_overall is not None:
+                        try:
+                            sim_team = team + [{"name": cand, "types": c_types, "source": "sim"}]
+                            sim_infos = base_infos + [info]
+                            cand_overall, _ = predict_overall(sim_team, sim_infos, chart, attack_types)
+                        except Exception:
+                            cand_overall = base_overall
+                    compare_tuple = (
+                        cand_overall if cand_overall is not None else 0,
+                        exposure_hits,
+                        cand_bst,
+                        cand_align + role_boost,
+                    )
+                    if compare_tuple > (best_overall, best_exposure_hits, best_bst, best_align):
+                        best_overall, best_exposure_hits, best_bst, best_align = compare_tuple
+                        fallback_name = cand
+                        fallback_types = c_types
+                        best_info = info
+                if fallback_name:
+                    reason_txt = "No positive gain; selected best aligned defensive candidate."
+                    best = (
+                        (0.0, defense_choice.get("delta", 0), 0.0),
+                        "[Fallback Aligned]",
+                        fallback_name,
+                        fallback_types,
+                        None,
+                        None,
+                        reason_txt,
+                    )
             else:
                 # pick highest BST final form not already on team
                 team_names = {m["name"] for m in team}
@@ -2498,11 +2553,6 @@ def main():
                     print("No positive additions available to auto-fill.")
 
             infos = team_infos_from_cache(team)
-            wheel_path = Path(__file__).with_name("tk_team_builder.py")
-            if wheel_path.exists():
-                launch_wheel(infos, str(wheel_path))
-            else:
-                print("Wheel GUI not found; skipping GUI launch.")
             return True
 
         while True:

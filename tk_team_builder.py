@@ -179,7 +179,7 @@ def fetch_type_icon(t: str):
         return icon
     except Exception:
         TYPE_ICON_CACHE[t] = None
-TYPE_ICON_CACHE_DIM[t] = None
+        TYPE_ICON_CACHE_DIM[t] = None
         return None
 
 def _hex_to_rgb(hex_color: str):
@@ -574,12 +574,12 @@ class App:
                     color = TYPE_COLORS.get(t, "#94a3b8")
                     icon = fetch_type_icon(t)
                     if icon:
-                    lbl = ttk.Label(type_frame, image=icon, background=bg_color)
-                    lbl.image = icon
-                    lbl.pack(side="left", padx=2)
-                else:
-                    lbl = tk.Label(type_frame, text=t.upper(), bg=color, fg=_contrast_color(color), padx=6, pady=2)
-                    lbl.pack(side="left", padx=2)
+                        lbl = ttk.Label(type_frame, image=icon, background=bg_color)
+                        lbl.image = icon
+                        lbl.pack(side="left", padx=2)
+                    else:
+                        lbl = tk.Label(type_frame, text=t.upper(), bg=color, fg=_contrast_color(color), padx=6, pady=2)
+                        lbl.pack(side="left", padx=2)
             else:
                 ttk.Label(type_frame, text="Types: --", foreground="#64748b", background=bg_color).pack(anchor="w")
 
