@@ -7,6 +7,7 @@ import os
 import json
 import base64
 import io
+import re
 from pathlib import Path
 from PIL import Image, ImageTk
 
@@ -16,6 +17,7 @@ POKEAPI_BASE = "https://pokeapi.co/api/v2"
 EXCLUDED_TYPES = {"shadow", "unknown"}
 TRACE_FUNCTIONS = False  # tracing hard-disabled to keep GUI quiet
 
+# Official-ish palette: type colors and Pokédex brand primaries
 TYPE_COLORS = {
     "normal": "#A8A77A",
     "fire": "#EE8130",
@@ -36,6 +38,11 @@ TYPE_COLORS = {
     "steel": "#B7B7CE",
     "fairy": "#D685AD",
 }
+POKEDEX_YELLOW = "#FFCB05"
+POKEDEX_BLUE = "#3B4CCA"
+POKEDEX_RED = "#EE1515"
+POKEDEX_DARK = "#1D1E2C"
+POKEDEX_LIGHT = "#FFF7D6"
 ROLE_MOVE_MIX = {
     "sweeper": "Prefers 1 STAB, 2 coverage hitting team weaknesses, and 1 priority/recoil or setup flex slot.",
     "tank": "Prefers heal/screen/hazard control first, plus 1 STAB and 1 coverage; utility takes priority.",
@@ -368,12 +375,13 @@ class App:
         self.root = root
         self.root.title("PokeAPI Team Wheel (Tk)")
         self._set_initial_geometry()
-        self.root.configure(bg="#e8f2ff")
+        self.root.configure(bg=POKEDEX_LIGHT)
 
         self.status_var = tk.StringVar(value="Team view ready.")
         self.metrics = {}
         payload_team, role_move_mix = load_payload_team()
         self.role_move_mix = role_move_mix or ROLE_MOVE_MIX
+        self.upgrades_raw = []
         if payload_team:
             base_team = payload_team[:6]
             while len(base_team) < 6:
@@ -388,12 +396,14 @@ class App:
                 if payload_path.exists():
                     payload_json = json.loads(payload_path.read_text())
                     self.metrics = payload_json.get("metrics", {}) or {}
+                    self.upgrades_raw = payload_json.get("metrics", {}).get("upgrades", []) or []
             except Exception:
                 self.metrics = {}
         else:
             self.team = [{"name": "", "types": [], "source": ""} for _ in range(6)]
             self.payload_moves = [[] for _ in range(6)]
             self.payload_by_cat = [{} for _ in range(6)]
+        self.parsed_upgrades = self._parse_upgrades(self.upgrades_raw)
         self.sprite_cache = {}
         self.cached_move_blocks = [None] * 6
 
@@ -409,15 +419,20 @@ class App:
         height = min(1000, max(800, int(sh * 0.85)))
         self.root.geometry(f"{width}x{height}")
         self.root.minsize(900, 720)
+        try:
+            self.root.iconify()
+            self.root.deiconify()
+        except Exception:
+            pass
 
     def _build_ui(self):
         self.style = ttk.Style()
         self.style.theme_use("default")
-        self.style.configure("TFrame", background="#e8f2ff")
-        self.style.configure("TLabel", background="#e8f2ff", foreground="#0f172a")
+        self.style.configure("TFrame", background=POKEDEX_LIGHT)
+        self.style.configure("TLabel", background=POKEDEX_LIGHT, foreground=POKEDEX_DARK)
         self.style.configure("Glass.TLabelframe", background="#f7fbff", bordercolor="#cbd5e1")
         self.style.configure("Glass.TLabelframe.Label", background="#f7fbff")
-        self.style.configure("CardHeader.TLabel", background="#f7fbff", foreground="#0b0d14", font=("Segoe UI", 11, "bold"))
+        self.style.configure("CardHeader.TLabel", background="#f7fbff", foreground=POKEDEX_DARK, font=("Segoe UI", 11, "bold"))
         self.style.configure("Tag.TLabel", background="#0f172a", foreground="#f8fafc", font=("Segoe UI", 8, "bold"))
 
         wrapper = ttk.Frame(self.root)
@@ -464,6 +479,7 @@ class App:
         ttk.Label(status_bar, textvariable=self.status_var, font=("Segoe UI", 9, "italic")).pack(
             anchor="w"
         )
+        status_bar.configure(style="TFrame")
 
     def _load_types(self):
         try:
@@ -756,12 +772,46 @@ class App:
     def _mark_unavailable_idx(self, idx):
         if 0 <= idx < len(self.team):
             name = self.team[idx].get("name", "(empty)")
+            # Remove current slot, then attempt to auto-replace using parsed upgrades
             self.team[idx] = {"name": "", "types": [], "source": "unavailable"}
             self.cached_move_blocks[idx] = None
-            self.status_var.set(f"Marked unavailable: {name}. Slot cleared; rerun finalize to replace.")
+            replaced = self._auto_replace(idx)
+            if replaced:
+                self.status_var.set(f"Replaced {name} with {replaced}.")
+            else:
+                self.status_var.set(f"Marked unavailable: {name}. Slot cleared; rerun finalize to replace.")
             self._render_payload_panel()
         else:
             self.status_var.set("Invalid slot to mark unavailable.")
+
+    def _parse_upgrades(self, lines):
+        """Parse upgrade lines into candidate names in order."""
+        names = []
+        for line in lines:
+            try:
+                clean = re.sub(r"\x1b\\[[0-9;]*m", "", line)
+                if "Overall " in clean:
+                    segment = clean.split("Overall ", 1)[1]
+                    cand = segment.split(":")[0].strip()
+                    names.append(cand.lower())
+            except Exception:
+                continue
+        return names
+
+    def _auto_replace(self, idx):
+        """Fill a cleared slot with the first upgrade candidate not already on the team."""
+        current_names = {m.get("name", "").lower() for m in self.team if m.get("name")}
+        for cand in self.parsed_upgrades:
+            if cand in current_names:
+                continue
+            try:
+                types = fetch_pokemon_typing(cand)
+            except Exception:
+                types = []
+            self.team[idx] = {"name": cand, "types": types, "source": "upgrade"}
+            self.cached_move_blocks[idx] = None
+            return cand.title()
+        return None
 def _apply_tracing():
     """Wrap module-level functions with trace_call for entry/exit visibility."""
     if not TRACE_FUNCTIONS:
