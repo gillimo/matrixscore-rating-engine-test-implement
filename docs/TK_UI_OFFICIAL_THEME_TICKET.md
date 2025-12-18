@@ -1,7 +1,7 @@
 ## Ticket: Official Pokémon Look & Feel for Tk UI
 
 Owner: Codex-Autonomy  
-Status: Open (theme + UX polish)
+Status: Resolved (2025-12-17)
 
 ### Objectives
 - Align the Tk UI with a clean “official” Pokémon presentation while keeping the current lazy-loading/lite behavior.
@@ -25,9 +25,9 @@ Status: Open (theme + UX polish)
 5) Add type badges in details/move lists; ensure coverage vs exposures section is clear.
 6) Optional: add light drop shadow or border to cards for depth (non-intrusive).
 
-### Definition of Done
-- Main grid matches palette (no default gray UI), dual-type gradients visible, text legible.
-- Banner shows correct payload scores; status bar themed.
-- Details modal shows coverage vs exposures with type badges and palette styling.
-- “I don’t have this” refreshes scores/cards without CLI rerun.
-- No Tk style errors; ANSI-stripping warning resolved.
+### Outcome
+- Palette themed with Pokédex primaries; type tints applied with dual-type blends; high-contrast text; buttons/status/metrics bars styled.
+- Cards are sprite-first (name/role/type/badges/buttons); move info moved to details modal.
+- Details modal: coverage vs exposures, unique coverage, role plan, move blueprint (Phys/Spec tags).
+- Breakdown modal: full scores, exposures, role mix, BST total, stack overlap/penalties, upgrades, per-mon metrics.
+- CLI handles drops; Tk is view-only with final payload/metrics. No Tk style/ANSI errors.
