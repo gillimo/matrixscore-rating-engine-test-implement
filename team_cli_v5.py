@@ -1687,11 +1687,15 @@ def team_infos_from_cache(team):
         cached = BOARD_CACHE.get(cache_key) or BOARD_CACHE.get((cache_key[0], cache_key[1]))
         if cached:
             _populate_move_data(cached["info"], cached_entry=cached) # Ensure move data is populated
-            infos.append(cached["info"])
+            info = cached["info"]
+            # carry source from member so we can respect user-supplied locks later
+            if not info.get("source"):
+                info["source"] = member.get("source", "")
+            infos.append(info)
         else:
             # If not in cache, create a basic info dict.
             # Move data will be fetched later if needed.
-            infos.append({"name": name, "types": member.get("types") or [], "suggested_moves": []})
+            infos.append({"name": name, "types": member.get("types") or [], "suggested_moves": [], "source": member.get("source", "")})
     return infos
 
 
@@ -2496,7 +2500,7 @@ def main():
             except Exception as exc:
                 print(f"Error fetching {name}: {exc}")
                 continue
-            team.append({"name": name.lower(), "types": types, "level_cap": level_cap})
+            team.append({"name": name.lower(), "types": types, "level_cap": level_cap, "source": "user"})
             try:
                 cached = cache_draft_board(name, level_cap=level_cap)
                 _populate_move_data(cached["info"], cached_entry=cached) # Add this line
@@ -2701,17 +2705,23 @@ def main():
                 )
                 vscore = typing_score(vcov)
                 contrib = baseline_def - vscore
-                impacts.append((contrib, idx, info["name"]))
+                impacts.append((contrib, idx, info["name"], info.get("source", "")))
             impacts.sort(key=lambda x: (x[0], x[2]))
-            weakest_idx = impacts[0][1]
-            weakest_name = impacts[0][2]
+            drop_candidates = [imp for imp in impacts if imp[3] != "user"]
             print("Defensive impacts (higher = more critical):")
-            for contrib, _idx, nm in impacts:
+            for contrib, _idx, nm, _src in impacts:
                 print(f" - {nm}: {contrib:+.0f}")
-            print(f"Weakest (candidate drop): {weakest_name}")
+            drop_available = bool(drop_candidates)
+            if not drop_candidates:
+                print("No droppable members (all user-supplied); skipping upgrade swap.")
+            else:
+                weakest_idx = drop_candidates[0][1]
+                weakest_name = drop_candidates[0][2]
+                print(f"Weakest (candidate drop): {weakest_name}")
             log_verbose(f"[upgrade] impacts sorted: {impacts}")
             core_team = [dict(m) for m in team_infos]
-            core_team.pop(weakest_idx)
+            if drop_candidates:
+                core_team.pop(weakest_idx)
             core_cov = compute_coverage(
                 [{"name": i["name"], "types": i["types"], "source": "core"} for i in core_team],
                 chart,
@@ -2801,15 +2811,21 @@ def main():
                 if demo_mode:
                     top = picks[0]
                     replacement = top[2]
-                    print(f"\nDemo mode: applying swap -> add {replacement.get('name','new')} (drop {weakest_name})")
-                    team_infos.pop(weakest_idx)
-                    team_infos.append(replacement)
+                    if drop_available:
+                        print(f"\nDemo mode: applying swap -> add {replacement.get('name','new')} (drop {weakest_name})")
+                        team_infos.pop(weakest_idx)
+                        team_infos.append(replacement)
+                    else:
+                        print("Demo mode: no eligible drop (user-supplied locked); skipping swap.")
             elif demo_mode and best_any is not None:
                 # fallback: apply best overall even if uplift <= 0 to honor auto-swap requirement
-                replacement = best_any[2]
-                print(f"\nDemo mode: applying fallback swap -> add {replacement.get('name','new')} (drop {weakest_name}); uplift {best_any[1]:+.0f}")
-                team_infos.pop(weakest_idx)
-                team_infos.append(replacement)
+                if drop_available:
+                    replacement = best_any[2]
+                    print(f"\nDemo mode: applying fallback swap -> add {replacement.get('name','new')} (drop {weakest_name}); uplift {best_any[1]:+.0f}")
+                    team_infos.pop(weakest_idx)
+                    team_infos.append(replacement)
+                else:
+                    print("Demo mode: no eligible drop (user-supplied locked); skipping swap.")
             else:
                 print("\u001b[32mNo upgrade found beyond current lineup.\u001b[0m")
 
