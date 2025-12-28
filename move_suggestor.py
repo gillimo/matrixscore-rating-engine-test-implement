@@ -51,7 +51,7 @@ POKEMON_CACHE_STATS = {"hit": 0, "miss": 0}
 _load_pokemon_cache() # Load cache once at module import
 ROLE_MOVE_MIX = {
     "sweeper": "Prefers strong STAB and coverage moves to maximize offensive pressure.",
-    "tank": "Prefers defensive moves, status effects, and moves that allow it to pivot or absorb damage.",
+    "tank": "Prefers defensive moves, a heal/soak option when available, and tools that absorb damage.",
     "balanced": "Prefers a balanced mix of STAB, coverage, and utility tuned to the team.",
 }
 
@@ -1650,7 +1650,7 @@ def pick_moves(
             "priority": 5,
         },
         "tank": {
-            "heal": 20,
+            "heal": 26,
             "screen": 15,
             "hazard": 12,
             "trap": 10,
@@ -1703,7 +1703,7 @@ def format_output(info):
     lines = []
     role_profiles = {
         "sweeper": "Sweeper profile: 2 coverage moves (hit most weaknesses), 1 STAB (aligned to main offensive stat), 1 buff/utility if present.",
-        "tank": "Tank profile: 1 screen/defensive debuff if available, 1 STAB, 1 coverage beater (highest weakness coverage), 1 open slot (utility or coverage).",
+        "tank": "Tank profile: 1 heal/soak if available, 1 screen/defensive debuff, 1 STAB, 1 coverage beater (highest weakness coverage).",
         "balanced": "Hybrid profile: self buff/defense, 1 STAB, 1 coverage, optional utility.",
     }
     lines.append(f"Pokemon: {info['name'].title()} ({'/'.join(info['types'])})")

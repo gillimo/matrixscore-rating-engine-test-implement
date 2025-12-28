@@ -1,10 +1,9 @@
 {
   "team": [
     {
-      "name": "scizor",
+      "name": "slowpoke-galar",
       "types": [
-        "bug",
-        "steel"
+        "psychic"
       ],
       "level_cap": null,
       "suggested_moves": [
@@ -29,9 +28,401 @@
           "priority": 0
         },
         {
-          "name": "scary-face",
+          "name": "block",
           "type": "normal",
           "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "egg",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "foul-play",
+          "type": "dark",
+          "cat": "physical",
+          "power": 95,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "foul-play",
+          "type": "dark",
+          "cat": "physical",
+          "power": 95,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "shadow-ball",
+          "type": "ghost",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "flamethrower",
+          "type": "fire",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "blizzard",
+          "type": "ice",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "hydro-pump",
+          "type": "water",
+          "cat": "special",
+          "power": 110,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "dig",
+          "type": "ground",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "belch",
+          "type": "poison",
+          "cat": "special",
+          "power": 120,
+          "acc": 90,
+          "method": "egg",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "liquidation",
+          "type": "water",
+          "cat": "physical",
+          "power": 85,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-beam",
+          "type": "ice",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "waterfall",
+          "type": "water",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "coverage_priority": [
+        [
+          "fighting",
+          1
+        ],
+        [
+          "flying",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "ghost",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "dark",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "poison",
+          0
+        ],
+        [
+          "ground",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "ice",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "dark",
+        "fire",
+        "ghost",
+        "ground",
+        "ice",
+        "water",
+        "poison"
+      ],
+      "se_hits": [
+        "fighting",
+        "flying",
+        "rock",
+        "bug",
+        "ghost",
+        "fire",
+        "dark",
+        "fairy"
+      ],
+      "role": "tank",
+      "alignment_score": 63,
+      "moves_fetched": true,
+      "source": "user",
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      }
+    },
+    {
+      "name": "mawile",
+      "types": [
+        "steel",
+        "fairy"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "stealth-rock",
+          "type": "rock",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "stone-edge",
+          "type": "rock",
+          "cat": "physical",
+          "power": 100,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-punch",
+          "type": "ice",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "stone-edge",
+          "type": "rock",
+          "cat": "physical",
+          "power": 100,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-punch",
+          "type": "ice",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-beam",
+          "type": "ice",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "rock-slide",
+          "type": "rock",
+          "cat": "physical",
+          "power": 75,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ice-fang",
+          "type": "ice",
+          "cat": "physical",
+          "power": 65,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "rock-tomb",
+          "type": "rock",
+          "cat": "physical",
+          "power": 60,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "ancient-power",
+          "type": "rock",
+          "cat": "special",
+          "power": 60,
+          "acc": 100,
+          "method": "egg",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "icy-wind",
+          "type": "ice",
+          "cat": "special",
+          "power": 55,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "grass-knot",
+          "type": "grass",
+          "cat": "special",
           "power": 0,
           "acc": 100,
           "method": "machine",
@@ -47,124 +438,12 @@
           "method": "machine",
           "level": 0,
           "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "giga-impact",
-          "type": "normal",
-          "cat": "physical",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
         },
         {
-          "name": "close-combat",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hyper-beam",
-          "type": "normal",
-          "cat": "special",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "double-edge",
-          "type": "normal",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "brick-break",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "take-down",
-          "type": "normal",
-          "cat": "physical",
-          "power": 90,
-          "acc": 85,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "wing-attack",
-          "type": "flying",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "level-up",
-          "level": 1,
-          "priority": 0
-        },
-        {
-          "name": "knock-off",
+          "name": "foul-play",
           "type": "dark",
           "cat": "physical",
-          "power": 65,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "aerial-ace",
-          "type": "flying",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "air-slash",
-          "type": "flying",
-          "cat": "special",
-          "power": 75,
-          "acc": 95,
-          "method": "level-up",
-          "level": 1,
-          "priority": 0
-        },
-        {
-          "name": "slash",
-          "type": "normal",
-          "cat": "physical",
-          "power": 70,
-          "acc": 100,
-          "method": "level-up",
-          "level": 24,
-          "priority": 0
-        },
-        {
-          "name": "thief",
-          "type": "dark",
-          "cat": "physical",
-          "power": 60,
+          "power": 95,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -172,6 +451,10 @@
         }
       ],
       "coverage_priority": [
+        [
+          "water",
+          2
+        ],
         [
           "ground",
           1
@@ -181,7 +464,11 @@
           1
         ],
         [
-          "water",
+          "grass",
+          1
+        ],
+        [
+          "ice",
           1
         ],
         [
@@ -217,19 +504,11 @@
           0
         ],
         [
-          "grass",
-          0
-        ],
-        [
           "electric",
           0
         ],
         [
           "psychic",
-          0
-        ],
-        [
-          "ice",
           0
         ],
         [
@@ -250,36 +529,49 @@
         ]
       ],
       "move_types": [
+        "grass",
+        "rock",
+        "ice",
         "normal",
-        "fighting",
-        "flying",
         "dark"
       ],
       "se_hits": [
+        "water",
         "ground",
         "rock",
-        "water"
+        "grass",
+        "ice"
       ],
       "role": "tank",
-      "alignment_score": 70,
+      "alignment_score": 55,
       "moves_fetched": true,
+      "source": "sim",
       "weaknesses": [],
       "suggested_by_category": {
         "stab": [],
         "coverage": [],
         "utility": [],
         "buff": []
-      },
-      "source": "autofill"
+      }
     },
     {
-      "name": "garchomp",
+      "name": "noivern",
       "types": [
-        "dragon",
-        "ground"
+        "flying",
+        "dragon"
       ],
       "level_cap": null,
       "suggested_moves": [
+        {
+          "name": "draco-meteor",
+          "type": "dragon",
+          "cat": "special",
+          "power": 130,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
         {
           "name": "outrage",
           "type": "dragon",
@@ -291,8 +583,271 @@
           "priority": 0
         },
         {
-          "name": "stealth-rock",
-          "type": "rock",
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "double-edge",
+          "type": "normal",
+          "cat": "physical",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "brick-break",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "heat-wave",
+          "type": "fire",
+          "cat": "special",
+          "power": 95,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "flamethrower",
+          "type": "fire",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "water-pulse",
+          "type": "water",
+          "cat": "special",
+          "power": 60,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "absorb",
+          "type": "grass",
+          "cat": "special",
+          "power": 20,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "boomburst",
+          "type": "normal",
+          "cat": "special",
+          "power": 140,
+          "acc": 100,
+          "method": "level-up",
+          "level": 62,
+          "priority": 0
+        },
+        {
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "shadow-ball",
+          "type": "ghost",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "dark-pulse",
+          "type": "dark",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "coverage_priority": [
+        [
+          "steel",
+          3
+        ],
+        [
+          "fighting",
+          2
+        ],
+        [
+          "poison",
+          1
+        ],
+        [
+          "ground",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "water",
+          1
+        ],
+        [
+          "grass",
+          1
+        ],
+        [
+          "ice",
+          1
+        ],
+        [
+          "dragon",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "flying",
+          0
+        ],
+        [
+          "bug",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "fighting",
+        "grass",
+        "fire",
+        "water",
+        "normal",
+        "ghost",
+        "dark"
+      ],
+      "se_hits": [
+        "steel",
+        "fighting",
+        "poison",
+        "ground",
+        "rock",
+        "fire",
+        "water",
+        "grass",
+        "ice",
+        "dragon",
+        "fairy"
+      ],
+      "role": "sweeper",
+      "alignment_score": 86,
+      "moves_fetched": true,
+      "source": "sim",
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      }
+    },
+    {
+      "name": "aurorus",
+      "types": [
+        "rock",
+        "ice"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "rest",
+          "type": "psychic",
           "cat": "status",
           "power": 0,
           "acc": 100,
@@ -301,10 +856,20 @@
           "priority": 0
         },
         {
-          "name": "swords-dance",
-          "type": "normal",
+          "name": "reflect",
+          "type": "psychic",
           "cat": "status",
           "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earth-power",
+          "type": "ground",
+          "cat": "special",
+          "power": 90,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -316,6 +881,289 @@
           "cat": "physical",
           "power": 100,
           "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "earth-power",
+          "type": "ground",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "mud-shot",
+          "type": "ground",
+          "cat": "special",
+          "power": 55,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "bulldoze",
+          "type": "ground",
+          "cat": "physical",
+          "power": 60,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "thunder",
+          "type": "electric",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "thunderbolt",
+          "type": "electric",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "psychic",
+          "type": "psychic",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "iron-tail",
+          "type": "steel",
+          "cat": "physical",
+          "power": 100,
+          "acc": 75,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "flash-cannon",
+          "type": "steel",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "iron-head",
+          "type": "steel",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "zen-headbutt",
+          "type": "psychic",
+          "cat": "physical",
+          "power": 80,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
+          "method": "level-up",
+          "level": 66,
+          "priority": 0
+        }
+      ],
+      "coverage_priority": [
+        [
+          "grass",
+          3
+        ],
+        [
+          "fighting",
+          2
+        ],
+        [
+          "flying",
+          2
+        ],
+        [
+          "ground",
+          2
+        ],
+        [
+          "fire",
+          2
+        ],
+        [
+          "water",
+          2
+        ],
+        [
+          "ice",
+          2
+        ],
+        [
+          "poison",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "steel",
+          1
+        ],
+        [
+          "electric",
+          1
+        ],
+        [
+          "psychic",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "rock",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "ground",
+        "electric",
+        "psychic",
+        "steel",
+        "normal"
+      ],
+      "se_hits": [
+        "grass",
+        "fighting",
+        "flying",
+        "ground",
+        "fire",
+        "water",
+        "ice",
+        "poison",
+        "bug",
+        "steel",
+        "electric",
+        "psychic",
+        "fairy"
+      ],
+      "role": "tank",
+      "alignment_score": 77,
+      "moves_fetched": true,
+      "weaknesses": [],
+      "suggested_by_category": {
+        "stab": [],
+        "coverage": [],
+        "utility": [],
+        "buff": []
+      },
+      "source": "sim"
+    },
+    {
+      "name": "garchomp",
+      "types": [
+        "dragon",
+        "ground"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "swords-dance",
+          "type": "normal",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "iron-head",
+          "type": "steel",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "metal-claw",
+          "type": "steel",
+          "cat": "physical",
+          "power": 50,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -353,61 +1201,11 @@
           "priority": 0
         },
         {
-          "name": "rock-slide",
-          "type": "rock",
-          "cat": "physical",
-          "power": 75,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "power-gem",
-          "type": "rock",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "rock-tomb",
-          "type": "rock",
-          "cat": "physical",
-          "power": 60,
-          "acc": 95,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
           "name": "fire-blast",
           "type": "fire",
           "cat": "special",
           "power": 110,
           "acc": 85,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "brick-break",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "poison-jab",
-          "type": "poison",
-          "cat": "physical",
-          "power": 80,
-          "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -423,11 +1221,61 @@
           "priority": 0
         },
         {
+          "name": "rock-slide",
+          "type": "rock",
+          "cat": "physical",
+          "power": 75,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "brick-break",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "power-gem",
+          "type": "rock",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
           "name": "fire-fang",
           "type": "fire",
           "cat": "physical",
           "power": 65,
           "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "rock-tomb",
+          "type": "rock",
+          "cat": "physical",
+          "power": 60,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "poison-jab",
+          "type": "poison",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -552,322 +1400,49 @@
       "source": "autofill"
     },
     {
-      "name": "blastoise",
+      "name": "skarmory",
       "types": [
-        "water"
+        "steel",
+        "flying"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "haze",
-          "type": "ice",
+          "name": "spikes",
+          "type": "ground",
           "cat": "status",
           "power": 0,
           "acc": 100,
-          "method": "machine",
-          "level": 0,
+          "method": "level-up",
+          "level": 44,
           "priority": 0
         },
         {
-          "name": "blizzard",
-          "type": "ice",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "ice-beam",
-          "type": "ice",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "earthquake",
-          "type": "ground",
-          "cat": "physical",
-          "power": 100,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "blizzard",
-          "type": "ice",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "ice-beam",
-          "type": "ice",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "earthquake",
-          "type": "ground",
-          "cat": "physical",
-          "power": 100,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dig",
+          "name": "drill-run",
           "type": "ground",
           "cat": "physical",
           "power": 80,
-          "acc": 100,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "ice-spinner",
-          "type": "ice",
+          "name": "sand-tomb",
+          "type": "ground",
           "cat": "physical",
-          "power": 80,
-          "acc": 100,
+          "power": 35,
+          "acc": 85,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "ice-punch",
-          "type": "ice",
+          "name": "rock-slide",
+          "type": "rock",
           "cat": "physical",
           "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "mud-shot",
-          "type": "ground",
-          "cat": "special",
-          "power": 55,
-          "acc": 95,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "icy-wind",
-          "type": "ice",
-          "cat": "special",
-          "power": 55,
-          "acc": 95,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "avalanche",
-          "type": "ice",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -4
-        },
-        {
-          "name": "hyper-beam",
-          "type": "normal",
-          "cat": "special",
-          "power": 150,
           "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "giga-impact",
-          "type": "normal",
-          "cat": "physical",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "coverage_priority": [
-        [
-          "flying",
-          1
-        ],
-        [
-          "poison",
-          1
-        ],
-        [
-          "ground",
-          1
-        ],
-        [
-          "bug",
-          1
-        ],
-        [
-          "fire",
-          1
-        ],
-        [
-          "ice",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "fighting",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "fairy",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "move_types": [
-        "ice",
-        "ground",
-        "normal",
-        "fighting"
-      ],
-      "se_hits": [
-        "flying",
-        "poison",
-        "ground",
-        "bug",
-        "fire",
-        "ice"
-      ],
-      "role": "tank",
-      "alignment_score": 70,
-      "moves_fetched": true,
-      "weaknesses": [],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [],
-        "utility": [],
-        "buff": []
-      },
-      "source": "autofill"
-    },
-    {
-      "name": "xerneas",
-      "types": [
-        "fairy"
-      ],
-      "level_cap": null,
-      "suggested_moves": [
-        {
-          "name": "reflect",
-          "type": "psychic",
-          "cat": "status",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "play-rough",
-          "type": "fairy",
-          "cat": "physical",
-          "power": 90,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "close-combat",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 75,
-          "priority": 0
-        },
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -875,101 +1450,21 @@
       ],
       "draft_board": [
         {
-          "name": "close-combat",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 75,
-          "priority": 0
-        },
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "zen-headbutt",
-          "type": "psychic",
+          "name": "drill-run",
+          "type": "ground",
           "cat": "physical",
           "power": 80,
-          "acc": 90,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "psychic",
-          "type": "psychic",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "psyshock",
-          "type": "psychic",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "giga-impact",
-          "type": "normal",
+          "name": "sand-tomb",
+          "type": "ground",
           "cat": "physical",
-          "power": 150,
-          "acc": 90,
-          "method": "level-up",
-          "level": 85,
-          "priority": 0
-        },
-        {
-          "name": "hyper-beam",
-          "type": "normal",
-          "cat": "special",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "megahorn",
-          "type": "bug",
-          "cat": "physical",
-          "power": 120,
+          "power": 35,
           "acc": 85,
-          "method": "level-up",
-          "level": 70,
-          "priority": 0
-        },
-        {
-          "name": "outrage",
-          "type": "dragon",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 80,
-          "priority": 0
-        },
-        {
-          "name": "thunder",
-          "type": "electric",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
           "method": "machine",
           "level": 0,
           "priority": 0
@@ -985,533 +1480,42 @@
           "priority": 0
         },
         {
-          "name": "take-down",
-          "type": "normal",
-          "cat": "physical",
-          "power": 90,
-          "acc": 85,
-          "method": "level-up",
-          "level": 50,
-          "priority": 0
-        }
-      ],
-      "coverage_priority": [
-        [
-          "ground",
-          2
-        ],
-        [
-          "fighting",
-          1
-        ],
-        [
-          "fire",
-          1
-        ],
-        [
-          "psychic",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "bug",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "ice",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "fairy",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "move_types": [
-        "fighting",
-        "psychic",
-        "normal",
-        "bug",
-        "dragon",
-        "electric",
-        "rock"
-      ],
-      "se_hits": [
-        "ground",
-        "fighting",
-        "fire",
-        "psychic"
-      ],
-      "role": "balanced",
-      "alignment_score": 37,
-      "moves_fetched": true,
-      "weaknesses": [],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [],
-        "utility": [],
-        "buff": []
-      },
-      "source": "autofill"
-    },
-    {
-      "name": "kangaskhan",
-      "types": [
-        "normal"
-      ],
-      "level_cap": null,
-      "suggested_moves": [
-        {
-          "name": "rest",
-          "type": "psychic",
-          "cat": "status",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hammer-arm",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 100,
-          "acc": 90,
-          "method": "egg",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "solar-beam",
-          "type": "grass",
-          "cat": "special",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "fire-blast",
-          "type": "fire",
-          "cat": "special",
-          "power": 110,
-          "acc": 85,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "earthquake",
-          "type": "ground",
-          "cat": "physical",
-          "power": 100,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "outrage",
-          "type": "dragon",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 48,
-          "priority": 0
-        },
-        {
-          "name": "hammer-arm",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 100,
-          "acc": 90,
-          "method": "egg",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "solar-beam",
-          "type": "grass",
-          "cat": "special",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "blizzard",
-          "type": "ice",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "fire-blast",
-          "type": "fire",
-          "cat": "special",
-          "power": 110,
-          "acc": 85,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "iron-tail",
-          "type": "steel",
-          "cat": "physical",
-          "power": 100,
-          "acc": 75,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hydro-pump",
-          "type": "water",
-          "cat": "special",
-          "power": 110,
-          "acc": 80,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "thunder",
-          "type": "electric",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dig",
-          "type": "ground",
-          "cat": "physical",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "brick-break",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "coverage_priority": [
-        [
-          "flying",
-          1
-        ],
-        [
-          "psychic",
-          1
-        ],
-        [
-          "fairy",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "fighting",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "bug",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "fire",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "ice",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "move_types": [
-        "fighting",
-        "ground",
-        "dragon",
-        "grass",
-        "ice",
-        "fire",
-        "steel",
-        "water",
-        "electric"
-      ],
-      "se_hits": [
-        "flying",
-        "psychic",
-        "fairy"
-      ],
-      "role": "balanced",
-      "alignment_score": 31,
-      "moves_fetched": true,
-      "weaknesses": [],
-      "suggested_by_category": {
-        "stab": [],
-        "coverage": [],
-        "utility": [],
-        "buff": []
-      },
-      "source": "autofill"
-    },
-    {
-      "name": "mewtwo",
-      "types": [
-        "psychic"
-      ],
-      "level_cap": null,
-      "suggested_moves": [
-        {
-          "name": "future-sight",
-          "type": "psychic",
-          "cat": "special",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 88,
-          "priority": 0
-        },
-        {
-          "name": "double-edge",
-          "type": "normal",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-punch",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 150,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -3
-        },
-        {
-          "name": "hurricane",
-          "type": "flying",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "fire-blast",
-          "type": "fire",
-          "cat": "special",
-          "power": 110,
-          "acc": 85,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-punch",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 150,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -3
-        },
-        {
-          "name": "hurricane",
-          "type": "flying",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "flamethrower",
-          "type": "fire",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "aura-sphere",
-          "type": "fighting",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "level-up",
-          "level": 40,
-          "priority": 0
-        },
-        {
-          "name": "stone-edge",
+          "name": "rock-tomb",
           "type": "rock",
           "cat": "physical",
-          "power": 100,
-          "acc": 80,
+          "power": 60,
+          "acc": 95,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "power-gem",
-          "type": "rock",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "shadow-ball",
-          "type": "ghost",
+          "name": "hyper-beam",
+          "type": "normal",
           "cat": "special",
-          "power": 80,
-          "acc": 100,
+          "power": 150,
+          "acc": 90,
           "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "night-slash",
+          "type": "dark",
+          "cat": "physical",
+          "power": 70,
+          "acc": 100,
+          "method": "egg",
           "level": 0,
           "priority": 0
         },
@@ -1526,20 +1530,40 @@
           "priority": 0
         },
         {
-          "name": "foul-play",
+          "name": "thief",
           "type": "dark",
           "cat": "physical",
-          "power": 95,
+          "power": 60,
           "acc": 100,
           "method": "machine",
           "level": 0,
           "priority": 0
         },
         {
-          "name": "brick-break",
+          "name": "body-press",
           "type": "fighting",
           "cat": "physical",
-          "power": 75,
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0
+        },
+        {
+          "name": "payback",
+          "type": "dark",
+          "cat": "physical",
+          "power": 50,
+          "acc": 100,
+          "method": "level-up",
+          "level": 32,
+          "priority": 0
+        },
+        {
+          "name": "x-scissor",
+          "type": "bug",
+          "cat": "physical",
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
@@ -1548,35 +1572,15 @@
       ],
       "coverage_priority": [
         [
-          "fighting",
-          1
-        ],
-        [
-          "flying",
-          1
+          "ground",
+          2
         ],
         [
           "rock",
           1
         ],
         [
-          "bug",
-          1
-        ],
-        [
-          "ghost",
-          1
-        ],
-        [
-          "fire",
-          1
-        ],
-        [
-          "dark",
-          1
-        ],
-        [
-          "fairy",
+          "water",
           1
         ],
         [
@@ -1584,11 +1588,23 @@
           0
         ],
         [
+          "fighting",
+          0
+        ],
+        [
+          "flying",
+          0
+        ],
+        [
           "poison",
           0
         ],
         [
-          "ground",
+          "bug",
+          0
+        ],
+        [
+          "ghost",
           0
         ],
         [
@@ -1596,7 +1612,7 @@
           0
         ],
         [
-          "water",
+          "fire",
           0
         ],
         [
@@ -1620,30 +1636,33 @@
           0
         ],
         [
+          "dark",
+          0
+        ],
+        [
+          "fairy",
+          0
+        ],
+        [
           "stellar",
           0
         ]
       ],
       "move_types": [
-        "fighting",
-        "fire",
-        "flying",
+        "ground",
         "rock",
-        "ghost",
-        "dark"
+        "normal",
+        "dark",
+        "fighting",
+        "bug"
       ],
       "se_hits": [
-        "fighting",
-        "flying",
+        "ground",
         "rock",
-        "bug",
-        "ghost",
-        "fire",
-        "dark",
-        "fairy"
+        "water"
       ],
-      "role": "sweeper",
-      "alignment_score": 81,
+      "role": "tank",
+      "alignment_score": 62,
       "moves_fetched": true,
       "weaknesses": [],
       "suggested_by_category": {
@@ -1652,7 +1671,7 @@
         "utility": [],
         "buff": []
       },
-      "source": "autofill"
+      "source": "sim"
     }
   ],
   "role_move_mix": {
@@ -1660,5 +1679,201 @@
     "tank": "Prefers defensive moves, status effects, and moves that allow it to pivot or absorb damage.",
     "balanced": "Prefers a balanced mix of STAB, coverage, and utility tuned to the team."
   },
-  "metrics": {}
+  "metrics": {
+    "scores": {
+      "defense": 47,
+      "offense": 100,
+      "delta": 0,
+      "delta_headroom": 100,
+      "offensive_delta": 0,
+      "shared": 47,
+      "overall": 84.93333333333334,
+      "perfect_text": "Perfect team: no net weaknesses (resist/immune >= weak for every attack type) AND offensive coverage can hit every type at least neutral, ideally super-effective.",
+      "weak": 17.75,
+      "resist": 31,
+      "immune": 6,
+      "net_exposed": 1,
+      "move_types": [
+        "dark",
+        "dragon",
+        "fighting",
+        "fire",
+        "grass",
+        "ground",
+        "ice",
+        "normal",
+        "psychic",
+        "rock",
+        "steel"
+      ],
+      "best_defensive_delta": 0,
+      "best_offense_gap": 0,
+      "coverage_offense": 100,
+      "headroom_offense": 100,
+      "stack_overlap": 4.25,
+      "stat_total": 2816,
+      "role_penalty": 1.0,
+      "bst_penalty": 5.066666666666668
+    },
+    "exposures": [
+      {
+        "attack": "ghost",
+        "weak": 1.0,
+        "resist": 0,
+        "immune": 0,
+        "neutral": 5,
+        "size": 6
+      }
+    ],
+    "role_counts": {
+      "tank": 4,
+      "sweeper": 1,
+      "balanced": 1
+    },
+    "upgrades": [
+      "\u001b[36mOverall aurorus: 90/100 (uplift +10; def 47, off 100, shared 47, delta 0; align 77, bst 521)\u001b[0m",
+      "\u001b[36mOverall diggersby: 89/100 (uplift +8; def 55, off 100, shared 31, delta 4.0; align 55, bst 423)\u001b[0m",
+      "\u001b[36mOverall onix: 88/100 (uplift +8; def 39, off 100, shared 24, delta 5.0; align 71, bst 385)\u001b[0m"
+    ],
+    "team": [
+      {
+        "name": "slowpoke-galar",
+        "role": "tank",
+        "alignment_score": 63,
+        "move_types": [
+          "dark",
+          "fire",
+          "ghost",
+          "ground",
+          "ice",
+          "water",
+          "poison"
+        ],
+        "se_hits": [
+          "fighting",
+          "flying",
+          "rock",
+          "bug",
+          "ghost",
+          "fire",
+          "dark",
+          "fairy"
+        ]
+      },
+      {
+        "name": "mawile",
+        "role": "tank",
+        "alignment_score": 55,
+        "move_types": [
+          "grass",
+          "rock",
+          "ice",
+          "normal",
+          "dark"
+        ],
+        "se_hits": [
+          "water",
+          "ground",
+          "rock",
+          "grass",
+          "ice"
+        ]
+      },
+      {
+        "name": "noivern",
+        "role": "sweeper",
+        "alignment_score": 86,
+        "move_types": [
+          "fighting",
+          "grass",
+          "fire",
+          "water",
+          "normal",
+          "ghost",
+          "dark"
+        ],
+        "se_hits": [
+          "steel",
+          "fighting",
+          "poison",
+          "ground",
+          "rock",
+          "fire",
+          "water",
+          "grass",
+          "ice",
+          "dragon",
+          "fairy"
+        ]
+      },
+      {
+        "name": "aurorus",
+        "role": "tank",
+        "alignment_score": 77,
+        "move_types": [
+          "ground",
+          "electric",
+          "psychic",
+          "steel",
+          "normal"
+        ],
+        "se_hits": [
+          "grass",
+          "fighting",
+          "flying",
+          "ground",
+          "fire",
+          "water",
+          "ice",
+          "poison",
+          "bug",
+          "steel",
+          "electric",
+          "psychic",
+          "fairy"
+        ]
+      },
+      {
+        "name": "garchomp",
+        "role": "balanced",
+        "alignment_score": 40,
+        "move_types": [
+          "steel",
+          "rock",
+          "fire",
+          "fighting",
+          "poison",
+          "normal"
+        ],
+        "se_hits": [
+          "steel",
+          "fighting",
+          "poison",
+          "rock",
+          "fire",
+          "ice",
+          "dragon",
+          "fairy"
+        ]
+      },
+      {
+        "name": "skarmory",
+        "role": "tank",
+        "alignment_score": 62,
+        "move_types": [
+          "ground",
+          "rock",
+          "normal",
+          "dark",
+          "fighting",
+          "bug"
+        ],
+        "se_hits": [
+          "ground",
+          "rock",
+          "water"
+        ]
+      }
+    ]
+  }
 }

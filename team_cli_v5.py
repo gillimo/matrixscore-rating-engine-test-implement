@@ -5,6 +5,7 @@ Combined CLI: build team typings first, then suggest moves, then launch Tk wheel
 """
 import json
 from collections import defaultdict
+import re
 import inspect
 import os
 import subprocess
@@ -42,6 +43,16 @@ TRACE_FUNCTIONS = False  # tracing disabled by default; enable for detailed logs
 HARNESS_SMOKE = os.environ.get("TEAM_HARNESS_SMOKE", "0") == "1" or "--harness-smoke" in sys.argv
 TYPE_CACHE_STATS = {"hit": 0, "miss": 0}
 WHEEL_LAUNCHED = False  # prevent multiple Tk launches per run
+REGIONAL_PREFIXES = {
+    "galarian": "galar",
+    "galar": "galar",
+    "alolan": "alola",
+    "alola": "alola",
+    "hisuian": "hisui",
+    "hisui": "hisui",
+    "paldean": "paldea",
+    "paldea": "paldea",
+}
 ZA_POKEDEX = [
     "chikorita","bayleef","meganium",
     "tepig","pignite","emboar",
@@ -99,7 +110,7 @@ ZA_POKEDEX = [
     "mawile",
     "absol",
     "riolu","lucario",
-    "slowpoke","slowbro","slowking",
+    "slowpoke","slowpoke-galar","slowbro","slowking",
     "carvanha","sharpedo",
     "tynamo","eelektrik","eelektross",
     "dratini","dragonair","dragonite",
@@ -340,7 +351,7 @@ def fetch_type_chart():
 
 
 def fetch_pokemon_typing(name: str):
-    key = name.lower()
+    key = normalize_pokemon_name(name)
     if key in POKEMON_CACHE:
         POKEMON_CACHE["__hits__"] = POKEMON_CACHE.get("__hits__", 0) + 1
     else:
@@ -354,7 +365,7 @@ def fetch_pokemon_typing(name: str):
 
 
 def pokemon_base_stat_total(name: str):
-    key = (name or "").lower()
+    key = normalize_pokemon_name(name)
     if not key:
         return 0
     try:
@@ -371,7 +382,7 @@ def pokemon_base_stat_total(name: str):
 
 def pokemon_offense_stat_total(name: str):
     """Return offensive stat total (Atk + SpA) for use in offense scoring/sorting."""
-    key = (name or "").lower()
+    key = normalize_pokemon_name(name)
     if not key:
         return 0
     try:
@@ -393,7 +404,7 @@ def pokemon_offense_stat_total(name: str):
 
 def pokemon_defense_stat_total(name: str):
     """Return defensive stat total (Def + SpD) for use in defense scoring/sorting."""
-    key = (name or "").lower()
+    key = normalize_pokemon_name(name)
     if not key:
         return 0
     try:
@@ -574,7 +585,8 @@ def fetch_single_type_candidates(t, current_team=None, version_group: str = VERS
     return [n for _, n in valid_candidates]  # Return all names, highest stats first
 
 def fetch_species_info(name: str):
-    res = requests.get(f"{POKEAPI_BASE}/pokemon-species/{name.lower()}", timeout=15)
+    key = normalize_pokemon_name(name)
+    res = requests.get(f"{POKEAPI_BASE}/pokemon-species/{key}", timeout=15)
     res.raise_for_status()
     return res.json()
 
@@ -732,6 +744,30 @@ def typing_score(cov):
         + 3.5 * exposed_immunes  # extra credit for blanking largest holes
         - 12 * net_exposed
         - 14 * stack_overlap  # heavier penalty for stacking existing weaknesses
+    )
+    return max(0, min(100, int(def_score)))
+
+
+def typing_score_display(cov):
+    total_weak = sum(c["weak"] for c in cov)
+    total_resist = sum(c["resist"] for c in cov)
+    total_immune = sum(c["immune"] for c in cov)
+    net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
+    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+    top_exposed = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    exposed_immunes = sum(c["immune"] for c in top_exposed)
+    covered_stack = sum(
+        max(0, (c["resist"] + c["immune"]) - c["weak"]) for c in cov if c["weak"] > 1
+    )
+    def_score = (
+        100
+        - 2.1 * total_weak
+        + 1.8 * total_resist
+        + 3.0 * total_immune
+        + 4.0 * exposed_immunes
+        + 3.0 * covered_stack
+        - 16 * net_exposed
+        - 6 * stack_overlap
     )
     return max(0, min(100, int(def_score)))
 
@@ -930,7 +966,7 @@ def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
     }
 
 
-def pick_defensive_addition(team, chart, attack_types):
+def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
     """Select the best defensive typing and return its strongest defensive candidate."""
     best = get_best_defensive_candidates(team, chart, attack_types)
     if not best or not best["candidates"]:
@@ -938,7 +974,8 @@ def pick_defensive_addition(team, chart, attack_types):
 
     choices = best.get("choices") or [best]
     labels = [c["label"] for c in choices]
-    print(f"\033[32m[Best Defensive Delta] {best['delta']:+.0f} via {', '.join(labels)}\033[0m")
+    if not silent:
+        print(f"\033[32m[Best Defensive Delta] {best['delta']:+.0f} via {', '.join(labels)}\033[0m")
 
     def stat_key(name):
         return pokemon_defense_stat_total(name)
@@ -961,7 +998,7 @@ def pick_defensive_addition(team, chart, attack_types):
     )
 
 
-def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclude=None, prefer_alignment=False):
+def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclude=None, prefer_alignment=False, silent: bool = False):
     """Pick the best offensive addition within the best defensive typing pool."""
     if defense_choice is None:
         defense_choice = get_best_defensive_candidates(team, chart, attack_types, exclude=exclude)
@@ -1105,7 +1142,7 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
             return None
         # fall back to best defensive pick only when it has positive delta
         if defense_choice.get("delta", 0) > 0:
-            def_fallback = pick_defensive_addition(team, chart, attack_types)
+            def_fallback = pick_defensive_addition(team, chart, attack_types, silent=silent)
             return def_fallback
         return None
 
@@ -1430,6 +1467,127 @@ def suggestion_buckets(team, cov, chart, attack_types):
 
         return lines, best_defensive_delta_available
 
+
+def _preview_autopick(team, chart, attack_types):
+    defense_choice = get_best_defensive_candidates(team, chart, attack_types)
+    if not defense_choice:
+        return None
+    pick = pick_offense_addition(
+        team,
+        chart,
+        attack_types,
+        defense_choice=defense_choice,
+        silent=True,
+    )
+    if not pick and defense_choice.get("delta", 0) > 0:
+        pick = pick_defensive_addition(team, chart, attack_types, silent=True)
+    return pick
+
+
+def _top_defensive_typings(team, chart, attack_types, top_n: int = 5):
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_score = typing_score(base_cov)
+    entries = []
+    for t in attack_types:
+        delta, _, _ = typing_delta(team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score)
+        if delta > 0:
+            entries.append((delta, [t]))
+    for i in range(len(attack_types)):
+        for j in range(i + 1, len(attack_types)):
+            pair = [attack_types[i], attack_types[j]]
+            delta, _, _ = typing_delta(team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score)
+            if delta > 0:
+                entries.append((delta, pair))
+    entries.sort(key=lambda x: (-x[0], x[1]))
+    results = []
+    for delta, types in entries:
+        if len(types) == 1:
+            opts = fetch_single_type_candidates(
+                types[0],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            label = types[0]
+        else:
+            opts = fetch_dual_candidates(
+                types[0],
+                types[1],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            label = f"{types[0]} + {types[1]}"
+        if opts:
+            results.append((delta, label, opts))
+        if len(results) >= top_n:
+            break
+    return results
+
+
+def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
+    if not team:
+        return "Add at least one Pokemon to see defense-focused suggestions."
+    lines = []
+    def _clean_reason(text: str) -> str:
+        return re.sub(r"\x1b\[[0-9;]*m", "", text or "").strip()
+
+    pick = _preview_autopick(team, chart, attack_types)
+    if pick:
+        score_tuple, _label, pname, ptypes, _loser_name, _loser_bst, _reason = pick
+        def_gain = score_tuple[1] if score_tuple else 0
+        type_text = "/".join(ptypes) if ptypes else "unknown"
+        lines.append(f"\033[96mAutopick next (if you type 'finalize'): {pname} ({type_text}) - defense delta {def_gain:+.0f}\033[0m")
+        reason = _clean_reason(_reason)
+        if reason:
+            lines.append(f"\033[96mWhy: {reason}\033[0m")
+        cov = compute_coverage(team, chart, attack_types)
+        exposure_gap = lambda c: c["weak"] - (c["resist"] + c["immune"])
+        top_needs = [c for c in cov if exposure_gap(c) > 0]
+        top_needs.sort(key=lambda c: exposure_gap(c), reverse=True)
+        stab_text = type_text if type_text != "unknown" else "STAB aligned to role"
+        lines.append("\033[96mMove build blueprint:\033[0m")
+        lines.append(f"\033[96m - STAB: Use {stab_text} aligned to role\033[0m")
+        if top_needs:
+            need = top_needs[0]
+            lines.append(f"\033[96m - Coverage: Cover {need['attack']} (team need {exposure_gap(need):.1f})\033[0m")
+        if len(top_needs) > 1:
+            need = top_needs[1]
+            lines.append(f"\033[96m - Coverage: Cover {need['attack']} (team need {exposure_gap(need):.1f})\033[0m")
+        lines.append("\033[96m - Coverage: Cover any remaining exposure or high-SE type\033[0m")
+        lines.append("\033[96m - Utility: Screen/heal/hazard or status control (per role)\033[0m")
+        try:
+            cached = cache_draft_board(pname)
+            _populate_move_data(cached["info"], cached_entry=cached)
+            moves = cached["info"].get("suggested_moves") or []
+            if not moves and cached["info"].get("draft_board"):
+                moves = cached["info"]["draft_board"]
+            move_names = [m["name"] for m in moves[:4] if m.get("name")]
+            if move_names:
+                lines.append(f"\033[96mSuggested moves: {', '.join(move_names)}\033[0m")
+        except Exception:
+            pass
+    else:
+        lines.append("\033[96mAutopick next (if you type 'finalize'): none (no positive defensive options)\033[0m")
+
+    top = _top_defensive_typings(team, chart, attack_types, top_n=top_n)
+    if not top:
+        lines.append("Top defensive typings: none (no positive deltas).")
+        return "\n".join(lines)
+
+    lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
+    for idx, (delta, label, opts) in enumerate(top, start=1):
+        preview = ", ".join(opts[:preview_limit])
+        if len(opts) > preview_limit:
+            preview = f"{preview}, +{len(opts) - preview_limit} more"
+        lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
+    return "\n".join(lines)
+
+
 def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     # Pre-cache draft boards for current team to avoid re-fetching later and surface offense hints early
     for member in team:
@@ -1468,7 +1626,8 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     total_immune = sum(c["immune"] for c in cov)
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
-    def_score = typing_score(cov)
+    def_score_raw = typing_score(cov)
+    def_score = typing_score_display(cov)
 
     # Rating: 100 when no positive delta; otherwise 100 minus the highest positive delta.
     rating_score = max(0, min(100, 100 - best_defensive_delta_available))
@@ -1543,6 +1702,17 @@ def parse_name_level(raw):
     name_tokens = [t for t in tokens if not t.isdigit()]
     name = " ".join(name_tokens).strip()
     return name, level_cap
+
+
+def normalize_pokemon_name(raw: str) -> str:
+    if not raw:
+        return ""
+    name = " ".join(raw.strip().lower().split())
+    parts = name.split(" ", 1)
+    if len(parts) == 2 and parts[0] in REGIONAL_PREFIXES:
+        base = parts[1].replace(" ", "-")
+        return f"{base}-{REGIONAL_PREFIXES[parts[0]]}"
+    return name.replace(" ", "-")
 
 
 def launch_wheel(team_data, wheel_path, metrics=None):
@@ -1789,7 +1959,7 @@ def predict_overall(team, team_infos, chart, attack_types):
         chart,
         attack_types,
     )
-    def_score = typing_score(cov)
+    def_score = typing_score_display(cov)
     shared_score = shared_weak_score(cov)
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     best_defensive_delta = compute_best_defensive_delta(
@@ -1800,7 +1970,7 @@ def predict_overall(team, team_infos, chart, attack_types):
     off_score = offense_score_with_bonuses(team_infos, cov, chart, attack_types)
     best_offense_gap = compute_best_offense_gain(team, chart, attack_types)
     # If defense or offense already scored perfect, treat delta as closed to avoid perpetual small headroom.
-    if def_score == 100:
+    if def_score_raw == 100:
         best_defensive_delta = 0
     if off_score == 100:
         best_offense_gap = 0
@@ -2263,7 +2433,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
     total_resist = sum(c["resist"] for c in cov)
     total_immune = sum(c["immune"] for c in cov)
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    def_score = typing_score(cov)
+    def_score = typing_score_display(cov)
 
     shared_score = shared_weak_score(cov)
 
@@ -2461,6 +2631,7 @@ def _populate_move_data(
     # Populate info dictionary with results from pick_moves
     info["suggested_moves"] = move_info.get("suggested_moves", [])
     info["draft_board"] = move_info.get("draft_board", [])
+    info["suggested_by_category"] = move_info.get("suggested_by_category", {})
     info["coverage_priority"] = move_info.get("coverage_priority", [])
     seen_types = []
     seen_types_set = set()
@@ -2567,7 +2738,7 @@ def main():
 
             builtins.input = demo_input
 
-        print("Team builder + move suggester. Commands: 'next' to move to moves, 'done' to finish, 'drop <name>' to remove, 'finalize' to auto-fill and continue.")
+        print("Team builder. Type a Pokemon name to add it. Commands: 'next' to continue, 'drop <name>' to remove, 'finalize' to auto-fill.")
 
         def do_finalize():
             nonlocal team
@@ -2582,8 +2753,7 @@ def main():
                             f"\033[32mAdded {name} via {label} "
                             f"(shared {shared_gain:+.0f}, def {def_gain:+.0f}, overall {overall_gain:+.0f})\033[0m"
                         )
-                    report, cov = coverage_report(team, chart, attack_types, show_suggestions=False)
-                    print(report)
+                    print(defense_focus_report(team, chart, attack_types))
                 else:
                     print("No positive additions available to auto-fill.")
             # Optional drop/replace loop before moves
@@ -2622,15 +2792,14 @@ def main():
             return True
 
         while True:
-            raw = input("Add Pokemon (name [level]) or 'next' to move to moves: ").strip()
+            raw = input("Add Pokemon name or type 'next': ").strip()
             if not raw:
                 continue
             if raw.lower() == "next":
                 # If we have a full team, show checkpoint summary
                 if team:
-                    report, cov = coverage_report(team, chart, attack_types, show_suggestions=True)
-                    print("\n=== Typing checkpoint ===")
-                    print(report)
+                    print("\n=== Defense checkpoint ===")
+                    print(defense_focus_report(team, chart, attack_types))
                 break
             if raw.lower() == "finalize":
                 if do_finalize():
@@ -2640,7 +2809,7 @@ def main():
             if raw.lower().startswith("drop"):
                 parts = raw.split()
                 if len(parts) >= 2:
-                    drop_name = parts[1].lower()
+                    drop_name = normalize_pokemon_name(parts[1])
                     team = [m for m in team if m["name"] != drop_name]
                     print(f"Dropped {drop_name}")
                 continue
@@ -2657,6 +2826,7 @@ def main():
                 filtered_tokens.append(tok)
             raw_filtered = " ".join(filtered_tokens)
             name, level_cap = parse_name_level(raw_filtered)
+            name = normalize_pokemon_name(name)
             if not name:
                 print("Provide a Pokemon name.")
                 continue
@@ -2677,8 +2847,7 @@ def main():
             except Exception as exc:
                 if VERBOSE:
                     print(f"Draft cache failed for {name}: {exc}")
-            report, cov = coverage_report(team, chart, attack_types, show_suggestions=True)
-            print(report)
+            print(defense_focus_report(team, chart, attack_types))
             if len(team) >= 6:
                 print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
             if finalize_after_add:
@@ -2696,16 +2865,15 @@ def main():
                         f"\033[32mAdded {name} via {label} "
                         f"(shared {shared_gain:+.0f}, def {def_gain:+.0f}, overall {overall_gain:+.0f})\033[0m"
                     )
-                report, cov = coverage_report(team, chart, attack_types, show_suggestions=False)
-                print(report)
+                print(defense_focus_report(team, chart, attack_types))
             else:
                 print("Auto-fill skipped: no positive additions available.")
 
         # Move suggestion phase
         if team:
-            print("\n=== Before moves: defensive improvement check ===")
-            print(best_defensive_improvement(team, chart, attack_types))
-        print("\n=== Typing locked in. Proceeding to move suggestions ===")
+            print("\n=== Defense checkpoint ===")
+            print(defense_focus_report(team, chart, attack_types))
+        print("\n=== Typing locked. Moving to move suggestions ===")
         # Collect boards for draft
         boards = []
         global TOTAL_POKEMON_FOR_MOVE_FETCH, POKEMON_MOVES_FETCHED
@@ -2765,33 +2933,70 @@ def main():
             print(f"\nBuilding draft board for {name}...") # Moved print after potential fetch.
             boards.append(info)
 
-        # Draft: up to 4 moves per mon, prefer role-based suggested moves; avoid duplicates when possible
-        assigned = {info["name"]: [] for info in boards}
-        for info in boards:
+        # Formal draft: round-robin, role-priority picks, no overlap across team
+        def _push_unique(queue, mv, seen):
+            name = (mv or {}).get("name")
+            if not name or name in seen:
+                return
+            queue.append(mv)
+            seen.add(name)
+
+        def _build_draft_queue(info):
+            role = (info.get("role") or "balanced").lower()
             suggested = info.get("suggested_moves") or []
-            # Take top 4 suggested moves first, avoid duplicates per mon only
+            by_cat = info.get("suggested_by_category") or {}
+            stab = by_cat.get("stab", [])
+            cov = by_cat.get("coverage", [])
+            util = by_cat.get("utility", [])
+            queue = []
+            seen = set()
+            if role == "sweeper":
+                if stab:
+                    _push_unique(queue, stab[0], seen)
+                if cov:
+                    _push_unique(queue, cov[0], seen)
+            elif role == "tank":
+                if util:
+                    _push_unique(queue, util[0], seen)
+                    if len(util) > 1:
+                        _push_unique(queue, util[1], seen)
+                if cov:
+                    _push_unique(queue, cov[0], seen)
+                if stab:
+                    _push_unique(queue, stab[0], seen)
+            else:  # balanced
+                if util:
+                    _push_unique(queue, util[0], seen)
+                if stab:
+                    _push_unique(queue, stab[0], seen)
+                if cov:
+                    _push_unique(queue, cov[0], seen)
             for mv in suggested:
-                if len(assigned[info["name"]]) >= 4:
+                _push_unique(queue, mv, seen)
+            for mv in info.get("draft_board", []):
+                _push_unique(queue, mv, seen)
+            return queue
+
+        assigned = {info["name"]: [] for info in boards}
+        draft_queues = {info["name"]: _build_draft_queue(info) for info in boards}
+        for _round in range(4):
+            for info in boards:
+                picks = assigned[info["name"]]
+                if len(picks) >= 4:
+                    continue
+                queue = draft_queues.get(info["name"], [])
+                for mv in queue:
+                    mv_name = mv.get("name")
+                    if not mv_name or mv_name in global_exclude or mv_name in global_used:
+                        continue
+                    if mv_name in [m.get("name") for m in picks]:
+                        continue
+                    picks.append(mv)
+                    global_used.add(mv_name)
                     break
-                if mv.get("name") in global_used or mv.get("name") in global_exclude:
-                    continue
-                if mv.get("name") in [m.get("name") for m in assigned[info["name"]]]:
-                    continue
-                assigned[info["name"]].append(mv)
-                if mv.get("name"):
-                    global_used.add(mv["name"])
-            # If still short, pull from draft_board
-            if len(assigned[info["name"]]) < 4:
-                for mv in info.get("draft_board", []):
-                    if len(assigned[info["name"]]) >= 4:
-                        break
-                    if mv["name"] in global_used or mv["name"] in global_exclude:
-                        continue
-                    if mv["name"] in [m.get("name") for m in assigned[info["name"]]]:
-                        continue
-                    assigned[info["name"]].append(mv)
-                    global_used.add(mv["name"])
-            # If still empty, synthesize one move to avoid none
+
+        # If still empty, synthesize one move to avoid none
+        for info in boards:
             if not assigned[info["name"]]:
                 fallback_type = (info.get("move_types") or (info.get("types") or ["normal"]))[0]
                 fallback_move = {"name": f"{fallback_type}-coverage", "type": fallback_type}
