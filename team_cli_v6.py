@@ -2277,11 +2277,8 @@ def shared_weak_score(cov):
         return 100
     max_weak = max(c["weak"] for c in cov)
     overlap = max(0, max_weak - 1)
-    stack = sum(max(0, c["weak"] - 1) for c in cov)
-    if stack == 1:
-        stack = 0
     exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    score = 100 - (overlap * 12) - (stack * 4) - (exposed * 6)
+    score = 100 - (overlap * 12) - (exposed * 6)
     return max(0, min(100, int(score)))
 
 
@@ -3519,7 +3516,7 @@ def main():
                 f" - Delta headroom: {scores['delta_headroom']}/100 "
                 f"(best remaining delta {scores['delta']:+.0f})"
             )
-            print(f" - Stack overlap: {scores.get('stack_overlap', 0)} (penalty applied in overall)")
+            print(f" - Stack overlap: {scores.get('stack_overlap', 0)} (informational)")
             print(f" - Overall: {scores['overall']}/100")
             if scores.get("role_penalty"):
                 print(f" - Role balance penalty applied: -{scores['role_penalty']:.1f}")
