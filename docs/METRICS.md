@@ -44,6 +44,14 @@ Offense score (offense_score_with_bonuses)
   - `se_ratio = se_types / total_types`
   - `breadth_bonus = min(10, 5*neutral_ratio + 6*se_ratio)`
 
+Offensive delta headroom (compute_best_offense_gain)
+- Base gain: `sim_offense - base_offense` using the offense score above.
+- Gain factor: `(1 + 1.0*closed_weak) * (1 + 0.25*len(new_types))`
+- BST factor: `bst_factor = clamp(0.8, 1.3, 0.7 + offense_stat_total/450)`
+- SE factor: `se_factor = 1.0 + 0.05*min(6, len(se_types))`
+- Ranked gain: `gain * gain_factor * bst_factor * se_factor * coverage_penalty`
+- Coverage penalty: `0.85` when neutral reach is near-complete but SE coverage is thin; else `1.0`.
+
 Overall score (overall_score)
 - `delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)`
 - `shared_penalty = max(0, 100 - shared_score) * 0.15`

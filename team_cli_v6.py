@@ -2208,10 +2208,10 @@ def compute_best_offense_gain(team, chart, attack_types):
                 elif base_exposed and sc["weak"] < base_c["weak"]:
                     closed_weak += 0.5
             new_types = move_types - base_move_types
-            gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
+            gain_factor = (1 + 1.0 * closed_weak) * (1 + 0.25 * len(new_types))
             stat_total = pokemon_offense_stat_total(pname)
-            bst_factor = max(0.75, min(1.45, 0.65 + stat_total / 350.0))
-            se_factor = 1.0 + 0.08 * min(6, len(se_types))
+            bst_factor = max(0.8, min(1.3, 0.7 + stat_total / 450.0))
+            se_factor = 1.0 + 0.05 * min(6, len(se_types))
             coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
             ranked_gain = gain * gain_factor * bst_factor * se_factor * coverage_penalty
             if ranked_gain > best_gain:
