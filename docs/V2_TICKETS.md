@@ -117,6 +117,9 @@ Open feature tickets
 - **FT-2025-12-28-038 | Autopick delta/explanation alignment (Completed)**  
   Use `typing_delta` in defensive candidate selection and fix autopick offense loop so explanations match the formula and top defensive typings.
 
+- **FT-2025-12-28-039 | Perfect team line only when perfect (Completed)**  
+  Print the "Perfect team" definition in gold only when the team meets perfect criteria.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

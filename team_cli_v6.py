@@ -2819,8 +2819,11 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         except Exception:
             continue
 
-    # Perfect team definition string
-    perfect_def = "Perfect team: no net weaknesses (resist/immune >= weak for every attack type) AND offensive coverage can hit every type at least neutral, ideally super-effective."
+    # Perfect team definition string (only shown when perfect)
+    perfect_def = (
+        "Perfect team: no net weaknesses (resist/immune >= weak for every attack type) "
+        "AND offensive coverage can hit every type at least neutral, ideally super-effective."
+    )
 
     best_defensive_delta = compute_best_defensive_delta(
         [{"name": i["name"], "types": i["types"], "source": "final"} for i in team_infos],
@@ -2866,6 +2869,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         bst_penalty = min(10.0, (520 - avg_bst) / 10.0)  # up to -10 when very low
         overall = max(0, min(100, overall - bst_penalty))
 
+    perfect_team = net_exposed == 0 and coverage_off == 100
     scores = {
         "defense": def_score,
         "offense": off_score,
@@ -2874,7 +2878,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         "offensive_delta": offensive_delta,
         "shared": shared_score,
         "overall": overall,
-        "perfect_text": perfect_def,
+        "perfect_text": perfect_def if perfect_team else "",
         "weak": total_weak,
         "resist": total_resist,
         "immune": total_immune,
@@ -2889,8 +2893,10 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         "role_penalty": role_penalty,
         "bst_penalty": bst_penalty,
     }
-    summary = [
-        perfect_def,
+    summary = []
+    if perfect_team:
+        summary.append(f"\033[33m{perfect_def}\033[0m")
+    summary.extend([
         f"Defensive score: {def_score}/100 (weak {total_weak}, resist {total_resist}, immune {total_immune}, net exposed types {net_exposed})",
         f"Offensive score: {off_score}/100 (coverage {coverage_off:.0f}, headroom {headroom_off:.0f}; best remaining offensive gain {best_offense_gap:+.0f}; move types: {', '.join(sorted(move_types)) if move_types else 'none'})",
         f"Shared-weakness score: {shared_score}/100 (penalizes overlapping weaknesses)",
@@ -2898,7 +2904,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         f"Offensive Delta (headroom): {100 - offensive_delta}/100 (best remaining offensive delta {offensive_delta:+.0f})",
         f"Overall team rating: {overall}/100",
         f"Team base stats total: {stat_total}",
-    ]
+    ])
     return "\n".join(summary), scores
 
 
