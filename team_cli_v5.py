@@ -409,7 +409,28 @@ def fetch_pokemon_typing(name: str):
 def pokemon_base_stat_total(name: str):
     key = normalize_pokemon_name(name)
     if not key:
+    return 0
+
+
+def pokemon_speed_stat(name: str):
+    """Return base Speed stat for a Pokemon (0 on failure)."""
+    key = (name or "").lower()
+    if not key:
         return 0
+    try:
+        if key not in POKEMON_CACHE:
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res.raise_for_status()
+            POKEMON_CACHE[key] = res.json()
+        data = POKEMON_CACHE.get(key) or {}
+        stats = data.get("stats") or []
+        for s in stats:
+            stat_name = (s.get("stat") or {}).get("name", "")
+            if stat_name == "speed":
+                return s.get("base_stat", 0)
+    except Exception:
+        return 0
+    return 0
     try:
         if key not in POKEMON_CACHE:
             res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
@@ -1745,35 +1766,20 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
             label = f"{combo[0]} + {combo[1]}"
         if not opts:
             continue
+        # Speed-first candidate selection for this typing pool.
+        fastest = max(opts, key=pokemon_speed_stat)
+        try:
+            ptypes = fetch_pokemon_typing(fastest)
+        except Exception:
+            ptypes = combo
+        speed = pokemon_speed_stat(fastest)
         delta, _sim_score, _base = typing_delta(
             team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
         )
-        defense_choice = {
-            "delta": delta,
-            "label": label,
-            "types": combo,
-            "candidates": opts,
-            "choices": [{"delta": delta, "label": label, "types": combo, "candidates": opts}],
-        }
-        pick = pick_offense_addition(
-            team,
-            chart,
-            attack_types,
-            defense_choice=defense_choice,
-            silent=True,
-        )
-        if pick:
-            score_tuple, _label, pname, ptypes, _loser_name, _loser_bst, _reason = pick
-            def_gain = score_tuple[1] if score_tuple else delta
-            off_gain = score_tuple[2] if score_tuple else 0.0
-            score = (off_gain, def_gain)
-        else:
-            pname = max(opts, key=pokemon_defense_stat_total)
-            ptypes = combo
-            def_gain = delta
-            off_gain = 0.0
-            score = (off_gain, def_gain)
-        scored.append((score, pname, ptypes, def_gain, off_gain))
+        # Use speed as primary ranking, then defensive delta.
+        def_gain = delta
+        off_gain = 0.0
+        scored.append(((speed, def_gain), fastest, ptypes, def_gain, off_gain))
     scored.sort(key=lambda x: (x[0][0], x[0][1]), reverse=True)
     return scored[:limit]
 
