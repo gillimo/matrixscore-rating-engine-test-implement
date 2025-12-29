@@ -1482,7 +1482,7 @@ def _preview_autopick(team, chart, attack_types):
         best_label = None
         best_opts = None
         best_types = None
-        for score, label, _preview, opts in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
+        for score, label, _preview, opts, _note in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
             if not opts:
                 continue
             if "+" in label:
@@ -1596,6 +1596,11 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
         sim_cov = compute_coverage(team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types)
         if not _is_safe_typing(base_cov_map, sim_cov):
             continue
+        added_weak = []
+        for sc in sim_cov:
+            bc = base_cov_map.get(sc["attack"], {"weak": 0})
+            if sc["weak"] > bc["weak"]:
+                added_weak.append(sc["attack"])
         _delta, sim_score, _base = typing_delta(
             team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score
         )
@@ -1608,7 +1613,8 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             stat_sort_key="defense",
         )
         if opts:
-            entries.append((sim_score, t, opts))
+            note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
+            entries.append((sim_score, t, opts, note))
     for i in range(len(attack_types)):
         for j in range(i + 1, len(attack_types)):
             pair = [attack_types[i], attack_types[j]]
@@ -1617,6 +1623,11 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             )
             if not _is_safe_typing(base_cov_map, sim_cov):
                 continue
+            added_weak = []
+            for sc in sim_cov:
+                bc = base_cov_map.get(sc["attack"], {"weak": 0})
+                if sc["weak"] > bc["weak"]:
+                    added_weak.append(sc["attack"])
             _delta, sim_score, _base = typing_delta(
                 team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score
             )
@@ -1631,14 +1642,15 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             )
             if opts:
                 label = f"{pair[0]} + {pair[1]}"
-                entries.append((sim_score, label, opts))
+                note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
+                entries.append((sim_score, label, opts, note))
     entries.sort(key=lambda x: (-x[0], x[1]))
     results = []
-    for score, label, opts in entries:
+    for score, label, opts, note in entries:
         preview = ", ".join(opts[:preview_limit])
         if len(opts) > preview_limit:
             preview = f"{preview}, +{len(opts) - preview_limit} more"
-        results.append((score, label, preview, opts))
+        results.append((score, label, preview, opts, note))
     return results
 
 
@@ -1693,8 +1705,9 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
         if safe_adds:
             lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-            for idx, (score, label, preview, _opts) in enumerate(safe_adds, start=1):
-                lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}\033[0m")
+            for idx, (score, label, preview, _opts, note) in enumerate(safe_adds, start=1):
+                suffix = f" ({note})" if note else ""
+                lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}{suffix}\033[0m")
         return "\n".join(lines)
 
     lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
@@ -1706,8 +1719,9 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
     safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
     if safe_adds:
         lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-        for idx, (score, label, preview, _opts) in enumerate(safe_adds, start=1):
-            lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}\033[0m")
+        for idx, (score, label, preview, _opts, note) in enumerate(safe_adds, start=1):
+            suffix = f" ({note})" if note else ""
+            lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}{suffix}\033[0m")
     return "\n".join(lines)
 
 
