@@ -1,8 +1,10 @@
 ## Bug Log
 
 Last triage: 2025-12-17 by Codex (Git/bookkeeping).
+Updated: Codex (2025-12-28).
 
 ### Active Bugs
+- ID: BUG-2025-12-28-001 | Title: Autopick returns none despite safe candidates | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-28 | Notes: Autopick printed "none (no positive defensive options)" while safe typing adds existed (see `logs/run_20251228_203302.log`); fallback now always returns a defensive pick.
 - ID: BUG-2025-12-12-002 | Title: Exposed weakness popup sometimes appears twice | Status: Active | Reported By: Atlas | Date: 2025-12-12 | Notes: Intermittent duplicate trigger from the coverage/exposure prompt path in the Tk flow; needs repro and event de-dupe.
 - ID: BUG-2025-12-12-005 | Title: Demo log shows defense 34/100 despite "Balanced" banner | Status: Active | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Typing checkpoint prints "Balanced (no defensive gains left)" but final defense score is 34 (heavy stack penalty); reconcile messages or thresholds.
 - ID: BUG-2025-12-13-014 | Title: Logs remain 0 bytes / runs hang | Status: Active | Reported By: Orion | Date: 2025-12-13 | Notes: Harness runs produce empty/tiny logs (e.g., run_20251213_015557.log); likely PS/Python child hang or flush/close failure. Flushing added to `log_verbose`/`progress` on 2025-12-15 but needs verification.  

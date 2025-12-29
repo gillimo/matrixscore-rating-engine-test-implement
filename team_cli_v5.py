@@ -1479,7 +1479,7 @@ def _preview_autopick(team, chart, attack_types):
         defense_choice=defense_choice,
         silent=True,
     )
-    if not pick and defense_choice.get("delta", 0) > 0:
+    if not pick:
         pick = pick_defensive_addition(team, chart, attack_types, silent=True)
     return pick
 

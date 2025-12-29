@@ -6,6 +6,9 @@ Open feature tickets
 - **FT-2025-12-28-001 | Show all safe typing adds in CLI output (Completed)**  
   Replace top-3 safest list with full safe-typing add list in the orange summary block.
 
+- **FT-2025-12-28-002 | Autopick always returns a Pokemon (Completed)**  
+  Ensure autopick falls back to a defensive pick when offense gating yields no pick.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 
