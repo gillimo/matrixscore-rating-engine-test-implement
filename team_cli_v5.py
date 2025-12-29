@@ -1529,6 +1529,75 @@ def _top_defensive_typings(team, chart, attack_types, top_n: int = 5):
     return results
 
 
+def _is_safe_typing(base_cov_map, sim_cov):
+    for sc in sim_cov:
+        bc = base_cov_map.get(sc["attack"], {"weak": 0, "resist": 0, "immune": 0})
+        was_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
+        now_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
+        if now_exposed and not was_exposed:
+            if bc["immune"] > 0:
+                continue
+            if bc["resist"] > bc["weak"]:
+                continue
+            return False
+    return True
+
+
+def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_score = typing_score(base_cov)
+    base_cov_map = {c["attack"]: c for c in base_cov}
+    entries = []
+    for t in attack_types:
+        sim_cov = compute_coverage(team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types)
+        if not _is_safe_typing(base_cov_map, sim_cov):
+            continue
+        _delta, sim_score, _base = typing_delta(
+            team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score
+        )
+        opts = fetch_single_type_candidates(
+            t,
+            current_team=team,
+            version_group=VERSION_GROUP,
+            chart=chart,
+            attack_types=attack_types,
+            stat_sort_key="defense",
+        )
+        if opts:
+            entries.append((sim_score, t, opts))
+    for i in range(len(attack_types)):
+        for j in range(i + 1, len(attack_types)):
+            pair = [attack_types[i], attack_types[j]]
+            sim_cov = compute_coverage(
+                team + [{"name": "sim", "types": pair, "source": "sim"}], chart, attack_types
+            )
+            if not _is_safe_typing(base_cov_map, sim_cov):
+                continue
+            _delta, sim_score, _base = typing_delta(
+                team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score
+            )
+            opts = fetch_dual_candidates(
+                pair[0],
+                pair[1],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            if opts:
+                label = f"{pair[0]} + {pair[1]}"
+                entries.append((sim_score, label, opts))
+    entries.sort(key=lambda x: (-x[0], x[1]))
+    results = []
+    for score, label, opts in entries:
+        preview = ", ".join(opts[:preview_limit])
+        if len(opts) > preview_limit:
+            preview = f"{preview}, +{len(opts) - preview_limit} more"
+        results.append((score, label, preview, opts))
+    return results
+
+
 def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
     if not team:
         return "Add at least one Pokemon to see defense-focused suggestions."
@@ -1577,6 +1646,11 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
     top = _top_defensive_typings(team, chart, attack_types, top_n=top_n)
     if not top:
         lines.append("Top defensive typings: none (no positive deltas).")
+        safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
+        if safe_adds:
+            lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
+            for idx, (score, label, preview, _opts) in enumerate(safe_adds, start=1):
+                lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}\033[0m")
         return "\n".join(lines)
 
     lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
@@ -1585,6 +1659,11 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         if len(opts) > preview_limit:
             preview = f"{preview}, +{len(opts) - preview_limit} more"
         lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
+    safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
+    if safe_adds:
+        lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
+        for idx, (score, label, preview, _opts) in enumerate(safe_adds, start=1):
+            lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}\033[0m")
     return "\n".join(lines)
 
 
