@@ -481,7 +481,7 @@ class App:
         tk.Label(metrics_frame, textvariable=self.score_text_var, font=("Segoe UI", 10), fg="#f8fafc", bg=POKEDEX_BLUE).pack(side="left")
         tk.Button(
             metrics_frame,
-            text="Tell me more",
+            text="Coaching Guide",
             bg=POKEDEX_RED,
             fg="#f8fafc",
             activebackground="#c01010",
@@ -710,17 +710,20 @@ class App:
 
     def _show_team_breakdown(self):
         win = tk.Toplevel(self.root)
-        win.title("Team Breakdown")
+        win.title("Coaching Guide")
         win.configure(bg="#f7fbff")
         txt = tk.Text(win, wrap="word", width=90, height=28, bg="#f7fbff", relief="flat")
         txt.pack(fill="both", expand=True, padx=10, pady=10)
         metrics = getattr(self, "metrics", {}) or {}
         lines = []
         scores = metrics.get("scores") or {}
+        lines.append("Coaching Guide")
+        lines.append("Focus: close exposures, broaden coverage, balance roles.")
         if scores:
-            lines.append("Scores:")
+            lines.append("
+Score snapshot:")
             lines.append(
-                f" - Overall {scores.get('overall','?')}/100 (Def {scores.get('defense','?')}, Off {scores.get('offense','?')}, Delta headroom {scores.get('delta_headroom','?')})"
+                f" - Overall {scores.get('overall','?')}/100 (Def {scores.get('defense','?')}, Off {scores.get('offense','?')}, Headroom {scores.get('delta_headroom','?')})"
             )
             if scores.get("role_penalty"):
                 lines.append(f" - Role balance penalty: -{scores['role_penalty']}")
@@ -729,17 +732,22 @@ class App:
             lines.append(
                 f" - Stack overlap: {scores.get('stack_overlap','?')} | Shared score: {scores.get('shared','?')} | Best defensive delta: {scores.get('best_defensive_delta','?')}"
             )
-            lines.append(f" - Base stat total: {scores.get('stat_total','?')}")
         exposures = metrics.get("exposures") or []
         if exposures:
-            lines.append("\nExposed types (weak > resist+immune):")
+            lines.append("
+Priority risks:")
+            ranked = []
             for c in exposures:
+                need = (c.get("weak", 0) or 0) - ((c.get("resist", 0) or 0) + (c.get("immune", 0) or 0))
+                ranked.append((need, c))
+            ranked.sort(key=lambda x: x[0], reverse=True)
+            for need, c in ranked:
                 lines.append(
-                    f" - {c.get('attack')}: weak {c.get('weak')} vs resist {c.get('resist')} immune {c.get('immune')}"
+                    f" - {c.get('attack')}: need {need:.1f} (weak {c.get('weak')}, resist {c.get('resist')}, immune {c.get('immune')})"
                 )
-            # Unique coverage map: which types only one mon covers
             if metrics.get("team"):
                 unique = []
+                cover_map = {}
                 for c in exposures:
                     t = c.get("attack")
                     coverers = []
@@ -748,36 +756,67 @@ class App:
                         se = set(entry.get("se_hits") or [])
                         if t in se or t in mt:
                             coverers.append(entry.get("name", ""))
+                    cover_map[t] = coverers
                     if len(coverers) == 1:
                         unique.append(f"{t} -> {coverers[0]}")
+                if cover_map:
+                    lines.append("
+Coverage accountability:")
+                    for t, coverers in cover_map.items():
+                        preview = ", ".join(coverers[:3]) if coverers else "none"
+                        lines.append(f" - {t}: {preview}")
                 if unique:
-                    lines.append("Unique coverage:")
+                    lines.append("
+Unique coverage (single points of failure):")
                     for u in unique:
                         lines.append(f" - {u}")
         roles = metrics.get("role_counts") or {}
         if roles:
-            lines.append("\nRole mix:")
+            lines.append("
+Role balance:")
             for r, cnt in roles.items():
-                lines.append(f" - {r}: {cnt}")
+                alert = " (stacked)" if cnt >= 3 else ""
+                lines.append(f" - {r}: {cnt}{alert}")
         upgrades = metrics.get("upgrades") or []
         if upgrades:
-            lines.append("\nTop upgrade ideas:")
+            lines.append("
+Upgrade ideas (if you want to swap a slot):")
             for line in upgrades:
                 lines.append(f" - {line}")
-        # Per-Pokemon metrics if present
         team_entries = metrics.get("team", [])
         if team_entries:
-            lines.append("\nPer-Pokémon metrics:")
+            lines.append("
+Slot coaching:")
             for entry in team_entries:
                 nm = entry.get("name", "").title()
                 role = entry.get("role", "n/a")
                 align = entry.get("alignment_score", 0)
                 stack = entry.get("stack_contrib", "?")
                 move_types = ", ".join(entry.get("move_types") or [])
-                lines.append(f" - {nm} [{role}]: align {align}/100; stack contrib {stack}; move types: {move_types}")
-        if not lines:
+                lines.append(
+                    f" - {nm} [{role}]: align {align}/100; stack {stack}; coverage types: {move_types or 'none'}"
+                )
+        if exposures:
+            lines.append("
+Next actions:")
+            top_exposures = []
+            for c in exposures:
+                need = (c.get("weak", 0) or 0) - ((c.get("resist", 0) or 0) + (c.get("immune", 0) or 0))
+                if need > 0:
+                    top_exposures.append((need, c.get("attack")))
+            top_exposures.sort(key=lambda x: x[0], reverse=True)
+            if top_exposures:
+                picks = ", ".join(t for _, t in top_exposures[:2])
+                lines.append(f" - Add SE/neutral coverage for: {picks}")
+            if roles:
+                stacked = [r for r, cnt in roles.items() if cnt >= 3]
+                if stacked:
+                    lines.append(f" - Balance roles (too many {', '.join(stacked)}).")
+            lines.append(" - Verify each slot has a clear role plan and 4 move slots filled.")
+        if not metrics:
             lines.append("No metrics available in payload.")
-        txt.insert("1.0", "\n".join(lines))
+        txt.insert("1.0", "
+".join(lines))
         txt.config(state="disabled")
 
     def _show_details(self, member):
