@@ -470,7 +470,7 @@ def pokemon_offense_stat_total(name: str):
             if stat_name in {"attack", "special-attack"}:
                 total += s.get("base_stat", 0)
             elif stat_name == "speed":
-                total += 0.75 * s.get("base_stat", 0)
+                total += 1.00 * s.get("base_stat", 0)
         return total
     except Exception:
         return 0
@@ -1053,7 +1053,8 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
     def stat_key(name):
         return pokemon_defense_stat_total(name)
 
-    pname = max(best["candidates"], key=stat_key)
+    # After picking the safest delta pool, favor faster options within it.
+    pname = max(best["candidates"], key=lambda n: (pokemon_speed_stat(n), stat_key(n)))
     wheel_proc = None
     try:
         ptypes = fetch_pokemon_typing(pname)
@@ -1225,10 +1226,10 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
                 )
                 if coverage_gains:
                     reason += f" [covers exposed: {', '.join(coverage_gains)}]"
-                compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst)
+                compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst, pokemon_speed_stat(pname))
                 align_score = info.get("alignment_score", 0)
                 if prefer_alignment:
-                    compare_tuple = (ranked_gain, align_score, sim_offense, stat_total, base_bst)
+                    compare_tuple = (ranked_gain, align_score, sim_offense, stat_total, base_bst, pokemon_speed_stat(pname))
                 if ranked_gain > 0 and (best_pick is None or compare_tuple > best_pick[0]):
                     best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst, align_score)
 
@@ -3250,6 +3251,63 @@ def main():
                     print(defense_focus_report(team, chart, attack_types))
                 else:
                     print("No positive additions available to auto-fill.")
+            # Speed substitution pass: within same typing, upgrade to the fastest final-form option.
+            if team:
+                has_fast = any(pokemon_speed_stat(m.get("name", "")) >= 110 for m in team if m.get("name"))
+                best_swap = None  # (speed_gain, cand_speed, cand_bst, idx, old, new)
+                for idx, member in enumerate(team):
+                    if has_fast:
+                        break
+                    if member.get("source") != "autofill":
+                        continue
+                    types = member.get("types") or []
+                    if not types:
+                        continue
+                    if len(types) == 1:
+                        opts = fetch_single_type_candidates(
+                            types[0],
+                            current_team=team,
+                            version_group=VERSION_GROUP,
+                            chart=chart,
+                            attack_types=attack_types,
+                        )
+                    else:
+                        opts = fetch_dual_candidates(
+                            types[0],
+                            types[1],
+                            current_team=team,
+                            version_group=VERSION_GROUP,
+                            chart=chart,
+                            attack_types=attack_types,
+                        )
+                    if not opts:
+                        continue
+                    current_name = member.get("name", "")
+                    current_speed = pokemon_speed_stat(current_name)
+                    current_bst = pokemon_base_stat_total(current_name)
+                    for cand in opts:
+                        if cand == current_name:
+                            continue
+                        try:
+                            c_types = fetch_pokemon_typing(cand)
+                        except Exception:
+                            continue
+                        if set(c_types) != set(types):
+                            continue
+                        cand_speed = pokemon_speed_stat(cand)
+                        if cand_speed <= current_speed:
+                            continue
+                        cand_bst = pokemon_base_stat_total(cand)
+                        speed_gain = cand_speed - current_speed
+                        swap_tuple = (cand_speed, speed_gain, cand_bst)
+                        if best_swap is None or swap_tuple > best_swap[:3]:
+                            best_swap = (cand_speed, speed_gain, cand_bst, idx, current_name, cand)
+                if best_swap:
+                    cand_speed, _gain, _bst, idx, old, new = best_swap
+                    member = team[idx]
+                    team[idx] = {"name": new, "types": member.get("types") or [], "source": "autofill"}
+                    print("\nSpeed substitution (same typing, fastest overall):")
+                    print(f" - {old} -> {new} (speed {cand_speed})")
             # Optional drop/replace loop before moves
             drop_exclude = set()
             while True:

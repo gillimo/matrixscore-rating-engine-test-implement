@@ -41,7 +41,7 @@ Offense score (offense_score_with_bonuses)
 Offensive delta headroom (compute_best_offense_gain)
 - Base gain: `sim_offense - base_offense` using the offense score above.
 - Gain factor: `(1 + 1.0*closed_weak) * (1 + 0.25*len(new_types))`
-- Offensive stat total: `attack + special_attack + 0.75*speed`
+- Offensive stat total: `attack + special_attack + 1.00*speed`
 - BST factor: `bst_factor = clamp(0.8, 1.3, 0.7 + offense_stat_total/450)`
 - SE factor: `se_factor = 1.0 + 0.05*min(6, len(se_types))`
 - Ranked gain: `gain * gain_factor * bst_factor * se_factor * coverage_penalty` (capped at 100 for headroom use).
