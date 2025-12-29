@@ -800,7 +800,6 @@ def compute_coverage(team, chart, attack_types):
 
 
 def typing_score(cov):
-    total_weak = sum(c["weak"] for c in cov)
     total_resist = sum(c["resist"] for c in cov)
     total_immune = sum(c["immune"] for c in cov)
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
@@ -811,42 +810,23 @@ def typing_score(cov):
     # Balanced scoring: weaknesses and exposed types penalize; resist/immune reward
     def_score = (
         100
-        - 2.1 * total_weak
-        + 1.6 * total_resist
-        + 4.0 * total_immune
-        + 7.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
-        - 22 * net_exposed
-        - 10 * stack_overlap  # moderate penalty to discourage stacking
+        + 0.8 * total_resist
+        + 2.5 * total_immune
+        + 3.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
+        - 35 * net_exposed
+        - 14 * stack_overlap  # moderate penalty to discourage stacking
     )
     if net_exposed == 0:
         return 100
-    return max(0, min(99, int(def_score)))
+    if net_exposed == 1:
+        return max(0, min(95, int(def_score)))
+    if net_exposed == 2:
+        return max(0, min(85, int(def_score)))
+    return max(0, min(75, int(def_score)))
 
 
 def typing_score_display(cov):
-    total_weak = sum(c["weak"] for c in cov)
-    total_resist = sum(c["resist"] for c in cov)
-    total_immune = sum(c["immune"] for c in cov)
-    net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
-    top_exposed = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
-    exposed_immunes = sum(c["immune"] for c in top_exposed)
-    covered_stack = sum(
-        max(0, (c["resist"] + c["immune"]) - c["weak"]) for c in cov if c["weak"] > 1
-    )
-    def_score = (
-        100
-        - 2.1 * total_weak
-        + 1.6 * total_resist
-        + 4.0 * total_immune
-        + 7.0 * exposed_immunes
-        + 2.0 * covered_stack
-        - 14 * net_exposed
-        - 12 * stack_overlap
-    )
-    if net_exposed == 0:
-        return 100
-    return max(0, min(99, int(def_score)))
+    return typing_score(cov)
 
 
 def stack_overlap_penalty(cov):

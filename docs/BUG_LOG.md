@@ -1,9 +1,14 @@
 ## Bug Log
 
 Last triage: 2025-12-17 by Codex (Git/bookkeeping).
-Updated: Codex (2025-12-28).
+Updated: Codex (2025-12-29).
 
 ### Active Bugs
+- ID: BUG-2025-12-29-002 | Title: Defense score penalizes total weakness counts instead of exposed weaknesses | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-29 | Notes: Removed total_weak term from defense score so exposed types drive penalties; verify with Gengar/Sableye pair.
+- ID: BUG-2025-12-29-003 | Title: Defense score remains too high with multiple exposed weaknesses | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-29 | Notes: Tightened resist/immune rewards, increased net_exposed/stack penalties, and capped defense by exposure count to prevent 2-exposure teams from rating in the 90s.
+- ID: BUG-2025-12-29-004 | Title: Defense display score mismatches core defense score | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-29 | Notes: Removed alternate display formula; display now delegates to typing_score for alignment.
+- ID: BUG-2025-12-29-005 | Title: Suggestions do not reliably close exposed weaknesses | Status: Active | Reported By: Codex | Date: 2025-12-29 | Notes: Autopick/suggestions can leave exposed types unresolved even when better closures exist; review defensive candidate weighting and exposure gating.
+- ID: BUG-2025-12-29-001 | Title: Defense score stays high with multiple exposed weaknesses | Status: Active | Reported By: Codex | Date: 2025-12-29 | Notes: Teams with several exposed types can still score near the top of the defense band; increase net_exposed/stack/weak penalties to push these down.
 - ID: BUG-2025-12-28-004 | Title: Pokemon cache save can crash on MemoryError | Status: Fixed (Needs Verification) | Reported By: Atlas | Date: 2025-12-28 | Notes: `_save_pokemon_cache` raised `KeyError` when persist_fail was missing after MemoryError; now initializes stat and guards increment.
 - ID: BUG-2025-12-28-003 | Title: _top_defensive_typings sort lambda crashes | Status: Fixed (Needs Verification) | Reported By: Atlas | Date: 2025-12-28 | Notes: IndexError from sort key referencing tuple index 3; sort now uses delta desc + type label.
 - ID: BUG-2025-12-28-002 | Title: NameError def_score_raw in predict_overall | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-28 | Notes: Demo run crashed at `predict_overall` because `def_score_raw` was undefined; set from `typing_score(cov)` before use.

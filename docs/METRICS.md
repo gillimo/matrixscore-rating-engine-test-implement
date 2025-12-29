@@ -6,13 +6,14 @@ Defense (typing_score)
 - Coverage inputs: for each attack type, count team members that are weak, resist, immune, or neutral.
 - Exposed type: `weak > (resist + immune)`.
 - Score formula:
-  - `def_score = 100 - 2.1*total_weak + 1.6*total_resist + 4.0*total_immune + 7.0*exposed_immunes - 22*net_exposed - 10*stack_overlap`
+  - `def_score = 100 + 0.8*total_resist + 2.5*total_immune + 3.0*exposed_immunes - 35*net_exposed - 14*stack_overlap`
+  - Exposure caps (applied when net_exposed > 0): `<=95` if `net_exposed==1`, `<=85` if `net_exposed==2`, `<=75` if `net_exposed>=3`.
   - `stack_overlap = sum(max(0, weak - 1))`
   - `exposed_immunes = sum(immune for exposed attack types)`
   - If `net_exposed == 0`, defense returns 100; otherwise clamps to 0..99.
 
 Defense (display score)
-- Uses the same `typing_score` formula as the core defense score to keep the numbers consistent across UI surfaces.
+- Uses the same `typing_score` output as the core defense score to keep all UI surfaces aligned.
 
 Defensive delta (typing_delta)
 - Base typing delta is `typing_score(sim) - typing_score(base)`.
@@ -58,7 +59,7 @@ Overall score (overall_score)
 - Role balance penalty: after overall, subtract `0.25*(count-2)` for each role with 3+ members.
 - BST penalty: if average BST < 500, subtract `min(4, (500 - avg_bst) / 12)`.
 
-Signed: Codex (2025-12-28)
+Signed: Codex (2025-12-29)
 Safe typing adds (CLI list)
 - Strong types: `resist + immune - weak >= 2` from current team coverage.
 - Score per typing: `100 - 12*missing_strong - 6*added_weaknesses` (clamped 0..100).
