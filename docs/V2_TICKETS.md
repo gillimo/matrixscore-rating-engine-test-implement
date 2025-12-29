@@ -132,6 +132,9 @@ Open feature tickets
 - **FT-2025-12-28-043 | Defensive delta emphasizes exposed closures (Completed)**  
   Tie defensive delta bonuses to exposed types and penalize choices that do not reduce net exposed types.
 
+- **FT-2025-12-28-044 | Console fallback after piped input (Completed)**  
+  When stdin hits EOF (piped runs), switch to `CONIN$` so the CLI stays interactive for drops and tweaks.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

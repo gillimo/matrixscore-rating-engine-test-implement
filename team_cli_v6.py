@@ -3124,6 +3124,23 @@ def main():
 
         print("Team builder. Type a Pokemon name to add it. Commands: 'next' to continue, 'drop <name>' to remove, 'finalize' to auto-fill.")
 
+        console_fallback = False
+
+        def _read_input(prompt: str) -> str:
+            nonlocal console_fallback
+            try:
+                return input(prompt)
+            except EOFError:
+                if os.name == "nt" and not console_fallback:
+                    try:
+                        sys.stdin = open("CONIN$", "r")
+                        console_fallback = True
+                        print("EOF on stdin; switching to console input...")
+                        return input(prompt)
+                    except Exception:
+                        pass
+                raise
+
         def do_finalize():
             nonlocal team
             print("Finalizing team...")
@@ -3146,7 +3163,7 @@ def main():
                 print("\nDrop & replace (pre-moves):")
                 for idx, member in enumerate(team):
                     print(f" {idx+1}) {member['name'].title()} ({'/'.join(member['types'])})")
-                choice = input("Enter number to drop, or 'done' to continue: ").strip().lower()
+                choice = _read_input("Enter number to drop, or 'done' to continue: ").strip().lower()
                 if choice == "done":
                     break
                 if choice.isdigit():
@@ -3176,7 +3193,7 @@ def main():
             return True
 
         while True:
-            raw = input("Add Pokemon name or type 'next': ").strip()
+            raw = _read_input("Add Pokemon name or type 'next': ").strip()
             tokens = raw.split()
             tokens, type_filters = _extract_type_filters(tokens)
             raw = " ".join(tokens).strip()
