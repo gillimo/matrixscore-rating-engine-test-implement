@@ -2359,7 +2359,7 @@ def predict_overall(team, team_infos, chart, attack_types):
     role_penalty = 0.0
     for cnt in role_counts.values():
         if cnt >= 3:
-            role_penalty += 0.5 * (cnt - 2)  # 3 of a kind = -0.5, 4 = -1.0, etc.
+            role_penalty += 0.25 * (cnt - 2)  # 3 of a kind = -0.25, 4 = -0.5, etc.
     if role_penalty:
         overall = max(0, min(100, overall - role_penalty))
     components = {
@@ -2867,7 +2867,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         if role == "balanced":
             continue  # allow multiple balanced slots without penalty
         if cnt >= 3:
-            role_penalty += 0.5 * (cnt - 2)
+            role_penalty += 0.25 * (cnt - 2)
     if role_penalty:
         overall = max(0, min(100, overall - role_penalty))
     # Light BST floor: penalize low average BST so filler glue doesn't overrate

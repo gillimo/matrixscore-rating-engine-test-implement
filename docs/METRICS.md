@@ -55,7 +55,7 @@ Overall score (overall_score)
 - `shared_penalty = max(0, 100 - shared_score) * 0.04`
 - `overall = 100 - delta_penalty - shared_penalty` (clamped 0..100)
 - Stack penalty is currently 0 (stacking is already captured in shared weakness).
-- Role balance penalty: after overall, subtract `0.5*(count-2)` for each role with 3+ members.
+- Role balance penalty: after overall, subtract `0.25*(count-2)` for each role with 3+ members.
 - BST penalty: if average BST < 500, subtract `min(4, (500 - avg_bst) / 12)`.
 
 Signed: Codex (2025-12-28)
