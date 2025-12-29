@@ -1664,8 +1664,26 @@ def _is_safe_typing(base_cov_map, sim_cov):
 
 def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
     base_cov = compute_coverage(team, chart, attack_types)
-    base_score = typing_score(base_cov)
     base_cov_map = {c["attack"]: c for c in base_cov}
+    strong_types = {
+        c["attack"]
+        for c in base_cov
+        if (c["resist"] + c["immune"] - c["weak"]) >= 2
+    }
+
+    def _weak_types(def_types):
+        weak = []
+        for atk in attack_types:
+            if defensive_multiplier(atk, def_types, chart) > 1:
+                weak.append(atk)
+        return weak
+
+    def _safe_score(def_types):
+        weak = _weak_types(def_types)
+        missing = sum(1 for t in weak if t not in strong_types)
+        score = max(0, 100 - missing * 12)
+        return score, weak, missing
+
     entries = []
     for t in attack_types:
         sim_cov = compute_coverage(team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types)
@@ -1676,9 +1694,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             bc = base_cov_map.get(sc["attack"], {"weak": 0})
             if sc["weak"] > bc["weak"]:
                 added_weak.append(sc["attack"])
-        _delta, sim_score, _base = typing_delta(
-            team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score
-        )
+        safe_score, _weak_types_list, missing = _safe_score([t])
         opts = fetch_single_type_candidates(
             t,
             current_team=team,
@@ -1689,7 +1705,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
         )
         if opts:
             note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
-            entries.append((sim_score, t, opts, note))
+            entries.append((safe_score, missing, len(added_weak), t, opts, note))
     for i in range(len(attack_types)):
         for j in range(i + 1, len(attack_types)):
             pair = [attack_types[i], attack_types[j]]
@@ -1703,9 +1719,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
                 bc = base_cov_map.get(sc["attack"], {"weak": 0})
                 if sc["weak"] > bc["weak"]:
                     added_weak.append(sc["attack"])
-            _delta, sim_score, _base = typing_delta(
-                team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score
-            )
+            safe_score, _weak_types_list, missing = _safe_score(pair)
             opts = fetch_dual_candidates(
                 pair[0],
                 pair[1],
@@ -1718,10 +1732,10 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             if opts:
                 label = f"{pair[0]} + {pair[1]}"
                 note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
-                entries.append((sim_score, label, opts, note))
-    entries.sort(key=lambda x: (-x[0], x[1]))
+                entries.append((safe_score, missing, len(added_weak), label, opts, note))
+    entries.sort(key=lambda x: (x[1], x[2], -x[0], x[3]))
     results = []
-    for score, label, opts, note in entries:
+    for score, _missing, _added_count, label, opts, note in entries:
         preview = ", ".join(opts[:preview_limit])
         if len(opts) > preview_limit:
             preview = f"{preview}, +{len(opts) - preview_limit} more"
