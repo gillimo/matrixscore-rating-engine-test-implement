@@ -745,7 +745,9 @@ def typing_score(cov):
         - 14 * net_exposed
         - 12 * stack_overlap  # heavy penalty, but less than net-exposed
     )
-    return max(0, min(100, int(def_score)))
+    if net_exposed == 0:
+        return 100
+    return max(0, min(99, int(def_score)))
 
 
 def typing_score_display(cov):
@@ -769,7 +771,9 @@ def typing_score_display(cov):
         - 18 * net_exposed
         - 5 * stack_overlap
     )
-    return max(0, min(100, int(def_score)))
+    if net_exposed == 0:
+        return 100
+    return max(0, min(99, int(def_score)))
 
 
 def stack_overlap_penalty(cov):

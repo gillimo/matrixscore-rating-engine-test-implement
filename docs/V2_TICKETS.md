@@ -42,6 +42,9 @@ Open feature tickets
 - **FT-2025-12-28-013 | Safe list weakness notes (Completed)**  
   Annotate safe typing adds when they increase raw weakness counts.
 
+- **FT-2025-12-28-014 | Defense score 100 only when no exposures (Completed)**  
+  Clamp defense score below 100 when any exposed weaknesses remain.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 
