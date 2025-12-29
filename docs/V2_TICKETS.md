@@ -99,6 +99,9 @@ Open feature tickets
 - **FT-2025-12-28-032 | Overall score A-tier tuning (Completed)**  
   Adjust overall weighting for delta penalties and shared penalty so strong, balanced teams land in expected bands (e.g., 83–85 for the clefable/mawile team, 92–94 for stacked ghosts) without changing structure.
 
+- **FT-2025-12-28-033 | Speed-weighted offense stats (Completed)**  
+  Include a stronger speed contribution in offensive stat total (Atk + SpA + 0.75*Speed) used by offense gain scaling.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

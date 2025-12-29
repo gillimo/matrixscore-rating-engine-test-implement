@@ -452,7 +452,7 @@ def pokemon_speed_stat(name: str):
 
 
 def pokemon_offense_stat_total(name: str):
-    """Return offensive stat total (Atk + SpA) for use in offense scoring/sorting."""
+    """Return offensive stat total (Atk + SpA + speed weight) for offense scoring/sorting."""
     key = normalize_pokemon_name(name)
     if not key:
         return 0
@@ -468,6 +468,8 @@ def pokemon_offense_stat_total(name: str):
             stat_name = (s.get("stat") or {}).get("name", "")
             if stat_name in {"attack", "special-attack"}:
                 total += s.get("base_stat", 0)
+            elif stat_name == "speed":
+                total += 0.75 * s.get("base_stat", 0)
         return total
     except Exception:
         return 0
