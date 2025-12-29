@@ -75,6 +75,12 @@ Open feature tickets
 - **FT-2025-12-28-024 | Rename main CLI to v6 and update harness (Completed)**  
   Rename `team_cli_v5.py` to `team_cli_v6.py` and point the test harness at the v6 script.
 
+- **FT-2025-12-28-025 | Safe list prioritizes fewest added weaknesses (Completed)**  
+  Order safe typing adds by added weakness count first, then by missing strong-type coverage and score.
+
+- **FT-2025-12-28-026 | Update METRICS.md to v6 formulas (Completed)**  
+  Document the current defense/offense/shared/overall formulas and penalties in `team_cli_v6.py`.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

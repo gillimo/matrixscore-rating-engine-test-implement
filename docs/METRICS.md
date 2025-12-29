@@ -1,20 +1,54 @@
-## Metrics (v5 snapshot)
+## Metrics (v6 snapshot, 2025-12-28)
 
-Current intent (needs fixes):
-- Overall: target `100 - (best_defensive_delta + best_offense_gap)`, with 5-point penalty per overlapping weakness. Should hit 100 when both deltas are 0 and no overlaps. Known bug: defense can hit 0 and offense gaps can inflate (e.g., +289) leading to nonsensical overall.
-- Defense: typing delta with penalties for new exposures/stacking; needs stronger bias against introducing 4x/2x stacks (BUG-2025-12-15-023/024) and fix for zero-score cases (BUG-2025-12-15-036).
-- Offense: headroom/gap based on coverage; inflation observed (BUG-2025-12-15-037). Move drafting still thin (often 1 move/mon).
-- Shared/overlap: overlapping weaknesses should incur penalties; ensure penalty applied consistently in overall.
+This document reflects the current scoring formulas in `team_cli_v6.py`.
 
-Move selection (in progress):
-- Draft board up to top 12; aim to suggest 4 moves per mon.
-- Moves should be coverage-aware (exposed/needed types) with positive-gain enforcement before delta=0 fallbacks; high-BST fallback last.
-- De-dupe moves globally; refresh stale move data to avoid 1-move outputs.
+Defense (typing_score)
+- Coverage inputs: for each attack type, count team members that are weak, resist, immune, or neutral.
+- Exposed type: `weak > (resist + immune)`.
+- Score formula:
+  - `def_score = 100 - 2.1*total_weak + 1.6*total_resist + 4.0*total_immune + 7.0*exposed_immunes - 14*net_exposed - 12*stack_overlap`
+  - `stack_overlap = sum(max(0, weak - 1))`
+  - `exposed_immunes = sum(immune for exposed attack types)`
+  - If `net_exposed == 0`, defense returns 100; otherwise clamps to 0..99.
 
-Action items:
-- Normalize defensive delta (handle new exposures/stacking correctly).
-- Clamp/adjust offensive gap to prevent inflation and reflect real coverage gains.
-- Enforce overlap penalties in overall; ensure 100 when no gaps/overlaps.
-- Fully wire coverage-aware move selection and positive-gain gating.
+Defense (display score)
+- Display variant is a slightly different formula used for summary output:
+  - `def_score = 100 - 2.1*total_weak + 2.0*total_resist + 4.5*total_immune + 7.5*exposed_immunes + 4.0*covered_stack - 18*net_exposed - 5*stack_overlap`
+  - `covered_stack = sum(max(0, resist+immune-weak) for attack types with weak > 1)`
+  - If `net_exposed == 0`, returns 100; otherwise clamps to 0..99.
 
-Signed: Codex (2025-12-17)
+Defensive delta (typing_delta)
+- Base typing delta is `typing_score(sim) - typing_score(base)`.
+- Penalty/bonus adjustments:
+  - Penalty: `new_exposed*14 + max(0, stack_delta)*10 + max(0, new_weak - new_resist)*6`
+  - Bonus: `immune_gain*10 + resist_gain*4 + max(0, new_resist - new_weak)*2`
+  - `stack_delta = stack_overlap(sim) - stack_overlap(base)`
+
+Shared weakness score
+- `overlap = max(0, max_weak - 1)`
+- `stack = sum(max(0, weak - 1))` (if `stack == 1`, set to 0)
+- `exposed = count(weak > resist+immune)`
+- `score = 100 - 16*overlap - 6*stack - 8*exposed` (clamped to 0..100)
+
+Offense score (offense_score_with_bonuses)
+- Build a move-type set from suggested moves across team.
+- Exposed types: `weak > (resist + immune)`.
+- For each exposed type:
+  - If any move type hits it SE: no penalty.
+  - Else if neutral coverage exists: `+6` penalty.
+  - Else (immune): `+14` penalty.
+- Breadth penalty: `max(0, 2 - len(move_types)) * 3`.
+- Base score: `100 - penalties - breadth_penalty`, clamped 0..100.
+- If all exposures are covered (penalties == 0), add a capped breadth bonus:
+  - `neutral_ratio = neutral_or_better / total_types`
+  - `se_ratio = se_types / total_types`
+  - `breadth_bonus = min(12, 6*neutral_ratio + 7*se_ratio)`
+
+Overall score (overall_score)
+- `delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)`
+- `shared_penalty = max(0, 100 - shared_score) * 0.15`
+- `overall = 100 - delta_penalty - shared_penalty` (clamped 0..100)
+- Stack penalty is currently 0 (stacking is already captured in shared weakness).
+- Role balance penalty: after overall, subtract `0.5*(count-2)` for each role with 3+ members.
+
+Signed: Codex (2025-12-28)

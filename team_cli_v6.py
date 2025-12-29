@@ -1733,7 +1733,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
                 label = f"{pair[0]} + {pair[1]}"
                 note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
                 entries.append((safe_score, missing, len(added_weak), label, opts, note))
-    entries.sort(key=lambda x: (x[1], x[2], -x[0], x[3]))
+    entries.sort(key=lambda x: (x[2], x[1], -x[0], x[3]))
     results = []
     for score, _missing, _added_count, label, opts, note in entries:
         preview = ", ".join(opts[:preview_limit])
