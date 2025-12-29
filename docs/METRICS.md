@@ -35,14 +35,14 @@ Offense score (offense_score_with_bonuses)
 - Exposed types: `weak > (resist + immune)`.
 - For each exposed type:
   - If any move type hits it SE: no penalty.
-  - Else if neutral coverage exists: `+6` penalty.
-  - Else (immune): `+14` penalty.
-- Breadth penalty: `max(0, 2 - len(move_types)) * 3`.
+  - Else if neutral coverage exists: `+7` penalty.
+  - Else (immune): `+16` penalty.
+- Breadth penalty: `max(0, 2 - len(move_types)) * 4`.
 - Base score: `100 - penalties - breadth_penalty`, clamped 0..100.
 - If all exposures are covered (penalties == 0), add a capped breadth bonus:
   - `neutral_ratio = neutral_or_better / total_types`
   - `se_ratio = se_types / total_types`
-  - `breadth_bonus = min(12, 6*neutral_ratio + 7*se_ratio)`
+  - `breadth_bonus = min(10, 5*neutral_ratio + 6*se_ratio)`
 
 Overall score (overall_score)
 - `delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)`

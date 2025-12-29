@@ -2275,12 +2275,12 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         if best >= 2.0:
             continue  # SE hit closes this exposure offensively
         if best >= 1.0:
-            penalties += 6.0  # neutral only
+            penalties += 7.0  # neutral only
         else:
-            penalties += 14.0  # cannot hit effectively (immune)
+            penalties += 16.0  # cannot hit effectively (immune)
 
     # Lightly discourage ultra-thin move_type sets
-    breadth_penalty = max(0, 2 - len(move_types)) * 3.0
+    breadth_penalty = max(0, 2 - len(move_types)) * 4.0
 
     base_score = max(0, min(100, 100 - penalties - breadth_penalty))
 
@@ -2290,7 +2290,7 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         neutral, se_types = offense_projection(move_types, chart, attack_types)
         neutral_ratio = neutral / max(1, total_types)
         se_ratio = len(se_types) / max(1, total_types)
-        breadth_bonus = min(12.0, 6.0 * neutral_ratio + 7.0 * se_ratio)  # cap to keep 100 ceiling
+        breadth_bonus = min(10.0, 5.0 * neutral_ratio + 6.0 * se_ratio)  # cap to keep 100 ceiling
         base_score = min(100, base_score + breadth_bonus)
 
     return int(base_score)
