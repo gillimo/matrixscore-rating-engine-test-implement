@@ -2180,7 +2180,7 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     (defensive score already captures heavy stacking impact).
     """
     delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)
-    stack_penalty = 0.8 * stack_overlap
+    stack_penalty = 0.0
     shared_penalty = max(0, 100 - shared_score) * 0.15
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
