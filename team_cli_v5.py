@@ -1775,6 +1775,29 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     return "\n".join(report_lines), cov
 
 
+def _print_red_summary(team, chart, attack_types):
+    cov = compute_coverage(team, chart, attack_types)
+    open_weak = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    roster = ", ".join(m.get("name", "").title() for m in team if m.get("name"))
+    weak_text = ", ".join(open_weak) if open_weak else "none"
+    defense_text = "n/a"
+    try:
+        infos = team_infos_from_cache(team)
+        _overall_score_val, _comps = predict_overall(team, infos, chart, attack_types)
+        defense_text = f"{_comps.get('defense', '?')}/100"
+    except Exception:
+        try:
+            def_only = typing_score_display(cov)
+            defense_text = f"{def_only}/100"
+        except Exception:
+            pass
+    print(f"\033[31mTeam: {roster}\033[0m")
+    print(f"\033[31mDefense score: {defense_text}\033[0m")
+    print(f"\033[31mOpen weaknesses: {weak_text}\033[0m")
+    if len(team) >= 6:
+        print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
+
+
 def parse_name_level(raw):
     tokens = raw.split()
     level_tokens = [t for t in tokens if t.isdigit()]
@@ -2893,6 +2916,9 @@ def main():
                     drop_name = normalize_pokemon_name(parts[1])
                     team = [m for m in team if m["name"] != drop_name]
                     print(f"Dropped {drop_name}")
+                    if team:
+                        print(defense_focus_report(team, chart, attack_types))
+                    _print_red_summary(team, chart, attack_types)
                 continue
             if len(team) >= 6:
                 print("Team already has 6 members. Use 'drop <name>' to remove one before adding more.")
@@ -2929,27 +2955,7 @@ def main():
                 if VERBOSE:
                     print(f"Draft cache failed for {name}: {exc}")
             print(defense_focus_report(team, chart, attack_types))
-            # Red summary after each pick: roster, defense score, open weaknesses
-            cov = compute_coverage(team, chart, attack_types)
-            open_weak = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
-            roster = ", ".join(m.get("name", "").title() for m in team if m.get("name"))
-            weak_text = ", ".join(open_weak) if open_weak else "none"
-            defense_text = "n/a"
-            try:
-                infos = team_infos_from_cache(team)
-                _overall_score_val, _comps = predict_overall(team, infos, chart, attack_types)
-                defense_text = f"{_comps.get('defense', '?')}/100"
-            except Exception:
-                try:
-                    def_only = typing_score_display(cov)
-                    defense_text = f"{def_only}/100"
-                except Exception:
-                    pass
-            print(f"\033[31mTeam: {roster}\033[0m")
-            print(f"\033[31mDefense score: {defense_text}\033[0m")
-            print(f"\033[31mOpen weaknesses: {weak_text}\033[0m")
-            if len(team) >= 6:
-                print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
+            _print_red_summary(team, chart, attack_types)
             if finalize_after_add:
                 if do_finalize():
                     break
