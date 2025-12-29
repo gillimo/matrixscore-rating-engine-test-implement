@@ -1501,6 +1501,15 @@ def pick_moves(
             if fallback and fallback not in suggestions:
                 suggestions.append(fallback)
 
+    # Dual-typing rule: ensure at least one STAB move for each type if available.
+    if len(types) == 2:
+        for t in types:
+            stab_pick = next((m for m in stab_sorted if m["type"] == t), None)
+            if not stab_pick:
+                stab_pick = next((m for m in candidate_moves if m["type"] == t), None)
+            if stab_pick and stab_pick not in suggestions:
+                suggestions.append(stab_pick)
+
     # Role-specific priorities
     if role == "sweeper":
         # Strongest STAB, coverage, priority, recoil/trade, then filler coverage/setup
@@ -1639,6 +1648,17 @@ def pick_moves(
             break
     if not draft_board:
         draft_board = final_moves[:]
+    if len(types) == 2:
+        required_stabs = []
+        for t in types:
+            stab_pick = next((m for m in stab_sorted if m["type"] == t), None)
+            if not stab_pick:
+                stab_pick = next((m for m in candidate_moves if m["type"] == t), None)
+            if stab_pick and stab_pick["name"] not in {m["name"] for m in required_stabs}:
+                required_stabs.append(stab_pick)
+        if required_stabs:
+            existing = [m for m in draft_board if m["name"] not in {r["name"] for r in required_stabs}]
+            draft_board = (required_stabs + existing)[:12]
 
     # Alignment score: how well moves fit role priorities
     role_weights = {
