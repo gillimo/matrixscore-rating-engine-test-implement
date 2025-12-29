@@ -857,16 +857,16 @@ class App:
         win.configure(bg="#f7fbff")
         txt = tk.Text(win, wrap="word", width=80, height=26, bg="#f7fbff", relief="flat")
         txt.pack(fill="both", expand=True, padx=10, pady=10)
+        self._ensure_types()
         name = member.get("name", "(empty)")
         types = member.get("types", [])
         role = member.get("role", "balanced")
         bst = fetch_base_stat_total(name) if name else 0
-        lines = [f"{name.title()} ({'/'.join(types) or '—'})", f"Role: {role.title()} | BST: {bst}"]
-        if member.get("coverage_priority"):
-            prio = ", ".join(f"{t} ({w})" for t, w in member["coverage_priority"][:6])
-            lines.append(f"Coverage priority: {prio}")
+        lines = [f"{name.title()} ({'/'.join(types) or '-'})", f"Role: {role.title()} | BST: {bst}"]
+
+        # Weakness coverage and swap guidance (top priority)
         weaknesses = member.get("weaknesses") or []
-        if not weaknesses:
+        if not weaknesses and types and getattr(self, "matrix", None):
             try:
                 for atk in self.matrix.keys():
                     mult = defensive_multiplier(atk, types, self.matrix)
@@ -876,10 +876,9 @@ class App:
                 weaknesses = []
         if weaknesses:
             weaknesses.sort(key=lambda x: x[1], reverse=True)
-            weak = ", ".join(f"{w} x{mult}" for w, mult in weaknesses[:6])
-            lines.append(f"Weaknesses: {weak}")
-            lines.append("Weakness coverage by team:")
-            for w, mult in weaknesses[:6]:
+            lines.append("")
+            lines.append("Weakness coverage + swap options:")
+            for w, mult in weaknesses[:8]:
                 coverers = []
                 for ally in self.team:
                     ally_name = ally.get("name", "")
@@ -896,7 +895,12 @@ class App:
                         coverers.append(f"{ally_name.title()} (immune)")
                     elif a_mult < 1:
                         coverers.append(f"{ally_name.title()} (resist)")
-                lines.append(f" - {w} x{mult}: {', '.join(coverers) if coverers else 'none'}")
+                cover_text = ", ".join(coverers) if coverers else "no safe swap"
+                lines.append(f" - {w} x{mult}: {cover_text}")
+        else:
+            lines.append("")
+            lines.append("Weakness coverage + swap options: none (typing unavailable)")
+
         # Coverage vs team exposures
         exposures = set()
         try:
@@ -908,16 +912,10 @@ class App:
         if exposures:
             hits = exposures & se_hits
             neutral = {t for t in exposures if t not in hits and move_types}
-            lines.append("\nTeam exposures this mon helps with:")
-            lines.append(f" - Super-effective: {', '.join(sorted(hits)) or '—'}")
-            lines.append(f" - Neutral: {', '.join(sorted(neutral)) or '—'}")
-            # Unique coverage check
-            exposure_map = {}
-            try:
-                for c in (self.metrics.get("exposures") or []):
-                    exposure_map[c.get("attack")] = c
-            except Exception:
-                exposure_map = {}
+            lines.append("")
+            lines.append("Team exposures this mon helps with:")
+            lines.append(f" - Super-effective: {', '.join(sorted(hits)) or '-'}")
+            lines.append(f" - Neutral: {', '.join(sorted(neutral)) or '-'}")
             unique_hits = []
             for t in exposures:
                 coverers = []
@@ -933,9 +931,11 @@ class App:
                     unique_hits.append(t)
             if unique_hits:
                 lines.append(f" - Unique coverage: {', '.join(sorted(unique_hits))}")
-        # Move synthesis: role plan + needed coverage
+
+        # Role plan and coverage goals
         role_plan = ROLE_MOVE_MIX.get(role, DEFAULT_ROLE_MOVE_MIX)
-        lines.append(f"\nRole plan: {role_plan}")
+        lines.append("")
+        lines.append(f"Role plan: {role_plan}")
         needed_types = []
         try:
             raw_exposures = self.metrics.get("exposures") or []
@@ -947,48 +947,47 @@ class App:
         except Exception:
             needed_types = []
         if needed_types:
-            lines.append("Suggested coverage to add:")
+            lines.append("Coverage priorities for this slot:")
             for t, need in needed_types[:4]:
                 can_cover = t in se_hits or t in move_types or t in types
                 status = "already covered" if can_cover else "add a move of this type"
                 lines.append(f" - {t}: team need {need:.1f} -> {status}")
-            # Required elements for delta gains: expose what move types would most improve deltas
-            lines.append("Delta boosters (move types that help most):")
-            # Rank exposures by need; suggest adding move types that hit those SE
+            lines.append("Delta boosters:")
             for t, need in needed_types[:4]:
                 lines.append(f" - Add {t}-hitting move to reduce team exposure (need {need:.1f})")
+
         # Move build blueprint
-        lines.append("\nMove build blueprint:")
+        lines.append("")
+        lines.append("Move build blueprint:")
         slot_needs = []
-        # Always 1 STAB slot
         stab_types = types or []
-        slot_needs.append(("STAB", f"Use { '/'.join(stab_types) or 'type STAB'} aligned to role"))
-        # Coverage slots: prioritize needed exposures
+        slot_needs.append(("STAB", f"Use {'/'.join(stab_types) or 'type STAB'} aligned to role"))
         for t, need in needed_types[:2]:
             slot_needs.append(("Coverage", f"Cover {t} (team need {need:.1f})"))
         if len(slot_needs) < 3:
             slot_needs.append(("Coverage", "Cover any remaining exposure or high-SE type"))
-        # Utility slot
         slot_needs.append(("Utility", "Screen/heal/hazard or status control (per role)"))
         for label, desc in slot_needs[:4]:
             lines.append(f" - {label}: {desc}")
-        # Current moves grouped (even if empty)
+
         moves = member.get("suggested_moves", [])
         if moves:
-            lines.append("\nMoves:")
+            lines.append("")
+            lines.append("Moves:")
             for mv in moves[:8]:
                 cat = mv.get("cat", "")
                 cat_label = "Phys" if cat == "physical" else ("Spec" if cat == "special" else "Status")
                 lines.append(f" - {mv.get('name','?')} [{mv.get('type','-')}/{cat_label}]")
         cats = member.get("suggested_by_category") or {}
         if cats:
-            lines.append("\nBy category:")
+            lines.append("")
+            lines.append("By category:")
             for key, mv_list in cats.items():
                 nice = key.title()
                 mv_txt = ", ".join(
                     f"{m.get('name','?')} ({'Phys' if m.get('cat')=='physical' else 'Spec' if m.get('cat')=='special' else 'Status'})"
                     for m in mv_list[:4]
-                ) or "—"
+                ) or "-"
                 lines.append(f" - {nice}: {mv_txt}")
         txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
@@ -1054,7 +1053,7 @@ class App:
         if initial and self.metrics.get("scores"):
             sc = self.metrics["scores"]
             self.score_text_var.set(
-                f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100"
+                f"Overall {sc.get('overall','?')}/100 | Def {sc.get('defense','?')}/100 | Off {sc.get('offense','?')}/100 | Stack {sc.get('stack_overlap','?')}"
             )
             return
         self._ensure_types()
@@ -1104,7 +1103,7 @@ class App:
             "role_counts": role_counts,
             "upgrades": self.upgrades_raw,
         }
-        self.score_text_var.set(f"Overall {overall}/100 | Def {def_score}/100 | Off {off_score}/100")
+        self.score_text_var.set(f"Overall {overall}/100 | Def {def_score}/100 | Off {off_score}/100 | Stack {stack_overlap}")
         if not initial:
             self._render_payload_panel()
 def _apply_tracing():
