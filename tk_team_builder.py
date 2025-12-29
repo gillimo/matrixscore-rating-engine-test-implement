@@ -720,8 +720,8 @@ class App:
         lines.append("Coaching Guide")
         lines.append("Focus: close exposures, broaden coverage, balance roles.")
         if scores:
-            lines.append("
-Score snapshot:")
+            lines.append("")
+            lines.append("Score snapshot:")
             lines.append(
                 f" - Overall {scores.get('overall','?')}/100 (Def {scores.get('defense','?')}, Off {scores.get('offense','?')}, Headroom {scores.get('delta_headroom','?')})"
             )
@@ -732,10 +732,13 @@ Score snapshot:")
             lines.append(
                 f" - Stack overlap: {scores.get('stack_overlap','?')} | Shared score: {scores.get('shared','?')} | Best defensive delta: {scores.get('best_defensive_delta','?')}"
             )
+
         exposures = metrics.get("exposures") or []
+        cover_map = {}
+        unique = []
         if exposures:
-            lines.append("
-Priority risks:")
+            lines.append("")
+            lines.append("Priority risks:")
             ranked = []
             for c in exposures:
                 need = (c.get("weak", 0) or 0) - ((c.get("resist", 0) or 0) + (c.get("immune", 0) or 0))
@@ -746,8 +749,6 @@ Priority risks:")
                     f" - {c.get('attack')}: need {need:.1f} (weak {c.get('weak')}, resist {c.get('resist')}, immune {c.get('immune')})"
                 )
             if metrics.get("team"):
-                unique = []
-                cover_map = {}
                 for c in exposures:
                     t = c.get("attack")
                     coverers = []
@@ -760,33 +761,63 @@ Priority risks:")
                     if len(coverers) == 1:
                         unique.append(f"{t} -> {coverers[0]}")
                 if cover_map:
-                    lines.append("
-Coverage accountability:")
+                    lines.append("")
+                    lines.append("Coverage accountability:")
                     for t, coverers in cover_map.items():
                         preview = ", ".join(coverers[:3]) if coverers else "none"
                         lines.append(f" - {t}: {preview}")
                 if unique:
-                    lines.append("
-Unique coverage (single points of failure):")
+                    lines.append("")
+                    lines.append("Unique coverage (single points of failure):")
                     for u in unique:
                         lines.append(f" - {u}")
+
         roles = metrics.get("role_counts") or {}
         if roles:
-            lines.append("
-Role balance:")
+            lines.append("")
+            lines.append("Role balance:")
             for r, cnt in roles.items():
                 alert = " (stacked)" if cnt >= 3 else ""
                 lines.append(f" - {r}: {cnt}{alert}")
+
+        if metrics.get("team"):
+            anchors = {}
+            for item in unique:
+                try:
+                    t, name = item.split(" -> ", 1)
+                except ValueError:
+                    continue
+                anchors.setdefault(name, []).append(t)
+            if not anchors:
+                ranked = []
+                for entry in metrics.get("team", []):
+                    try:
+                        score = float(entry.get("stack_contrib", 0))
+                    except Exception:
+                        score = 0.0
+                    ranked.append((score, entry.get("name", "")))
+                ranked.sort(reverse=True)
+                for score, name in ranked[:2]:
+                    if name:
+                        anchors.setdefault(name, []).append("team stability")
+            if anchors:
+                lines.append("")
+                lines.append("Critical anchors:")
+                for name, reasons in anchors.items():
+                    reason_txt = ", ".join(reasons)
+                    lines.append(f" - {name.title()}: anchors {reason_txt}")
+
         upgrades = metrics.get("upgrades") or []
         if upgrades:
-            lines.append("
-Upgrade ideas (if you want to swap a slot):")
+            lines.append("")
+            lines.append("Upgrade ideas (if you want to swap a slot):")
             for line in upgrades:
                 lines.append(f" - {line}")
+
         team_entries = metrics.get("team", [])
         if team_entries:
-            lines.append("
-Slot coaching:")
+            lines.append("")
+            lines.append("Slot coaching:")
             for entry in team_entries:
                 nm = entry.get("name", "").title()
                 role = entry.get("role", "n/a")
@@ -796,9 +827,10 @@ Slot coaching:")
                 lines.append(
                     f" - {nm} [{role}]: align {align}/100; stack {stack}; coverage types: {move_types or 'none'}"
                 )
+
         if exposures:
-            lines.append("
-Next actions:")
+            lines.append("")
+            lines.append("Next actions:")
             top_exposures = []
             for c in exposures:
                 need = (c.get("weak", 0) or 0) - ((c.get("resist", 0) or 0) + (c.get("immune", 0) or 0))
@@ -813,10 +845,10 @@ Next actions:")
                 if stacked:
                     lines.append(f" - Balance roles (too many {', '.join(stacked)}).")
             lines.append(" - Verify each slot has a clear role plan and 4 move slots filled.")
+
         if not metrics:
             lines.append("No metrics available in payload.")
-        txt.insert("1.0", "
-".join(lines))
+        txt.insert("1.0", "\n".join(lines))
         txt.config(state="disabled")
 
     def _show_details(self, member):
@@ -833,9 +865,38 @@ Next actions:")
         if member.get("coverage_priority"):
             prio = ", ".join(f"{t} ({w})" for t, w in member["coverage_priority"][:6])
             lines.append(f"Coverage priority: {prio}")
-        if member.get("weaknesses"):
-            weak = ", ".join(f"{w} x{mult}" for w, mult in member["weaknesses"][:6])
+        weaknesses = member.get("weaknesses") or []
+        if not weaknesses:
+            try:
+                for atk in self.matrix.keys():
+                    mult = defensive_multiplier(atk, types, self.matrix)
+                    if mult > 1:
+                        weaknesses.append((atk, mult))
+            except Exception:
+                weaknesses = []
+        if weaknesses:
+            weaknesses.sort(key=lambda x: x[1], reverse=True)
+            weak = ", ".join(f"{w} x{mult}" for w, mult in weaknesses[:6])
             lines.append(f"Weaknesses: {weak}")
+            lines.append("Weakness coverage by team:")
+            for w, mult in weaknesses[:6]:
+                coverers = []
+                for ally in self.team:
+                    ally_name = ally.get("name", "")
+                    if ally_name and ally_name.lower() == name.lower():
+                        continue
+                    ally_types = ally.get("types") or []
+                    if not ally_types:
+                        continue
+                    try:
+                        a_mult = defensive_multiplier(w, ally_types, self.matrix)
+                    except Exception:
+                        a_mult = 1.0
+                    if a_mult == 0:
+                        coverers.append(f"{ally_name.title()} (immune)")
+                    elif a_mult < 1:
+                        coverers.append(f"{ally_name.title()} (resist)")
+                lines.append(f" - {w} x{mult}: {', '.join(coverers) if coverers else 'none'}")
         # Coverage vs team exposures
         exposures = set()
         try:
