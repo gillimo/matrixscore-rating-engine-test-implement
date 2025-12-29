@@ -1492,6 +1492,12 @@ def pick_moves(
                 return "stab_offense"
             return "coverage_offense"
 
+    def _best_stab_for_type(stab_type):
+        pick = next((m for m in stab_sorted if m["type"] == stab_type), None)
+        if pick:
+            return pick
+        return next((m for m in candidate_moves if m["type"] == stab_type), None)
+
     suggestions = []
     # Ensure self-weak typings (ghost/dragon) carry STAB of that type; this is the highest priority.
     self_weak_types = set(types) & SELF_WEAK_TYPES
@@ -1501,14 +1507,15 @@ def pick_moves(
             if fallback and fallback not in suggestions:
                 suggestions.append(fallback)
 
-    # Dual-typing rule: ensure at least one STAB move for each type if available.
-    if len(types) == 2:
-        for t in types:
-            stab_pick = next((m for m in stab_sorted if m["type"] == t), None)
-            if not stab_pick:
-                stab_pick = next((m for m in candidate_moves if m["type"] == t), None)
-            if stab_pick and stab_pick not in suggestions:
-                suggestions.append(stab_pick)
+    # Require at least one STAB per type (mono or dual) before role draft logic.
+    required_stabs = []
+    for t in types:
+        stab_pick = _best_stab_for_type(t)
+        if stab_pick and stab_pick not in required_stabs:
+            required_stabs.append(stab_pick)
+    for m in required_stabs:
+        if m not in suggestions:
+            suggestions.append(m)
 
     # Role-specific priorities
     if role == "sweeper":
@@ -1626,6 +1633,14 @@ def pick_moves(
         final_moves.append(m)
         if len(final_moves) >= 4:
             break
+    # Enforce required STABs by replacing lowest-priority moves if needed.
+    if required_stabs:
+        required_names = [m["name"] for m in required_stabs if m]
+        missing = [m for m in required_stabs if m and m["name"] not in {mv["name"] for mv in final_moves}]
+        if missing:
+            preserved = [m for m in final_moves if m["name"] in required_names]
+            remaining = [m for m in final_moves if m["name"] not in {mv["name"] for mv in preserved}]
+            final_moves = (preserved + missing + remaining)[:4]
     # If still short, fill from best coverage/STAB/utility
     if len(final_moves) < 4:
         for m in cov_sorted + stab_sorted + stat_sorted:
@@ -1648,17 +1663,10 @@ def pick_moves(
             break
     if not draft_board:
         draft_board = final_moves[:]
-    if len(types) == 2:
-        required_stabs = []
-        for t in types:
-            stab_pick = next((m for m in stab_sorted if m["type"] == t), None)
-            if not stab_pick:
-                stab_pick = next((m for m in candidate_moves if m["type"] == t), None)
-            if stab_pick and stab_pick["name"] not in {m["name"] for m in required_stabs}:
-                required_stabs.append(stab_pick)
-        if required_stabs:
-            existing = [m for m in draft_board if m["name"] not in {r["name"] for r in required_stabs}]
-            draft_board = (required_stabs + existing)[:12]
+    if required_stabs:
+        required_names = {m["name"] for m in required_stabs if m}
+        existing = [m for m in draft_board if m["name"] not in required_names]
+        draft_board = (required_stabs + existing)[:12]
 
     # Alignment score: how well moves fit role priorities
     role_weights = {
