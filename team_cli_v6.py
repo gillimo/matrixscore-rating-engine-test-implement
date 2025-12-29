@@ -2371,9 +2371,9 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
     (defensive score already captures heavy stacking impact).
     """
-    delta_penalty = 0.4 * (best_defensive_delta + best_offense_gap)
+    delta_penalty = 0.25 * (best_defensive_delta + best_offense_gap)
     stack_penalty = 0.0
-    shared_penalty = max(0, 100 - shared_score) * 0.12
+    shared_penalty = max(0, 100 - shared_score) * 0.08
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
 
