@@ -1735,9 +1735,12 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
                 continue
             combos.append([t, other])
     else:
+        combos.append([type_filters[0]])
+        combos.append([type_filters[1]])
         combos.append(type_filters[:2])
     seen = set()
     scored = []
+    per_combo_limit = 1 if len(type_filters) == 2 else limit
     for combo in combos:
         key = tuple(sorted(combo))
         if key in seen:
@@ -1767,19 +1770,20 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
         if not opts:
             continue
         # Speed-first candidate selection for this typing pool.
-        fastest = max(opts, key=pokemon_speed_stat)
-        try:
-            ptypes = fetch_pokemon_typing(fastest)
-        except Exception:
-            ptypes = combo
-        speed = pokemon_speed_stat(fastest)
-        delta, _sim_score, _base = typing_delta(
-            team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
-        )
-        # Use speed as primary ranking, then defensive delta.
-        def_gain = delta
-        off_gain = 0.0
-        scored.append(((speed, def_gain), fastest, ptypes, def_gain, off_gain))
+        ranked = sorted(opts, key=pokemon_speed_stat, reverse=True)[:per_combo_limit]
+        for fastest in ranked:
+            try:
+                ptypes = fetch_pokemon_typing(fastest)
+            except Exception:
+                ptypes = combo
+            speed = pokemon_speed_stat(fastest)
+            delta, _sim_score, _base = typing_delta(
+                team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
+            )
+            # Use speed as primary ranking, then defensive delta.
+            def_gain = delta
+            off_gain = 0.0
+            scored.append(((speed, def_gain), fastest, ptypes, def_gain, off_gain))
     scored.sort(key=lambda x: (x[0][0], x[0][1]), reverse=True)
     return scored[:limit]
 
