@@ -892,10 +892,17 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
     resist_gain = 0
     new_weak = 0
     new_resist = 0
+    base_net_exposed = 0
+    sim_net_exposed = 0
+    exposed_gap_reduction = 0.0
     for sc in sim_cov:
         bc = base_cov_map.get(sc["attack"], {"weak": 0, "resist": 0, "immune": 0})
         was_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
         now_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
+        if was_exposed:
+            base_net_exposed += 1
+        if now_exposed:
+            sim_net_exposed += 1
         if now_exposed and not was_exposed:
             new_exposed += 1
         if was_exposed and sc["immune"] > bc["immune"]:
@@ -905,9 +912,18 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
         # Track net resist vs weak creation
         new_weak += max(0, sc["weak"] - bc["weak"])
         new_resist += max(0, sc["resist"] - bc["resist"])
+        if was_exposed:
+            base_gap = bc["weak"] - (bc["resist"] + bc["immune"])
+            sim_gap = sc["weak"] - (sc["resist"] + sc["immune"])
+            if sim_gap < base_gap:
+                exposed_gap_reduction += (base_gap - sim_gap)
     stack_delta = stack_overlap_penalty(sim_cov) - stack_overlap_penalty(base_cov)
     penalty = new_exposed * 16 + max(0, stack_delta) * 12 + max(0, new_weak - new_resist) * 7
-    bonus = immune_gain * 12 + resist_gain * 5 + max(0, new_resist - new_weak) * 2
+    if base_net_exposed > 0 and sim_net_exposed >= base_net_exposed:
+        penalty += 10
+    if sim_net_exposed > base_net_exposed:
+        penalty += 6 * (sim_net_exposed - base_net_exposed)
+    bonus = immune_gain * 12 + resist_gain * 5 + exposed_gap_reduction * 6 + max(0, new_resist - new_weak) * 2
     sim_score = sim_score - penalty + bonus
     return sim_score - base_score, sim_score, base_score
 
