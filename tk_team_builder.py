@@ -811,8 +811,25 @@ class App:
         if upgrades:
             lines.append("")
             lines.append("Upgrade ideas (if you want to swap a slot):")
-            for line in upgrades:
-                lines.append(f" - {line}")
+            # Determine weakest slots for swap guidance.
+            drop_order = []
+            try:
+                entries = metrics.get("team", []) or []
+                for entry in entries:
+                    name = entry.get("name", "")
+                    try:
+                        score = float(entry.get("stack_contrib", 0))
+                    except Exception:
+                        score = 0.0
+                    if name:
+                        drop_order.append((score, name))
+                drop_order.sort(key=lambda x: x[0])
+            except Exception:
+                drop_order = []
+            drop_list = [name.title() for _score, name in drop_order]
+            for idx, line in enumerate(upgrades):
+                drop_hint = drop_list[idx] if idx < len(drop_list) else (drop_list[0] if drop_list else "lowest impact slot")
+                lines.append(f" - {line} | drop: {drop_hint}")
 
         team_entries = metrics.get("team", [])
         if team_entries:
