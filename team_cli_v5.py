@@ -37,7 +37,7 @@ TYPE_CACHE_PATH = Path(__file__).with_name("type_chart_cache.json")
 DRAFT_CACHE_PATH = Path(__file__).with_name("draft_cache.json")
 TYPE_POKEMON_CACHE_PATH = Path(__file__).with_name("type_pokemon_cache.json")
 FINAL_FORMS_CACHE_PATH = Path(__file__).with_name("final_forms_cache.json")
-LOG_FOOTER = "Permissions: full access to OneDrive/Desktop/teambuilder_v5 granted by user on 2025-12-17."
+LOG_FOOTER = "Permissions: full access to OneDrive/Desktop/teambuilder_v2 granted by user on 2025-12-12. Signed: Atlas"
 VERBOSE = False  # enable for detailed loop progress during test runs
 TRACE_FUNCTIONS = False  # tracing disabled by default; enable for detailed logs
 HARNESS_SMOKE = os.environ.get("TEAM_HARNESS_SMOKE", "0") == "1" or "--harness-smoke" in sys.argv
@@ -424,27 +424,6 @@ def pokemon_defense_stat_total(name: str):
         return 0
 
 
-def pokemon_speed_stat(name: str):
-    """Return base Speed stat for speed-based scoring adjustments."""
-    key = (name or "").lower()
-    if not key:
-        return 0
-    try:
-        if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
-            res.raise_for_status()
-            POKEMON_CACHE[key] = res.json()
-        data = POKEMON_CACHE.get(key) or {}
-        stats = data.get("stats") or []
-        for s in stats:
-            stat_name = (s.get("stat") or {}).get("name", "")
-            if stat_name == "speed":
-                return s.get("base_stat", 0)
-    except Exception:
-        return 0
-    return 0
-
-
 def _get_pokemon_stat_total_fn(key: str):
     """Helper to return the correct stat total function based on key."""
     if key == "defense":
@@ -748,20 +727,48 @@ def compute_coverage(team, chart, attack_types):
 
 
 def typing_score(cov):
-    # Defense score is strictly about exposed holes.
-    # If nothing is exposed, defense is perfect regardless of stack overlap.
-    exposure_total = sum(max(0, c["weak"] - (c["resist"] + c["immune"])) for c in cov)
-    if exposure_total == 0:
-        return 100
-    def_score = 100 - 10 * exposure_total
+    total_weak = sum(c["weak"] for c in cov)
+    total_resist = sum(c["resist"] for c in cov)
+    total_immune = sum(c["immune"] for c in cov)
+    net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
+    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+    # Reward immunity to exposed types (heavier than generic immunity)
+    top_exposed = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    exposed_immunes = sum(c["immune"] for c in top_exposed)
+    # Balanced scoring: weaknesses and exposed types penalize; resist/immune reward
+    def_score = (
+        100
+        - 2.1 * total_weak
+        + 1.6 * total_resist
+        + 4.0 * total_immune
+        + 7.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
+        - 14 * net_exposed
+        - 12 * stack_overlap  # heavy penalty, but less than net-exposed
+    )
     return max(0, min(100, int(def_score)))
 
 
 def typing_score_display(cov):
-    exposure_total = sum(max(0, c["weak"] - (c["resist"] + c["immune"])) for c in cov)
-    if exposure_total == 0:
-        return 100
-    def_score = 100 - 10 * exposure_total
+    total_weak = sum(c["weak"] for c in cov)
+    total_resist = sum(c["resist"] for c in cov)
+    total_immune = sum(c["immune"] for c in cov)
+    net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
+    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+    top_exposed = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    exposed_immunes = sum(c["immune"] for c in top_exposed)
+    covered_stack = sum(
+        max(0, (c["resist"] + c["immune"]) - c["weak"]) for c in cov if c["weak"] > 1
+    )
+    def_score = (
+        100
+        - 2.1 * total_weak
+        + 2.0 * total_resist
+        + 4.5 * total_immune
+        + 7.5 * exposed_immunes
+        + 4.0 * covered_stack
+        - 18 * net_exposed
+        - 5 * stack_overlap
+    )
     return max(0, min(100, int(def_score)))
 
 
@@ -803,7 +810,7 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
     sim_score = typing_score(sim_cov)
     # Penalize newly introduced exposures/stacking; reward immunizing/resisting exposed types.
     base_cov_map = {c["attack"]: c for c in base_cov}
-    new_exposed = 0.0
+    new_exposed = 0
     immune_gain = 0
     resist_gain = 0
     new_weak = 0
@@ -813,14 +820,7 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
         was_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
         now_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
         if now_exposed and not was_exposed:
-            # If we already hard-cover this type with immunities, don't count it as new exposure.
-            if bc["immune"] > 0:
-                pass
-            # If we already have more resists than weaknesses, discount the exposure.
-            elif bc["resist"] > bc["weak"]:
-                new_exposed += 0.5
-            else:
-                new_exposed += 1.0
+            new_exposed += 1
         if was_exposed and sc["immune"] > bc["immune"]:
             immune_gain += 1
         if was_exposed and sc["resist"] > bc["resist"]:
@@ -833,23 +833,6 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
     bonus = immune_gain * 10 + resist_gain * 4 + max(0, new_resist - new_weak) * 2
     sim_score = sim_score - penalty + bonus
     return sim_score - base_score, sim_score, base_score
-
-
-def _weighted_new_exposed(base_cov, sim_cov):
-    base_cov_map = {c["attack"]: c for c in base_cov}
-    new_exposed = 0.0
-    for sc in sim_cov:
-        bc = base_cov_map.get(sc["attack"], {"weak": 0, "resist": 0, "immune": 0})
-        was_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
-        now_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
-        if now_exposed and not was_exposed:
-            if bc["immune"] > 0:
-                continue
-            if bc["resist"] > bc["weak"]:
-                new_exposed += 0.5
-            else:
-                new_exposed += 1.0
-    return new_exposed
 
 
 def best_defensive_improvement(team, chart, attack_types):
@@ -1485,106 +1468,10 @@ def suggestion_buckets(team, cov, chart, attack_types):
         return lines, best_defensive_delta_available
 
 
-def _risky_fallback_offerings(team, chart, attack_types, defense_choice):
-    base_cov = compute_coverage(team, chart, attack_types)
-    base_cov_map = {c["attack"]: c for c in base_cov}
-    fallback_ranked = []
-    for pname in defense_choice.get("candidates") or []:
-        try:
-            ptypes = fetch_pokemon_typing(pname)
-        except Exception:
-            ptypes = defense_choice.get("types") or []
-        sim_cov = compute_coverage(team + [{"name": pname, "types": ptypes, "source": "sim"}], chart, attack_types)
-        new_exposed_weighted = _weighted_new_exposed(base_cov, sim_cov)
-        # Also block picks that increase weakness on already-exposed types unless over-covered.
-        worsens_exposed = False
-        for sc in sim_cov:
-            bc = base_cov_map.get(sc["attack"])
-            if not bc:
-                continue
-            already_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
-            if not already_exposed:
-                continue
-            if bc["immune"] > 0:
-                continue
-            if bc["resist"] > bc["weak"]:
-                continue
-            if sc["weak"] > bc["weak"]:
-                worsens_exposed = True
-                break
-        # Fallback ranking: prefer typings whose weaknesses are already covered by team immunities.
-        immune_cover = 0.0
-        for atk_type in attack_types:
-            mult = defensive_multiplier(atk_type, ptypes, chart)
-            if mult > 1:
-                immune_cover += base_cov_map.get(atk_type, {}).get("immune", 0) * mult
-        fallback_ranked.append((worsens_exposed, -immune_cover, new_exposed_weighted, pname))
-    fallback_ranked.sort()
-    fallback_names = [p for _w, _ic, _ne, p in fallback_ranked[:6]]
-    immune_counts = {c["attack"]: c["immune"] for c in base_cov}
-    resist_counts = {c["attack"]: c["resist"] for c in base_cov}
-    top_immune = sorted(immune_counts.items(), key=lambda x: x[1], reverse=True)
-    top_resist = sorted(resist_counts.items(), key=lambda x: x[1], reverse=True)
-    immune_txt = ", ".join(f"{t} x{n}" for t, n in top_immune[:2] if n > 0) or "none"
-    resist_txt = ", ".join(f"{t} x{n}" for t, n in top_resist[:2] if n > 0) or "none"
-    reason = f"Risky pick fallback: no safe adds. Leaning into strengths (immunities: {immune_txt}; resists: {resist_txt})."
-    return fallback_names, reason
-
-
 def _preview_autopick(team, chart, attack_types):
     defense_choice = get_best_defensive_candidates(team, chart, attack_types)
     if not defense_choice:
         return None
-    # Prefer candidates that do not create weighted new exposures (immune or over-resisted types are safe).
-    base_cov = compute_coverage(team, chart, attack_types)
-    base_cov_map = {c["attack"]: c for c in base_cov}
-    safe_candidates = []
-    fallback_reason = None
-    for pname in defense_choice.get("candidates") or []:
-        try:
-            ptypes = fetch_pokemon_typing(pname)
-        except Exception:
-            ptypes = defense_choice.get("types") or []
-        sim_cov = compute_coverage(team + [{"name": pname, "types": ptypes, "source": "sim"}], chart, attack_types)
-        new_exposed_weighted = _weighted_new_exposed(base_cov, sim_cov)
-        # Also block picks that increase weakness on already-exposed types unless over-covered.
-        worsens_exposed = False
-        for sc in sim_cov:
-            bc = base_cov_map.get(sc["attack"])
-            if not bc:
-                continue
-            already_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
-            if not already_exposed:
-                continue
-            if bc["immune"] > 0:
-                continue
-            if bc["resist"] > bc["weak"]:
-                continue
-            if sc["weak"] > bc["weak"]:
-                worsens_exposed = True
-                break
-        if new_exposed_weighted == 0 and not worsens_exposed:
-            safe_candidates.append(pname)
-            continue
-    if safe_candidates:
-        defense_choice = dict(defense_choice)
-        defense_choice["candidates"] = safe_candidates
-        defense_choice["choices"] = [defense_choice]
-    else:
-        if defense_choice.get("delta", 0) <= 0:
-            safety = _top_safety_typings(team, chart, attack_types, top_n=1, preview_limit=6)
-            if safety:
-                _score, _risk, label, _preview, opts = safety[0]
-                fallback_reason = f"Safety pick: weaknesses already covered -> {label}"
-                defense_choice = dict(defense_choice)
-                defense_choice["candidates"] = opts[:6]
-                defense_choice["choices"] = [defense_choice]
-            else:
-                fallback_names, fallback_reason = _risky_fallback_offerings(team, chart, attack_types, defense_choice)
-                if fallback_names:
-                    defense_choice = dict(defense_choice)
-                    defense_choice["candidates"] = fallback_names
-                    defense_choice["choices"] = [defense_choice]
     pick = pick_offense_addition(
         team,
         chart,
@@ -1594,8 +1481,6 @@ def _preview_autopick(team, chart, attack_types):
     )
     if not pick and defense_choice.get("delta", 0) > 0:
         pick = pick_defensive_addition(team, chart, attack_types, silent=True)
-    if pick and fallback_reason:
-        pick = (pick[0], pick[1], pick[2], pick[3], pick[4], pick[5], f"{fallback_reason} {pick[6]}")
     return pick
 
 
@@ -1644,70 +1529,6 @@ def _top_defensive_typings(team, chart, attack_types, top_n: int = 5):
     return results
 
 
-def _top_safety_typings(team, chart, attack_types, top_n=3, preview_limit: int = 10):
-    """Return typings that are safest using current defensive formulas."""
-    base_cov = compute_coverage(team, chart, attack_types)
-    base_score = typing_score(base_cov)
-
-    entries = []
-    for t in attack_types:
-        sim_cov = compute_coverage(team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types)
-        _delta, sim_score, _base = typing_delta(
-            team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score
-        )
-        risk = _weighted_new_exposed(base_cov, sim_cov)
-        weaknesses = sum(1 for c in sim_cov if c["weak"] > 0)
-        opts = fetch_single_type_candidates(
-            t,
-            current_team=team,
-            version_group=VERSION_GROUP,
-            chart=chart,
-            attack_types=attack_types,
-            stat_sort_key="defense",
-        )
-        if opts:
-            entries.append((sim_score, risk, weaknesses, f"{t}", opts))
-    for i in range(len(attack_types)):
-        for j in range(i + 1, len(attack_types)):
-            pair = [attack_types[i], attack_types[j]]
-            sim_cov = compute_coverage(team + [{"name": "sim", "types": pair, "source": "sim"}], chart, attack_types)
-            _delta, sim_score, _base = typing_delta(
-                team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score
-            )
-            risk = _weighted_new_exposed(base_cov, sim_cov)
-            weaknesses = sum(1 for c in sim_cov if c["weak"] > 0)
-            opts = fetch_dual_candidates(
-                pair[0],
-                pair[1],
-                current_team=team,
-                version_group=VERSION_GROUP,
-                chart=chart,
-                attack_types=attack_types,
-                stat_sort_key="defense",
-            )
-            if opts:
-                label = f"{pair[0]} + {pair[1]}"
-                entries.append((sim_score, risk, weaknesses, label, opts))
-    entries.sort(key=lambda x: (-x[0], x[1], x[2], x[3]))
-    if top_n is None:
-        sliced = entries
-    else:
-        sliced = entries[:top_n]
-    results = []
-    for score, risk, _weaknesses, label, opts in sliced:
-        preview = ", ".join(opts[:preview_limit])
-        if len(opts) > preview_limit:
-            preview = f"{preview}, +{len(opts) - preview_limit} more"
-        results.append((score, risk, label, preview, opts))
-    return results
-
-
-def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
-    """Return all typing adds that introduce no new exposure risk."""
-    entries = _top_safety_typings(team, chart, attack_types, top_n=None, preview_limit=preview_limit)
-    return [entry for entry in entries if entry[1] <= 0]
-
-
 def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
     if not team:
         return "Add at least one Pokemon to see defense-focused suggestions."
@@ -1724,8 +1545,6 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         reason = _clean_reason(_reason)
         if reason:
             lines.append(f"\033[96mWhy: {reason}\033[0m")
-            if "Risky pick fallback" in reason:
-                lines.append(f"\033[91m{reason.split(' Risky pick fallback:')[-1].strip() if 'Risky pick fallback:' in reason else reason}\033[0m")
         cov = compute_coverage(team, chart, attack_types)
         exposure_gap = lambda c: c["weak"] - (c["resist"] + c["immune"])
         top_needs = [c for c in cov if exposure_gap(c) > 0]
@@ -1754,61 +1573,10 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
             pass
     else:
         lines.append("\033[96mAutopick next (if you type 'finalize'): none (no positive defensive options)\033[0m")
-        # Risky fallback offerings when no positive deltas exist.
-        try:
-            defense_choice = get_best_defensive_candidates(team, chart, attack_types)
-            if defense_choice.get("delta", 0) <= 0:
-                safety = _top_safety_typings(team, chart, attack_types, top_n=1, preview_limit=preview_limit)
-                if not safety:
-                    fallback_names, reason = _risky_fallback_offerings(team, chart, attack_types, defense_choice)
-                    if fallback_names:
-                        lines.append(f"\033[91m{reason}\033[0m")
-                        lines.append("\033[91mRisky flow offerings (lean into strengths):\033[0m")
-                        for idx, name in enumerate(fallback_names, start=1):
-                            lines.append(f"\033[91m {idx}) {name}\033[0m")
-        except Exception:
-            pass
-
-    # Covered typings summary (resist + immune) with covering members.
-    try:
-        covered_entries = []
-        for atk in attack_types:
-            names = []
-            immune_count = 0
-            for member in team:
-                ptypes = member.get("types") or []
-                if not ptypes:
-                    continue
-                mult = defensive_multiplier(atk, ptypes, chart)
-                if mult == 0:
-                    names.append((member.get("name") or "unknown").title())
-                    immune_count += 1
-                elif mult < 1:
-                    names.append((member.get("name") or "unknown").title())
-            if names:
-                covered_entries.append((len(names), immune_count, atk, names))
-        covered_entries.sort(key=lambda x: (-x[0], -x[1], x[2]))
-        top_covered = covered_entries[:3]
-        if top_covered:
-            parts = []
-            for count, _immune_count, atk, names in top_covered:
-                preview = ", ".join(names[:4])
-                if len(names) > 4:
-                    preview = f"{preview}, +{len(names) - 4} more"
-                parts.append(f"{atk} ({count}: {preview})")
-            lines.append(f"\033[33mTypings you cover: {'; '.join(parts)}\033[0m")
-    except Exception:
-        pass
 
     top = _top_defensive_typings(team, chart, attack_types, top_n=top_n)
     if not top:
         lines.append("Top defensive typings: none (no positive deltas).")
-        # Even when no defensive deltas exist, show safest typings to guide late picks.
-        safety = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
-        if safety:
-            lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-            for idx, (score, risk, label, preview, _opts) in enumerate(safety, start=1):
-                lines.append(f"\033[33m {idx}) {label} score {score:+.0f} (risk {risk:.0f}) -> {preview}\033[0m")
         return "\n".join(lines)
 
     lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
@@ -1817,53 +1585,6 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         if len(opts) > preview_limit:
             preview = f"{preview}, +{len(opts) - preview_limit} more"
         lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
-    safety = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
-    if safety:
-        lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-        for idx, (score, risk, label, preview, _opts) in enumerate(safety, start=1):
-            lines.append(f"\033[33m {idx}) {label} score {score:+.0f} (risk {risk:.0f}) -> {preview}\033[0m")
-    # If safe autopick is unavailable, surface risky fallback offerings instead of deltas.
-    try:
-        defense_choice = get_best_defensive_candidates(team, chart, attack_types)
-        if defense_choice:
-            base_cov = compute_coverage(team, chart, attack_types)
-            base_cov_map = {c["attack"]: c for c in base_cov}
-            safe_candidates = []
-            for pname in defense_choice.get("candidates") or []:
-                try:
-                    ptypes = fetch_pokemon_typing(pname)
-                except Exception:
-                    ptypes = defense_choice.get("types") or []
-                sim_cov = compute_coverage(team + [{"name": pname, "types": ptypes, "source": "sim"}], chart, attack_types)
-                if _weighted_new_exposed(base_cov, sim_cov) != 0:
-                    continue
-                worsens_exposed = False
-                for sc in sim_cov:
-                    bc = base_cov_map.get(sc["attack"])
-                    if not bc:
-                        continue
-                    already_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
-                    if not already_exposed:
-                        continue
-                    if bc["immune"] > 0 or bc["resist"] > bc["weak"]:
-                        continue
-                    if sc["weak"] > bc["weak"]:
-                        worsens_exposed = True
-                        break
-                if not worsens_exposed:
-                    safe_candidates.append(pname)
-        if not safe_candidates:
-            if defense_choice.get("delta", 0) <= 0:
-                safety = _top_safety_typings(team, chart, attack_types, top_n=1, preview_limit=preview_limit)
-                if not safety:
-                    fallback_names, reason = _risky_fallback_offerings(team, chart, attack_types, defense_choice)
-                    if fallback_names:
-                        lines.append(f"\033[91m{reason}\033[0m")
-                        lines.append("\033[91mRisky flow offerings (lean into strengths):\033[0m")
-                        for idx, name in enumerate(fallback_names, start=1):
-                            lines.append(f"\033[91m {idx}) {name}\033[0m")
-    except Exception:
-        pass
     return "\n".join(lines)
 
 
@@ -1907,7 +1628,6 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     def_score_raw = typing_score(cov)
     def_score = typing_score_display(cov)
-    def_score_raw = typing_score(cov)
     def_score_raw = typing_score(cov)
 
     # Rating: 100 when no positive delta; otherwise 100 minus the highest positive delta.
@@ -2148,14 +1868,9 @@ def compute_best_offense_gain(team, chart, attack_types):
             gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
             stat_total = pokemon_offense_stat_total(pname)
             bst_factor = max(0.75, min(1.45, 0.65 + stat_total / 350.0))
-            try:
-                spd = (fetch_pokemon_stats(pname) or {}).get("speed", 0)
-            except Exception:
-                spd = 0
-            speed_factor = max(0.85, min(1.2, 0.85 + spd / 500.0))
             se_factor = 1.0 + 0.08 * min(6, len(se_types))
             coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
-            ranked_gain = gain * gain_factor * bst_factor * speed_factor * se_factor * coverage_penalty
+            ranked_gain = gain * gain_factor * bst_factor * se_factor * coverage_penalty
             if ranked_gain > best_gain:
                 best_gain = ranked_gain
         except Exception:
@@ -2245,7 +1960,6 @@ def predict_overall(team, team_infos, chart, attack_types):
         chart,
         attack_types,
     )
-    def_score_raw = typing_score(cov)
     def_score = typing_score_display(cov)
     shared_score = shared_weak_score(cov)
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
@@ -2268,22 +1982,6 @@ def predict_overall(team, team_infos, chart, attack_types):
         shared_score,
         stack_overlap=stack_overlap,
     )
-    # Final score adjustment: if defense/offense are perfect and no headroom remains,
-    # apply a light speed penalty so slow teams don't auto-100 with heavy overlap.
-    avg_speed = 0.0
-    speed_count = 0
-    for info in team_infos:
-        name = info.get("name", "")
-        if not name:
-            continue
-        spd = pokemon_speed_stat(name)
-        if spd:
-            avg_speed += spd
-            speed_count += 1
-    avg_speed = avg_speed / max(1, speed_count)
-    if def_score == 100 and off_score == 100 and best_defensive_delta == 0 and best_offense_gap == 0:
-        speed_penalty = max(0.0, min(10.0, (80 - avg_speed) * 0.2))
-        overall = max(0, min(100, overall - speed_penalty))
     # Role balance penalty: gently nudge if we overstack one role (3+)
     role_counts = defaultdict(int)
     for info in team_infos:
@@ -2306,7 +2004,6 @@ def predict_overall(team, team_infos, chart, attack_types):
         "best_defensive_delta": best_defensive_delta,
         "cov": cov,
         "role_penalty": role_penalty,
-        "avg_speed": avg_speed,
     }
     return overall, components
 
@@ -2317,9 +2014,9 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
     (defensive score already captures heavy stacking impact).
     """
-    delta_penalty = 0.4 * (best_defensive_delta + best_offense_gap)
-    stack_penalty = 1.0 * stack_overlap
-    shared_penalty = max(0, 90 - shared_score) * 0.1
+    delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)
+    stack_penalty = 1.5 * stack_overlap
+    shared_penalty = max(0, 100 - shared_score) * 0.15
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
 
@@ -2845,12 +2542,6 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         f"Overall team rating: {overall}/100",
         f"Team base stats total: {stat_total}",
     ]
-    if def_score == 100 and off_score == 100 and best_defensive_delta == 0 and best_offense_gap == 0:
-        summary.append(f"Speed check: avg base Speed {avg_speed:.0f} (slow teams score lower despite closed holes).")
-    if def_score == 100 and off_score == 100 and shared_score < 80:
-        summary.append(
-            "\033[33mNote: Overall is pulled down by shared weaknesses (stack overlap), even with perfect offense/defense.\033[0m"
-        )
     return "\n".join(summary), scores
 
 
@@ -3161,13 +2852,9 @@ def main():
             print(defense_focus_report(team, chart, attack_types))
             # Red summary after each pick: roster, defense score, open weaknesses
             cov = compute_coverage(team, chart, attack_types)
-            open_weak = [
-                (c["attack"], c["weak"] - (c["resist"] + c["immune"]))
-                for c in cov
-                if c["weak"] > (c["resist"] + c["immune"])
-            ]
+            open_weak = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
             roster = ", ".join(m.get("name", "").title() for m in team if m.get("name"))
-            weak_text = ", ".join(f"{atk} ({gap:.1f})" for atk, gap in open_weak) if open_weak else "none"
+            weak_text = ", ".join(open_weak) if open_weak else "none"
             defense_text = "n/a"
             try:
                 infos = team_infos_from_cache(team)
@@ -3182,19 +2869,6 @@ def main():
             print(f"\033[31mTeam: {roster}\033[0m")
             print(f"\033[31mDefense score: {defense_text}\033[0m")
             print(f"\033[31mOpen weaknesses: {weak_text}\033[0m")
-            covered = sorted(
-                cov,
-                key=lambda c: (c["resist"] + c["immune"], c["attack"]),
-                reverse=True,
-            )
-            covered_top = [c for c in covered if (c["resist"] + c["immune"]) > 0][:3]
-            if covered_top:
-                covered_txt = ", ".join(
-                    f"{c['attack']} ({c['resist']+c['immune']})" for c in covered_top
-                )
-                print(f"\033[31mTypings you cover: {covered_txt}\033[0m")
-            else:
-                print("\033[31mTypings you cover: none\033[0m")
             if len(team) >= 6:
                 print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
             if finalize_after_add:
