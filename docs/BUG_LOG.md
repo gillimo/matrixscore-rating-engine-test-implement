@@ -4,6 +4,7 @@ Last triage: 2025-12-17 by Codex (Git/bookkeeping).
 Updated: Codex (2025-12-28).
 
 ### Active Bugs
+- ID: BUG-2025-12-28-003 | Title: _top_defensive_typings sort lambda crashes | Status: Fixed (Needs Verification) | Reported By: Atlas | Date: 2025-12-28 | Notes: IndexError from sort key referencing tuple index 3; sort now uses delta desc + type label.
 - ID: BUG-2025-12-28-002 | Title: NameError def_score_raw in predict_overall | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-28 | Notes: Demo run crashed at `predict_overall` because `def_score_raw` was undefined; set from `typing_score(cov)` before use.
 - ID: BUG-2025-12-28-001 | Title: Autopick returns none despite safe candidates | Status: Fixed (Needs Verification) | Reported By: Codex | Date: 2025-12-28 | Notes: Autopick printed "none (no positive defensive options)" while safe typing adds existed (see `logs/run_20251228_203302.log`); fallback now always returns a defensive pick.
 - ID: BUG-2025-12-12-002 | Title: Exposed weakness popup sometimes appears twice | Status: Active | Reported By: Atlas | Date: 2025-12-12 | Notes: Intermittent duplicate trigger from the coverage/exposure prompt path in the Tk flow; needs repro and event de-dupe.

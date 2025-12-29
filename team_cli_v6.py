@@ -1612,7 +1612,7 @@ def _top_defensive_typings(team, chart, attack_types, top_n: int = 5):
             delta, _, _ = typing_delta(team, pair, chart, attack_types, base_cov=base_cov, base_score=base_score)
             if delta > 0:
                 entries.append((delta, pair))
-    entries.sort(key=lambda x: (len(x[3].split(", ")) if x[3] else 0, -x[0], x[1]))
+    entries.sort(key=lambda x: (-x[0], ",".join(x[1])))
     results = []
     for delta, types in entries:
         if len(types) == 1:
