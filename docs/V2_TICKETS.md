@@ -96,7 +96,7 @@ Open feature tickets
 - **FT-2025-12-28-031 | Offensive delta headroom A-tier tuning (Completed)**  
   Normalize `compute_best_offense_gain` scaling to prevent inflation and make 0 truly mean no remaining offensive lift; keep current calculation flow.
 
-- **FT-2025-12-28-032 | Overall score A-tier tuning (Open)**  
+- **FT-2025-12-28-032 | Overall score A-tier tuning (Completed)**  
   Adjust overall weighting for delta penalties and shared penalty so strong, balanced teams land in expected bands (e.g., 83–85 for the clefable/mawile team, 92–94 for stacked ghosts) without changing structure.
 
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  

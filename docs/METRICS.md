@@ -53,8 +53,8 @@ Offensive delta headroom (compute_best_offense_gain)
 - Coverage penalty: `0.85` when neutral reach is near-complete but SE coverage is thin; else `1.0`.
 
 Overall score (overall_score)
-- `delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)`
-- `shared_penalty = max(0, 100 - shared_score) * 0.15`
+- `delta_penalty = 0.4 * (best_defensive_delta + best_offense_gap)`
+- `shared_penalty = max(0, 100 - shared_score) * 0.12`
 - `overall = 100 - delta_penalty - shared_penalty` (clamped 0..100)
 - Stack penalty is currently 0 (stacking is already captured in shared weakness).
 - Role balance penalty: after overall, subtract `0.5*(count-2)` for each role with 3+ members.
