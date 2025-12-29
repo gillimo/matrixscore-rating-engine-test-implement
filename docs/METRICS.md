@@ -20,8 +20,8 @@ Defense (display score)
 Defensive delta (typing_delta)
 - Base typing delta is `typing_score(sim) - typing_score(base)`.
 - Penalty/bonus adjustments:
-  - Penalty: `new_exposed*14 + max(0, stack_delta)*10 + max(0, new_weak - new_resist)*6`
-  - Bonus: `immune_gain*10 + resist_gain*4 + max(0, new_resist - new_weak)*2`
+  - Penalty: `new_exposed*16 + max(0, stack_delta)*12 + max(0, new_weak - new_resist)*7`
+  - Bonus: `immune_gain*12 + resist_gain*5 + max(0, new_resist - new_weak)*2`
   - `stack_delta = stack_overlap(sim) - stack_overlap(base)`
 
 Shared weakness score

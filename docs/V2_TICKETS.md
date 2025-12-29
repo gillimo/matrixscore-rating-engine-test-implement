@@ -90,7 +90,7 @@ Open feature tickets
 - **FT-2025-12-28-029 | Shared weakness score A-tier tuning (Completed)**  
   Rebalance overlap/stack/exposed penalties to avoid double‑punishing teams already penalized in defense, while keeping shared weaknesses a meaningful discriminator.
 
-- **FT-2025-12-28-030 | Defensive delta headroom A-tier tuning (Open)**  
+- **FT-2025-12-28-030 | Defensive delta headroom A-tier tuning (Completed)**  
   Refine `typing_delta` penalty/bonus coefficients to better penalize new exposures/stacking and reward closing exposed types, without changing the formula shape.
 
 - **FT-2025-12-28-031 | Offensive delta headroom A-tier tuning (Open)**  

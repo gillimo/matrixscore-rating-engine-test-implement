@@ -904,8 +904,8 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
         new_weak += max(0, sc["weak"] - bc["weak"])
         new_resist += max(0, sc["resist"] - bc["resist"])
     stack_delta = stack_overlap_penalty(sim_cov) - stack_overlap_penalty(base_cov)
-    penalty = new_exposed * 14 + max(0, stack_delta) * 10 + max(0, new_weak - new_resist) * 6
-    bonus = immune_gain * 10 + resist_gain * 4 + max(0, new_resist - new_weak) * 2
+    penalty = new_exposed * 16 + max(0, stack_delta) * 12 + max(0, new_weak - new_resist) * 7
+    bonus = immune_gain * 12 + resist_gain * 5 + max(0, new_resist - new_weak) * 2
     sim_score = sim_score - penalty + bonus
     return sim_score - base_score, sim_score, base_score
 
