@@ -1960,8 +1960,7 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     def_score_raw = typing_score(cov)
-    def_score = typing_score_display(cov)
-    def_score_raw = typing_score(cov)
+    def_score = typing_score(cov)
 
     # Rating: 100 when no positive delta; otherwise 100 minus the highest positive delta.
     rating_score = max(0, min(100, 100 - best_defensive_delta_available))
@@ -2041,7 +2040,7 @@ def _print_red_summary(team, chart, attack_types):
         defense_text = f"{_comps.get('defense', '?')}/100"
     except Exception:
         try:
-            def_only = typing_score_display(cov)
+            def_only = typing_score(cov)
             defense_text = f"{def_only}/100"
         except Exception:
             pass
@@ -2317,7 +2316,7 @@ def predict_overall(team, team_infos, chart, attack_types):
         attack_types,
     )
     def_score_raw = typing_score(cov)
-    def_score = typing_score_display(cov)
+    def_score = typing_score(cov)
     shared_score = shared_weak_score(cov)
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     best_defensive_delta = compute_best_defensive_delta(
@@ -2371,9 +2370,9 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
     (defensive score already captures heavy stacking impact).
     """
-    delta_penalty = 0.25 * (best_defensive_delta + best_offense_gap)
+    delta_penalty = 0.1 * (best_defensive_delta + best_offense_gap)
     stack_penalty = 0.0
-    shared_penalty = max(0, 100 - shared_score) * 0.08
+    shared_penalty = max(0, 100 - shared_score) * 0.04
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
 
@@ -2792,7 +2791,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
     total_resist = sum(c["resist"] for c in cov)
     total_immune = sum(c["immune"] for c in cov)
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    def_score = typing_score_display(cov)
+    def_score = typing_score(cov)
 
     shared_score = shared_weak_score(cov)
 

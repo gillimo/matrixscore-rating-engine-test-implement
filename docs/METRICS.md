@@ -12,10 +12,7 @@ Defense (typing_score)
   - If `net_exposed == 0`, defense returns 100; otherwise clamps to 0..99.
 
 Defense (display score)
-- Display variant is a slightly different formula used for summary output:
-  - `def_score = 100 - 2.1*total_weak + 1.6*total_resist + 4.0*total_immune + 7.0*exposed_immunes + 2.0*covered_stack - 14*net_exposed - 12*stack_overlap`
-  - `covered_stack = sum(max(0, resist+immune-weak) for attack types with weak > 1)`
-  - If `net_exposed == 0`, returns 100; otherwise clamps to 0..99.
+- Uses the same `typing_score` formula as the core defense score to keep the numbers consistent across UI surfaces.
 
 Defensive delta (typing_delta)
 - Base typing delta is `typing_score(sim) - typing_score(base)`.
@@ -54,8 +51,8 @@ Offensive delta headroom (compute_best_offense_gain)
 - Coverage penalty: `0.85` when neutral reach is near-complete but SE coverage is thin; else `1.0`.
 
 Overall score (overall_score)
-- `delta_penalty = 0.25 * (best_defensive_delta + best_offense_gap)`
-- `shared_penalty = max(0, 100 - shared_score) * 0.08`
+- `delta_penalty = 0.1 * (best_defensive_delta + best_offense_gap)`
+- `shared_penalty = max(0, 100 - shared_score) * 0.04`
 - `overall = 100 - delta_penalty - shared_penalty` (clamped 0..100)
 - Stack penalty is currently 0 (stacking is already captured in shared weakness).
 - Role balance penalty: after overall, subtract `0.5*(count-2)` for each role with 3+ members.
