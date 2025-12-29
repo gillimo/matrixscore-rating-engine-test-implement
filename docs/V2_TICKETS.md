@@ -81,6 +81,24 @@ Open feature tickets
 - **FT-2025-12-28-026 | Update METRICS.md to v6 formulas (Completed)**  
   Document the current defense/offense/shared/overall formulas and penalties in `team_cli_v6.py`.
 
+- **FT-2025-12-28-027 | Defense score A-tier tuning (Completed)**  
+  Retune defense weights (weak/resist/immune/exposed/stack) to reduce drift between `typing_score` and `typing_score_display`, keep 100 only when net_exposed==0, and preserve current structure while improving stability across stacked teams.
+
+- **FT-2025-12-28-028 | Offense score A-tier tuning (Open)**  
+  Adjust offense penalty/breadth bonus weights to ensure exposure coverage dominates, while rewarding true breadth without inflating scores; keep structure of `offense_score_with_bonuses`.
+
+- **FT-2025-12-28-029 | Shared weakness score A-tier tuning (Open)**  
+  Rebalance overlap/stack/exposed penalties to avoid double‑punishing teams already penalized in defense, while keeping shared weaknesses a meaningful discriminator.
+
+- **FT-2025-12-28-030 | Defensive delta headroom A-tier tuning (Open)**  
+  Refine `typing_delta` penalty/bonus coefficients to better penalize new exposures/stacking and reward closing exposed types, without changing the formula shape.
+
+- **FT-2025-12-28-031 | Offensive delta headroom A-tier tuning (Open)**  
+  Normalize `compute_best_offense_gain` scaling to prevent inflation and make 0 truly mean no remaining offensive lift; keep current calculation flow.
+
+- **FT-2025-12-28-032 | Overall score A-tier tuning (Open)**  
+  Adjust overall weighting for delta penalties and shared penalty so strong, balanced teams land in expected bands (e.g., 83–85 for the clefable/mawile team, 92–94 for stacked ghosts) without changing structure.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

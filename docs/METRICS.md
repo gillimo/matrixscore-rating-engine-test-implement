@@ -13,7 +13,7 @@ Defense (typing_score)
 
 Defense (display score)
 - Display variant is a slightly different formula used for summary output:
-  - `def_score = 100 - 2.1*total_weak + 2.0*total_resist + 4.5*total_immune + 7.5*exposed_immunes + 4.0*covered_stack - 18*net_exposed - 5*stack_overlap`
+  - `def_score = 100 - 2.1*total_weak + 1.6*total_resist + 4.0*total_immune + 7.0*exposed_immunes + 2.0*covered_stack - 14*net_exposed - 12*stack_overlap`
   - `covered_stack = sum(max(0, resist+immune-weak) for attack types with weak > 1)`
   - If `net_exposed == 0`, returns 100; otherwise clamps to 0..99.
 

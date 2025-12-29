@@ -835,12 +835,12 @@ def typing_score_display(cov):
     def_score = (
         100
         - 2.1 * total_weak
-        + 2.0 * total_resist
-        + 4.5 * total_immune
-        + 7.5 * exposed_immunes
-        + 4.0 * covered_stack
-        - 18 * net_exposed
-        - 5 * stack_overlap
+        + 1.6 * total_resist
+        + 4.0 * total_immune
+        + 7.0 * exposed_immunes
+        + 2.0 * covered_stack
+        - 14 * net_exposed
+        - 12 * stack_overlap
     )
     if net_exposed == 0:
         return 100
