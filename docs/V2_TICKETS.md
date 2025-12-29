@@ -27,6 +27,9 @@ Open feature tickets
 - **FT-2025-12-28-008 | Upgrade drop guidance (Completed)**  
   Show a suggested drop target alongside each upgrade idea in the coaching guide.
 
+- **FT-2025-12-28-009 | Reduce stack penalty in overall (Completed)**  
+  Lower the stack overlap penalty so stacked-ghost teams rate closer to 92-94.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 
