@@ -57,6 +57,9 @@ Open feature tickets
 - **FT-2025-12-28-018 | Dual-type filter shows both singles (Completed)**  
   When two elements are provided, show suggestions for each single type and the dual combo.
 
+- **FT-2025-12-28-019 | Type-only input handling (Completed)**  
+  Allow entering just element filters to show suggestions without requiring a Pokemon name.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

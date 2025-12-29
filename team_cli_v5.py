@@ -409,12 +409,22 @@ def fetch_pokemon_typing(name: str):
 def pokemon_base_stat_total(name: str):
     key = normalize_pokemon_name(name)
     if not key:
-    return 0
+        return 0
+    try:
+        if key not in POKEMON_CACHE:
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res.raise_for_status()
+            POKEMON_CACHE[key] = res.json()
+        data = POKEMON_CACHE.get(key) or {}
+        stats = data.get("stats") or []
+        return sum(s.get("base_stat", 0) for s in stats)
+    except Exception:
+        return 0
 
 
 def pokemon_speed_stat(name: str):
     """Return base Speed stat for a Pokemon (0 on failure)."""
-    key = (name or "").lower()
+    key = normalize_pokemon_name(name)
     if not key:
         return 0
     try:
@@ -431,16 +441,6 @@ def pokemon_speed_stat(name: str):
     except Exception:
         return 0
     return 0
-    try:
-        if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
-            res.raise_for_status()
-            POKEMON_CACHE[key] = res.json()
-        data = POKEMON_CACHE.get(key) or {}
-        stats = data.get("stats") or []
-        return sum(s.get("base_stat", 0) for s in stats)
-    except Exception:
-        return 0
 
 
 def pokemon_offense_stat_total(name: str):
@@ -3102,11 +3102,13 @@ def main():
 
         while True:
             raw = input("Add Pokemon name or type 'next': ").strip()
-            if not raw:
-                continue
             tokens = raw.split()
             tokens, type_filters = _extract_type_filters(tokens)
             raw = " ".join(tokens).strip()
+            if not raw:
+                if type_filters:
+                    _print_type_filtered_options(team, chart, attack_types, type_filters)
+                continue
             if raw.lower() == "next":
                 # If we have a full team, show checkpoint summary
                 if team:
