@@ -2895,10 +2895,14 @@ def final_team_rating(team_infos, cov, chart, attack_types):
     summary = []
     if perfect_team:
         summary.append(f"\033[33m{perfect_def}\033[0m")
+    exposed_list = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    exposed_note = ""
+    if exposed_list:
+        exposed_note = " (exposed: " + ", ".join(c["attack"] for c in exposed_list) + ")"
     summary.extend([
         f"Defensive score: {def_score}/100 (weak {total_weak}, resist {total_resist}, immune {total_immune}, net exposed types {net_exposed})",
         f"Offensive score: {off_score}/100 (coverage {coverage_off:.0f}, headroom {headroom_off:.0f}; best remaining offensive gain {best_offense_gap:+.0f}; move types: {', '.join(sorted(move_types)) if move_types else 'none'})",
-        f"Shared-weakness score: {shared_score}/100 (penalizes overlapping weaknesses)",
+        f"Shared-weakness score: {shared_score}/100 (penalizes overlapping weaknesses){exposed_note}",
         f"Defensive Delta headroom: {defensive_delta_headroom}/100 (best remaining defensive delta {best_defensive_delta:+.0f})",
         f"Offensive Delta (headroom): {100 - offensive_delta}/100 (best remaining offensive delta {offensive_delta:+.0f})",
         f"Overall team rating: {overall}/100",
