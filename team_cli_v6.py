@@ -981,7 +981,9 @@ def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
         if not opts:
             return
         sim_cov = compute_coverage(team + [{"name": "sim", "types": add_types, "source": "sim"}], chart, attack_types)
-        delta = typing_score(sim_cov) - base_score
+        delta, _sim_score, _base = typing_delta(
+            team, add_types, chart, attack_types, base_cov=base_cov, base_score=base_score
+        )
         overlap = stack_overlap_penalty(sim_cov)
         exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
         key = (delta, -(overlap - base_overlap), -exposed)
@@ -1063,6 +1065,12 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
         ptypes = fetch_pokemon_typing(pname)
     except Exception:
         ptypes = best["types"]
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_overlap = stack_overlap_penalty(base_cov)
+    base_exposed = sum(1 for c in base_cov if c["weak"] > (c["resist"] + c["immune"]))
+    sim_cov = compute_coverage(team + [{"name": "sim", "types": best["types"], "source": "sim"}], chart, attack_types)
+    sim_overlap = stack_overlap_penalty(sim_cov)
+    sim_exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
     label = f"{best['label']} delta {best['delta']:+.0f}"
     return (
         (0.0, best["delta"], 0.0),
@@ -1071,7 +1079,10 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
         ptypes,
         None,
         None,
-        f"Best defensive typing {best['label']} (delta {best['delta']:+.0f})",
+        (
+            f"Best defensive typing {best['label']} (delta {best['delta']:+.0f}; "
+            f"exposed {sim_exposed - base_exposed:+.0f}; overlap {sim_overlap - base_overlap:+.0f})"
+        ),
     )
 
 
@@ -1110,105 +1121,105 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
                 ptypes = def_opt.get("types") or []
             if exclude and pname.lower() in exclude:
                 continue
+            info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
+            cached = None
+            try:
+                cached = cache_draft_board(pname)
+                info = cached["info"]
+                # Refresh move data so offense sim uses real moves, not stale/synthetic
+                _populate_move_data(
+                    info,
+                    cached_entry=cached,
+                    exposed_types=set(exposed_types),
+                    needed_offense=set(attack_types),
+                    force=True,
+                )
+            except Exception:
+                pass
 
-        info = {"name": pname, "types": ptypes, "suggested_moves": [], "move_types": []}
-        cached = None
-        try:
-            cached = cache_draft_board(pname)
-            info = cached["info"]
-            # Refresh move data so offense sim uses real moves, not stale/synthetic
-            _populate_move_data(
-                info,
-                cached_entry=cached,
-                exposed_types=set(exposed_types),
-                needed_offense=set(attack_types),
-                force=True,
-            )
-        except Exception:
-            pass
+            candidate_move_types = set(info.get("move_types") or [])
+            synthetic_cover = False
+            if not info.get("suggested_moves") and candidate_move_types:
+                info = dict(info)
+                limited_types = []
+                for t in candidate_move_types:
+                    if t not in limited_types:
+                        limited_types.append(t)
+                    if len(limited_types) >= 4:
+                        break
+                info["suggested_moves"] = [{"name": f"{t}-coverage", "type": t} for t in limited_types]
+                synthetic_cover = True
 
-        candidate_move_types = set(info.get("move_types") or [])
-        synthetic_cover = False
-        if not info.get("suggested_moves") and candidate_move_types:
-            info = dict(info)
-            limited_types = []
-            for t in candidate_move_types:
-                if t not in limited_types:
-                    limited_types.append(t)
-                if len(limited_types) >= 4:
-                    break
-            info["suggested_moves"] = [{"name": f"{t}-coverage", "type": t} for t in limited_types]
-            synthetic_cover = True
+            move_types = base_move_types | {m["type"] for m in info.get("suggested_moves", []) if m.get("type")}
+            sim_infos = base_infos + [info]
+            sim_team = team + [{"name": pname, "types": ptypes, "source": "sim"}]
+            sim_cov = compute_coverage(sim_team, chart, attack_types)
+            sim_offense = offense_score_with_bonuses(sim_infos, sim_cov, chart, attack_types)
+            gain = sim_offense - base_offense
 
-        move_types = base_move_types | {m["type"] for m in info.get("suggested_moves", []) if m.get("type")}
-        sim_infos = base_infos + [info]
-        sim_team = team + [{"name": pname, "types": ptypes, "source": "sim"}]
-        sim_cov = compute_coverage(sim_team, chart, attack_types)
-        sim_offense = offense_score_with_bonuses(sim_infos, sim_cov, chart, attack_types)
-        gain = sim_offense - base_offense
+            neutral, se_types = offense_projection(move_types, chart, attack_types)
+            closed_weak = 0.0
+            for sc in sim_cov:
+                base_c = base_cov_map.get(sc["attack"])
+                if not base_c:
+                    continue
+                base_exposed = base_c["weak"] > (base_c["resist"] + base_c["immune"])
+                sim_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
+                if base_exposed and not sim_exposed:
+                    closed_weak += 1.0
+                elif base_exposed and sc["weak"] < base_c["weak"]:
+                    closed_weak += 0.5
+            new_types = move_types - base_move_types
+            stat_total = pokemon_offense_stat_total(pname)
+            base_bst = pokemon_base_stat_total(pname)
+            # Heavier weighting on base stats; also penalize very low offense totals.
+            bst_factor = max(0.65, min(1.8, 0.5 + stat_total / 250.0))
+            gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
+            se_factor = 1.0 + 0.08 * min(6, len(se_types))
+            coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
+            if synthetic_cover:
+                coverage_penalty *= 0.75  # discount inferred coverage vs real moves
+            low_stat_penalty = 0.0
+            if stat_total < 180:
+                low_stat_penalty = 14.0
+            elif stat_total < 220:
+                low_stat_penalty = 7.0
+            ranked_gain = (gain * gain_factor * bst_factor * se_factor * coverage_penalty) - low_stat_penalty
+            # Identify coverage gains against currently exposed types
+            coverage_gains = []
+            for t in exposed_types:
+                before = max(chart[atk].get(t, 1.0) for atk in base_move_types) if base_move_types else 1.0
+                after = max(chart[atk].get(t, 1.0) for atk in move_types) if move_types else before
+                if before < 1.0 and after >= 1.0:
+                    coverage_gains.append(f"{t} (neutral)")
+                elif before < 2.0 and after >= 2.0:
+                    coverage_gains.append(f"{t} (SE)")
+            # BST floor: skip low BST picks unless they deliver strong gains or unique coverage
+            bst_floor = 540
+            gain_threshold_for_low_bst = 35.0
+            skip_candidate = base_bst < bst_floor and ranked_gain < gain_threshold_for_low_bst and not coverage_gains
+            # If defensive delta is 0, require positive gain or coverage to proceed
+            delta_zero = def_opt.get("delta", 0) <= 0
+            if delta_zero and ranked_gain <= 0 and not coverage_gains:
+                skip_candidate = True
 
-        neutral, se_types = offense_projection(move_types, chart, attack_types)
-        closed_weak = 0.0
-        for sc in sim_cov:
-            base_c = base_cov_map.get(sc["attack"])
-            if not base_c:
-                continue
-            base_exposed = base_c["weak"] > (base_c["resist"] + base_c["immune"])
-            sim_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
-            if base_exposed and not sim_exposed:
-                closed_weak += 1.0
-            elif base_exposed and sc["weak"] < base_c["weak"]:
-                closed_weak += 0.5
-        new_types = move_types - base_move_types
-        stat_total = pokemon_offense_stat_total(pname)
-        base_bst = pokemon_base_stat_total(pname)
-        # Heavier weighting on base stats; also penalize very low offense totals.
-        bst_factor = max(0.65, min(1.8, 0.5 + stat_total / 250.0))
-        gain_factor = (1 + 1.5 * closed_weak) * (1 + 0.4 * len(new_types))
-        se_factor = 1.0 + 0.08 * min(6, len(se_types))
-        coverage_penalty = 0.85 if neutral >= (len(attack_types) - 1) and len(se_types) < 5 else 1.0
-        if synthetic_cover:
-            coverage_penalty *= 0.75  # discount inferred coverage vs real moves
-        low_stat_penalty = 0.0
-        if stat_total < 180:
-            low_stat_penalty = 14.0
-        elif stat_total < 220:
-            low_stat_penalty = 7.0
-        ranked_gain = (gain * gain_factor * bst_factor * se_factor * coverage_penalty) - low_stat_penalty
-        # Identify coverage gains against currently exposed types
-        coverage_gains = []
-        for t in exposed_types:
-            before = max(chart[atk].get(t, 1.0) for atk in base_move_types) if base_move_types else 1.0
-            after = max(chart[atk].get(t, 1.0) for atk in move_types) if move_types else before
-            if before < 1.0 and after >= 1.0:
-                coverage_gains.append(f"{t} (neutral)")
-            elif before < 2.0 and after >= 2.0:
-                coverage_gains.append(f"{t} (SE)")
-        # BST floor: skip low BST picks unless they deliver strong gains or unique coverage
-        bst_floor = 540
-        gain_threshold_for_low_bst = 35.0
-        skip_candidate = base_bst < bst_floor and ranked_gain < gain_threshold_for_low_bst and not coverage_gains
-        # If defensive delta is 0, require positive gain or coverage to proceed
-        delta_zero = def_opt.get("delta", 0) <= 0
-        if delta_zero and ranked_gain <= 0 and not coverage_gains:
-            skip_candidate = True
+            if not skip_candidate:
+                reason = (
+                    f"\033[36m{def_opt['label']} (def {def_opt.get('delta', 0):+.0f}) -> offense {pname}: "
+                    f"offense {sim_offense:.0f}/100 (gain {gain:+.0f}); closes {closed_weak:.1f} weaknesses; "
+                    f"new types: {len(new_types)}\033[0m"
+                )
+                if coverage_gains:
+                    reason += f" [covers exposed: {', '.join(coverage_gains)}]"
+                compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst)
+                align_score = info.get("alignment_score", 0)
+                if prefer_alignment:
+                    compare_tuple = (ranked_gain, align_score, sim_offense, stat_total, base_bst)
+                if ranked_gain > 0 and (best_pick is None or compare_tuple > best_pick[0]):
+                    best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst, align_score)
 
-        if not skip_candidate:
-            reason = (
-                f"\033[36m{def_opt['label']} -> offense {pname}: offense {sim_offense:.0f}/100 "
-                f"(gain {gain:+.0f}); closes {closed_weak:.1f} weaknesses; new types: {len(new_types)}\033[0m"
-            )
-            if coverage_gains:
-                reason += f" [covers exposed: {', '.join(coverage_gains)}]"
-            compare_tuple = (ranked_gain, sim_offense, stat_total, base_bst)
-            align_score = info.get("alignment_score", 0)
-            if prefer_alignment:
-                compare_tuple = (ranked_gain, align_score, sim_offense, stat_total, base_bst)
-            if ranked_gain > 0 and (best_pick is None or compare_tuple > best_pick[0]):
-                best_pick = (compare_tuple, reason, pname, ptypes, ranked_gain, sim_offense, stat_total, base_bst, align_score)
-
-        if highest_bst_candidate is None or base_bst > highest_bst_candidate[0]:
-            highest_bst_candidate = (base_bst, pname, ranked_gain)
+            if highest_bst_candidate is None or base_bst > highest_bst_candidate[0]:
+                highest_bst_candidate = (base_bst, pname, ranked_gain)
 
     for def_opt in defense_choice.get("choices", []):
         consider_offense(def_opt)
