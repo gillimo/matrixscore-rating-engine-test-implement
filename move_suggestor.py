@@ -1263,13 +1263,13 @@ def classify_role(stats):
     # Offense favors main attacking stat + speed; bulk favors HP and defenses
     main_atk = max(atk, spa)
     off_support = min(atk, spa)
-    offense = main_atk * 1.2 + off_support * 0.4 + spe * 1.0
+    offense = main_atk * 1.2 + off_support * 0.4 + spe * 1.3
     bulk = hp * 1.2 + (defe + spd) * 1.1
 
     # Sweeper if very fast and offense close to/above bulk, or offense far above bulk
-    if spe >= 120 and offense >= bulk * 0.9:
+    if spe >= 115 and offense >= bulk * 0.88:
         return "sweeper"
-    if offense >= bulk * 1.35:
+    if offense >= bulk * 1.28:
         return "sweeper"
     # Tank if bulk leads meaningfully and speed is modest
     if spe < 90 and bulk >= offense * 1.05:

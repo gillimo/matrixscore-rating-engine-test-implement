@@ -102,6 +102,9 @@ Open feature tickets
 - **FT-2025-12-28-033 | Speed-weighted offense stats (Completed)**  
   Include a stronger speed contribution in offensive stat total (Atk + SpA + 0.75*Speed) used by offense gain scaling.
 
+- **FT-2025-12-28-034 | Speed-forward role classification (Completed)**  
+  Increase speed weighting and relax sweeper thresholds in `classify_role` to encourage a bell-curve role mix (1 tank, 1 sweeper, 2 balanced by default).
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 
