@@ -739,11 +739,11 @@ def typing_score(cov):
     def_score = (
         100
         - 2.1 * total_weak
-        + 1.4 * total_resist
-        + 2.2 * total_immune
-        + 3.5 * exposed_immunes  # extra credit for blanking largest holes
-        - 12 * net_exposed
-        - 14 * stack_overlap  # heavier penalty for stacking existing weaknesses
+        + 1.6 * total_resist
+        + 4.0 * total_immune
+        + 7.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
+        - 14 * net_exposed
+        - 12 * stack_overlap  # heavy penalty, but less than net-exposed
     )
     return max(0, min(100, int(def_score)))
 
@@ -762,12 +762,12 @@ def typing_score_display(cov):
     def_score = (
         100
         - 2.1 * total_weak
-        + 1.8 * total_resist
-        + 3.0 * total_immune
-        + 4.0 * exposed_immunes
-        + 3.0 * covered_stack
-        - 16 * net_exposed
-        - 6 * stack_overlap
+        + 2.0 * total_resist
+        + 4.5 * total_immune
+        + 7.5 * exposed_immunes
+        + 4.0 * covered_stack
+        - 18 * net_exposed
+        - 5 * stack_overlap
     )
     return max(0, min(100, int(def_score)))
 
@@ -1628,6 +1628,7 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
     def_score_raw = typing_score(cov)
     def_score = typing_score_display(cov)
+    def_score_raw = typing_score(cov)
 
     # Rating: 100 when no positive delta; otherwise 100 minus the highest positive delta.
     rating_score = max(0, min(100, 100 - best_defensive_delta_available))
@@ -1909,7 +1910,7 @@ def shared_weak_score(cov):
     if stack == 1:
         stack = 0
     exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    score = 100 - (overlap * 18) - (stack * 7) - (exposed * 5)
+    score = 100 - (overlap * 16) - (stack * 6) - (exposed * 8)
     return max(0, min(100, int(score)))
 
 
@@ -1931,9 +1932,9 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         if best >= 2.0:
             continue  # SE hit closes this exposure offensively
         if best >= 1.0:
-            penalties += 8.0  # neutral only
+            penalties += 6.0  # neutral only
         else:
-            penalties += 18.0  # cannot hit effectively (immune)
+            penalties += 14.0  # cannot hit effectively (immune)
 
     # Lightly discourage ultra-thin move_type sets
     breadth_penalty = max(0, 2 - len(move_types)) * 3.0
@@ -1946,7 +1947,7 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         neutral, se_types = offense_projection(move_types, chart, attack_types)
         neutral_ratio = neutral / max(1, total_types)
         se_ratio = len(se_types) / max(1, total_types)
-        breadth_bonus = min(10.0, 6.0 * neutral_ratio + 6.0 * se_ratio)  # cap to keep 100 ceiling
+        breadth_bonus = min(12.0, 6.0 * neutral_ratio + 7.0 * se_ratio)  # cap to keep 100 ceiling
         base_score = min(100, base_score + breadth_bonus)
 
     return int(base_score)
@@ -2013,9 +2014,10 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
     (defensive score already captures heavy stacking impact).
     """
-    delta_penalty = 0.5 * (best_defensive_delta + best_offense_gap)
-    stack_penalty = 2.0 * stack_overlap
-    overall = 100 - delta_penalty - stack_penalty
+    delta_penalty = 0.45 * (best_defensive_delta + best_offense_gap)
+    stack_penalty = 1.5 * stack_overlap
+    shared_penalty = max(0, 100 - shared_score) * 0.15
+    overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
 
 
@@ -2848,6 +2850,25 @@ def main():
                 if VERBOSE:
                     print(f"Draft cache failed for {name}: {exc}")
             print(defense_focus_report(team, chart, attack_types))
+            # Red summary after each pick: roster, defense score, open weaknesses
+            cov = compute_coverage(team, chart, attack_types)
+            open_weak = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+            roster = ", ".join(m.get("name", "").title() for m in team if m.get("name"))
+            weak_text = ", ".join(open_weak) if open_weak else "none"
+            defense_text = "n/a"
+            try:
+                infos = team_infos_from_cache(team)
+                _overall_score_val, _comps = predict_overall(team, infos, chart, attack_types)
+                defense_text = f"{_comps.get('defense', '?')}/100"
+            except Exception:
+                try:
+                    def_only = typing_score_display(cov)
+                    defense_text = f"{def_only}/100"
+                except Exception:
+                    pass
+            print(f"\033[31mTeam: {roster}\033[0m")
+            print(f"\033[31mDefense score: {defense_text}\033[0m")
+            print(f"\033[31mOpen weaknesses: {weak_text}\033[0m")
             if len(team) >= 6:
                 print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
             if finalize_after_add:
