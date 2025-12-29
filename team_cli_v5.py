@@ -1739,8 +1739,11 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
         combos.append([type_filters[1]])
         combos.append(type_filters[:2])
     seen = set()
-    scored = []
-    per_combo_limit = 1 if len(type_filters) == 2 else limit
+    grouped = []
+    per_combo_limit = limit if len(type_filters) == 2 else limit
+    def _top_speed(opts, n):
+        ranked = sorted(opts, key=pokemon_speed_stat, reverse=True)
+        return ranked[:n]
     for combo in combos:
         key = tuple(sorted(combo))
         if key in seen:
@@ -1769,35 +1772,45 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
             label = f"{combo[0]} + {combo[1]}"
         if not opts:
             continue
-        # Speed-first candidate selection for this typing pool.
-        ranked = sorted(opts, key=pokemon_speed_stat, reverse=True)[:per_combo_limit]
-        for fastest in ranked:
+        delta, _sim_score, _base = typing_delta(
+            team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
+        )
+        picks = []
+        for fastest in _top_speed(opts, per_combo_limit):
             try:
                 ptypes = fetch_pokemon_typing(fastest)
             except Exception:
                 ptypes = combo
             speed = pokemon_speed_stat(fastest)
-            delta, _sim_score, _base = typing_delta(
-                team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
-            )
-            # Use speed as primary ranking, then defensive delta.
             def_gain = delta
             off_gain = 0.0
-            scored.append(((speed, def_gain), fastest, ptypes, def_gain, off_gain))
-    scored.sort(key=lambda x: (x[0][0], x[0][1]), reverse=True)
-    return scored[:limit]
+            picks.append(((speed, def_gain), fastest, ptypes, def_gain, off_gain))
+        picks.sort(key=lambda x: (x[0][0], x[0][1]), reverse=True)
+        grouped.append((combo, label, picks[:limit]))
+    return grouped
 
 
 def _print_type_filtered_options(team, chart, attack_types, type_filters):
-    filtered = _filtered_type_suggestions(team, chart, attack_types, type_filters)
-    if not filtered:
+    grouped = _filtered_type_suggestions(team, chart, attack_types, type_filters)
+    if not grouped:
         return
     header = f"Type add options {_type_tags(type_filters)}:"
     print(_color_type(header, type_filters[0]))
-    for idx, (_score, pname, ptypes, def_gain, off_gain) in enumerate(filtered, start=1):
-        type_text = "/".join(ptypes) if ptypes else "unknown"
-        line = f" {idx}) {pname} ({type_text}) def {def_gain:+.0f} off {off_gain:+.0f}"
-        print(_color_type(line, type_filters[0]))
+    for combo, label, picks in grouped:
+        if not picks:
+            continue
+        if len(combo) == 1:
+            title = _color_type(f"{combo[0].title()} options:", combo[0])
+        else:
+            left = _color_type(combo[0], combo[0])
+            right = _color_type(combo[1], combo[1])
+            title = f"{left} + {right} options:"
+        print(title)
+        for idx, (_score, pname, ptypes, def_gain, off_gain) in enumerate(picks, start=1):
+            type_text = "/".join(ptypes) if ptypes else label
+            line = f" {idx}) {pname} ({type_text}) def {def_gain:+.0f} off {off_gain:+.0f}"
+            color_type = combo[0]
+            print(_color_type(line, color_type))
 
 
 def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
