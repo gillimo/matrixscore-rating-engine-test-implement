@@ -30,6 +30,7 @@ AVAILABILITY_CACHE = {}
 VERBOSE = False
 BOARD_CACHE = {}
 BOARD_CACHE_STATS = {"hit": 0, "miss": 0, "persist_fail": 0, "loaded": 0}
+SPECIES_CACHE = {}
 TOTAL_POKEMON_FOR_MOVE_FETCH = 0
 POKEMON_MOVES_FETCHED = 0
 LOG_DIR = Path(__file__).with_name("logs")
@@ -646,6 +647,8 @@ def fetch_single_type_candidates(t, current_team=None, version_group: str = VERS
         try:
             if not pokemon_in_version(n, version_group=version_group):
                 continue
+            if is_legendary_or_mythical(n):
+                continue
             typing = fetch_pokemon_typing(n)
             if len(typing) == 1 and typing[0] == t:
                 # Calculate stat_total for basic scoring/sorting, but no sim_overall
@@ -662,6 +665,20 @@ def fetch_species_info(name: str):
     res = requests.get(f"{POKEAPI_BASE}/pokemon-species/{key}", timeout=15)
     res.raise_for_status()
     return res.json()
+
+
+def is_legendary_or_mythical(name: str) -> bool:
+    key = normalize_pokemon_name(name)
+    cached = SPECIES_CACHE.get(key)
+    if cached is not None:
+        return cached
+    try:
+        species = fetch_species_info(key)
+        flag = bool(species.get("is_legendary") or species.get("is_mythical"))
+    except Exception:
+        flag = False
+    SPECIES_CACHE[key] = flag
+    return flag
 
 def fetch_dual_candidates(type_a, type_b, current_team=None, version_group: str = VERSION_GROUP, chart=None, attack_types=None, stat_sort_key=None):
     # Gather intersection of pokemon lists for both types
@@ -708,6 +725,8 @@ def fetch_dual_candidates(type_a, type_b, current_team=None, version_group: str 
     for n in inter: # 'inter' already filtered by finals_set and current_team
         try:
             if not pokemon_in_version(n, version_group=version_group):
+                continue
+            if is_legendary_or_mythical(n):
                 continue
             typing = fetch_pokemon_typing(n)
             if set(typing) != {type_a, type_b}:
@@ -800,29 +819,14 @@ def compute_coverage(team, chart, attack_types):
 
 
 def typing_score(cov):
-    total_resist = sum(c["resist"] for c in cov)
-    total_immune = sum(c["immune"] for c in cov)
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
-    # Reward immunity to exposed types (heavier than generic immunity)
-    top_exposed = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
-    exposed_immunes = sum(c["immune"] for c in top_exposed)
-    # Balanced scoring: weaknesses and exposed types penalize; resist/immune reward
-    def_score = (
-        100
-        + 0.8 * total_resist
-        + 2.5 * total_immune
-        + 3.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
-        - 35 * net_exposed
-        - 14 * stack_overlap  # moderate penalty to discourage stacking
+    exposure_gap_total = sum(
+        max(0, c["weak"] - (c["resist"] + c["immune"])) for c in cov
     )
-    if net_exposed == 0:
-        return 100
-    if net_exposed == 1:
-        return max(0, min(95, int(def_score)))
-    if net_exposed == 2:
-        return max(0, min(85, int(def_score)))
-    return max(0, min(75, int(def_score)))
+    # Defense score: reflect exposure severity and stacking only.
+    def_score = 100 - (8 * exposure_gap_total) - (8 * stack_overlap)
+    return max(0, min(100, int(def_score)))
 
 
 def typing_score_display(cov):
@@ -865,47 +869,23 @@ def typing_delta(team, add_types, chart, attack_types, base_cov=None, base_score
         team + [{"name": "sim", "types": add_types, "source": "sim"}], chart, attack_types
     )
     sim_score = typing_score(sim_cov)
-    # Penalize newly introduced exposures/stacking; reward immunizing/resisting exposed types.
+    # Keep scoring simple (exposure-driven), but reward resists/immunities
+    # against currently exposed types to guide selection.
     base_cov_map = {c["attack"]: c for c in base_cov}
-    new_exposed = 0
     immune_gain = 0
     resist_gain = 0
-    new_weak = 0
-    new_resist = 0
-    base_net_exposed = 0
-    sim_net_exposed = 0
-    exposed_gap_reduction = 0.0
     for sc in sim_cov:
         bc = base_cov_map.get(sc["attack"], {"weak": 0, "resist": 0, "immune": 0})
         was_exposed = bc["weak"] > (bc["resist"] + bc["immune"])
-        now_exposed = sc["weak"] > (sc["resist"] + sc["immune"])
-        if was_exposed:
-            base_net_exposed += 1
-        if now_exposed:
-            sim_net_exposed += 1
-        if now_exposed and not was_exposed:
-            new_exposed += 1
-        if was_exposed and sc["immune"] > bc["immune"]:
+        if not was_exposed:
+            continue
+        if sc["immune"] > bc["immune"]:
             immune_gain += 1
-        if was_exposed and sc["resist"] > bc["resist"]:
+        if sc["resist"] > bc["resist"]:
             resist_gain += 1
-        # Track net resist vs weak creation
-        new_weak += max(0, sc["weak"] - bc["weak"])
-        new_resist += max(0, sc["resist"] - bc["resist"])
-        if was_exposed:
-            base_gap = bc["weak"] - (bc["resist"] + bc["immune"])
-            sim_gap = sc["weak"] - (sc["resist"] + sc["immune"])
-            if sim_gap < base_gap:
-                exposed_gap_reduction += (base_gap - sim_gap)
-    stack_delta = stack_overlap_penalty(sim_cov) - stack_overlap_penalty(base_cov)
-    penalty = new_exposed * 16 + max(0, stack_delta) * 12 + max(0, new_weak - new_resist) * 7
-    if base_net_exposed > 0 and sim_net_exposed >= base_net_exposed:
-        penalty += 10
-    if sim_net_exposed > base_net_exposed:
-        penalty += 6 * (sim_net_exposed - base_net_exposed)
-    bonus = immune_gain * 12 + resist_gain * 5 + exposed_gap_reduction * 6 + max(0, new_resist - new_weak) * 2
-    sim_score = sim_score - penalty + bonus
-    return sim_score - base_score, sim_score, base_score
+    raw_delta = sim_score - base_score
+    bonus = (immune_gain * 6) + (resist_gain * 3)
+    return raw_delta + bonus, sim_score, base_score
 
 
 def best_defensive_improvement(team, chart, attack_types):
@@ -968,6 +948,7 @@ def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
     base_cov = compute_coverage(team, chart, attack_types)
     base_score = typing_score(base_cov)
     base_overlap = stack_overlap_penalty(base_cov)
+    base_exposed = sum(1 for c in base_cov if c["weak"] > (c["resist"] + c["immune"]))
 
     best_key = None  # tuple for ordering
     best_choices = []  # list of dicts for ties
@@ -980,10 +961,25 @@ def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
         delta, _sim_score, _base = typing_delta(
             team, add_types, chart, attack_types, base_cov=base_cov, base_score=base_score
         )
+        sim_score_raw = typing_score(sim_cov)
+        delta_raw = sim_score_raw - base_score
         overlap = stack_overlap_penalty(sim_cov)
         exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
-        key = (delta, -(overlap - base_overlap), -exposed)
-        choice = {"delta": delta, "label": label, "types": add_types, "candidates": opts, "overlap": overlap, "exposed": exposed}
+        exposure_delta = base_exposed - exposed
+        if base_exposed > 0:
+            key = (delta_raw, exposure_delta, delta, -(overlap - base_overlap), -exposed)
+        else:
+            key = (delta_raw, delta, -(overlap - base_overlap), -exposed)
+        choice = {
+            "delta": delta,
+            "delta_raw": delta_raw,
+            "label": label,
+            "types": add_types,
+            "candidates": opts,
+            "overlap": overlap,
+            "exposed": exposed,
+            "exposure_delta": exposure_delta,
+        }
         if best_key is None or key > best_key:
             best_key = key
             best_choices = [choice]
@@ -1032,6 +1028,7 @@ def get_best_defensive_candidates(team, chart, attack_types, exclude=None):
     primary = best_choices[0]
     return {
         "delta": primary["delta"],
+        "delta_raw": primary["delta_raw"],
         "label": primary["label"],
         "types": primary["types"],
         "candidates": primary["candidates"],
@@ -1049,8 +1046,9 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
 
     choices = best.get("choices") or [best]
     labels = [c["label"] for c in choices]
+    delta_raw = best.get("delta_raw", best["delta"])
     if not silent:
-        print(f"\033[32m[Best Defensive Delta] {best['delta']:+.0f} via {', '.join(labels)}\033[0m")
+        print(f"\033[32m[Best Defensive Delta] {delta_raw:+.0f} via {', '.join(labels)}\033[0m")
 
     def stat_key(name):
         return pokemon_defense_stat_total(name)
@@ -1064,12 +1062,15 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
     base_cov = compute_coverage(team, chart, attack_types)
     base_overlap = stack_overlap_penalty(base_cov)
     base_exposed = sum(1 for c in base_cov if c["weak"] > (c["resist"] + c["immune"]))
+    base_score = typing_score(base_cov)
     sim_cov = compute_coverage(team + [{"name": "sim", "types": best["types"], "source": "sim"}], chart, attack_types)
     sim_overlap = stack_overlap_penalty(sim_cov)
     sim_exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
-    label = f"{best['label']} delta {best['delta']:+.0f}"
+    sim_score = typing_score(sim_cov)
+    def_gain_raw = sim_score - base_score
+    label = f"{best['label']} delta {def_gain_raw:+.0f} (def {base_score:.0f}->{sim_score:.0f})"
     return (
-        (0.0, best["delta"], 0.0),
+        (0.0, def_gain_raw, 0.0),
         label,
         pname,
         ptypes,
@@ -1086,6 +1087,23 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
     """Pick the best offensive addition within the best defensive typing pool."""
     if defense_choice is None:
         defense_choice = get_best_defensive_candidates(team, chart, attack_types, exclude=exclude)
+        if defense_choice and defense_choice.get("delta", 0) <= 0:
+            safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=6)
+            if safe_adds:
+                _score, _def_delta, label, _preview, opts, _note = safe_adds[0]
+                if "+" in label:
+                    pair = [p.strip() for p in label.split("+", 1)]
+                    types = [pair[0], pair[1]]
+                else:
+                    types = [label]
+                defense_choice = dict(defense_choice)
+                defense_choice["label"] = f"Safe typing ({label})"
+                defense_choice["candidates"] = opts
+                defense_choice["types"] = types
+                defense_choice["choices"] = [defense_choice]
+                defense_choice["delta"] = 0
+            else:
+                defense_choice = None
     if not defense_choice or not defense_choice.get("choices"):
         return None
 
@@ -1256,9 +1274,10 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
             f"ranked gain {highest_bst_loser_gain:+.1f})"
         )
 
+    def_delta_raw = defense_choice.get("delta_raw", defense_choice.get("delta", 0))
     label = f"{defense_choice['label']} -> best offense {pname} (gain {ranked_gain:+.0f})"
     return (
-        (0.0, defense_choice["delta"], ranked_gain),
+        (0.0, def_delta_raw, ranked_gain),
         label,
         pname,
         ptypes,
@@ -1291,12 +1310,15 @@ def suggestion_buckets(team, cov, chart, attack_types):
     missing_types = []
     all_singles = []
     for t in TYPE_POOL:
-        delta, _, _ = typing_delta(team, [t], chart, attack_types, base_cov=cov, base_score=base_score)
+        delta, sim_score, _ = typing_delta(team, [t], chart, attack_types, base_cov=cov, base_score=base_score)
+        delta_raw = sim_score - base_score
         opts = fetch_single_type_candidates(t, current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types)
         all_singles.append((delta, t, opts))
         if delta > 0:
             if opts:
-                positive_singles.append((delta, t, f"Single-type {t} delta {delta:+.0f}: " + ", ".join(opts), [t]))
+                positive_singles.append(
+                    (delta, delta_raw, t, f"Single-type {t} delta {delta:+.0f}: " + ", ".join(opts), [t])
+                )
             else:
                 missing_types.append((delta, f"Single-type {t} delta {delta:+.0f} (no available Pokemon)"))
 
@@ -1309,9 +1331,10 @@ def suggestion_buckets(team, cov, chart, attack_types):
             if pair in seen_pairs:
                 continue
             seen_pairs.add(pair)
-            delta, _, _ = typing_delta(team, list(pair), chart, attack_types, base_cov=cov, base_score=base_score)
+            delta, sim_score, _ = typing_delta(team, list(pair), chart, attack_types, base_cov=cov, base_score=base_score)
             if delta <= 0:
                 continue
+            delta_raw = sim_score - base_score
             opts = fetch_dual_candidates(
                 pair[0],
                 pair[1],
@@ -1322,19 +1345,21 @@ def suggestion_buckets(team, cov, chart, attack_types):
             )
             if opts:
                 positive_duals.append(
-                    (delta, f"Dual-type {pair[0]} + {pair[1]} delta {delta:+.0f}: " + ", ".join(opts), list(pair))
+                    (
+                        delta,
+                        delta_raw,
+                        f"Dual-type {pair[0]} + {pair[1]} delta {delta:+.0f}: " + ", ".join(opts),
+                        list(pair),
+                    )
                 )
             else:
                 missing_duals.append(
                     (delta, f"Dual-type {pair[0]} + {pair[1]} delta {delta:+.0f} (no available Pokemon)")
                 )
 
-    positives = sorted(
-        [(d, l, types) for d, _, l, types in positive_singles] + positive_duals,
-        key=lambda x: x[0],
-        reverse=True,
-    )
-    best_defensive_delta_available = positives[0][0] if positives else 0
+    base_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
+    positives = [(d, dr, l, types) for d, dr, _, l, types in positive_singles] + positive_duals
+    best_defensive_delta_available = max((dr for _, dr, _, _ in positives), default=0)
 
     # Cache best-delta calculations per simulated team (hashable by typing signature)
     best_defensive_delta_cache = {}
@@ -1354,12 +1379,13 @@ def suggestion_buckets(team, cov, chart, attack_types):
         base_score_local = typing_score(base_cov_local)
         best_local = 0
         for t in TYPE_POOL:
-            delta_local, _, _ = typing_delta(
-                sim_team, [t], chart, attack_types, base_cov=base_cov_local, base_score=base_score_local
+            sim_cov_local = compute_coverage(
+                sim_team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types
             )
-            if delta_local <= 0:
+            delta_raw = typing_score(sim_cov_local) - base_score_local
+            if delta_raw <= 0:
                 continue
-            best_local = max(best_local, delta_local)
+            best_local = max(best_local, delta_raw)
         seen_pairs_local = set()
         for i in range(len(TYPE_POOL)):
             for j in range(i + 1, len(TYPE_POOL)):
@@ -1367,12 +1393,13 @@ def suggestion_buckets(team, cov, chart, attack_types):
                 if pair_local in seen_pairs_local:
                     continue
                 seen_pairs_local.add(pair_local)
-                delta_local, _, _ = typing_delta(
-                    sim_team, list(pair_local), chart, attack_types, base_cov=base_cov_local, base_score=base_score_local
+                sim_cov_local = compute_coverage(
+                    sim_team + [{"name": "sim", "types": list(pair_local), "source": "sim"}], chart, attack_types
                 )
-                if delta_local <= 0:
+                delta_raw = typing_score(sim_cov_local) - base_score_local
+                if delta_raw <= 0:
                     continue
-                best_local = max(best_local, delta_local)
+                best_local = max(best_local, delta_raw)
         best_defensive_delta_cache[sig] = best_local
         return best_local
 
@@ -1391,23 +1418,32 @@ def suggestion_buckets(team, cov, chart, attack_types):
 
     # Defensive bucket
     def_top = []
-    for delta, line, _types in positives:
+    for delta, delta_raw, line, _types in positives:
         if delta <= 0:
             continue
         if "no available Pokemon" in line or "none found" in line:
             continue
-        def_top.append((delta, line, _types))
-    def_top.sort(key=lambda x: x[0], reverse=True)
+        sim_cov = compute_coverage(
+            team + [{"name": "sim", "types": _types, "source": "sim"}], chart, attack_types
+        )
+        sim_exposed = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
+        exposure_delta = base_exposed - sim_exposed
+        def_top.append((delta, line, _types, exposure_delta, delta_raw))
+    if base_exposed > 0:
+        def_top.sort(key=lambda x: (x[3], x[0]), reverse=True)
+    else:
+        def_top.sort(key=lambda x: x[0], reverse=True)
     def_top = select_with_ties(def_top, 3, key=lambda x: x[0])
     if def_top:
-        for idx, (_, line, tps) in enumerate(def_top, start=1):
+        for idx, (_, line, tps, _exp_delta, delta_raw) in enumerate(def_top, start=1):
             impact = defensive_impact(tps)
-            text = f"{line} {impact}"
+            text = re.sub(r"delta [+-]?\\d+", f"delta {delta_raw:+.0f}", line)
+            text = f"{text} {impact}"
             if idx == 1:
                 text = f"[BEST DEF] {text}"
             lines.append(f"\033[32m{text}\033[0m")
     else:
-        lines.append("[32mBalanced (no defensive gains left; stacked weaknesses may still lower defense score).[0m")
+        lines.append("\033[32mNo defensive gains left (defense may still be low if exposed types remain).[0m")
 
     # Offense bucket (orange)
     def current_move_types():
@@ -1566,7 +1602,7 @@ def _preview_autopick(team, chart, attack_types):
         best_label = None
         best_opts = None
         best_types = None
-        for score, label, _preview, opts, _note in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
+        for score, def_delta, label, _preview, opts, _note in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
             if not opts:
                 continue
             if "+" in label:
@@ -1595,6 +1631,20 @@ def _preview_autopick(team, chart, attack_types):
             defense_choice["candidates"] = best_opts
             defense_choice["types"] = best_types
             defense_choice["choices"] = [defense_choice]
+        else:
+            safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=6)
+            if safe_adds:
+                _score, _def_delta, label, _preview, opts, _note = safe_adds[0]
+                if "+" in label:
+                    pair = [p.strip() for p in label.split("+", 1)]
+                    types = [pair[0], pair[1]]
+                else:
+                    types = [label]
+                defense_choice = dict(defense_choice)
+                defense_choice["label"] = f"Safe typing ({label})"
+                defense_choice["candidates"] = opts
+                defense_choice["types"] = types
+                defense_choice["choices"] = [defense_choice]
     pick = pick_offense_addition(
         team,
         chart,
@@ -1674,6 +1724,7 @@ def _is_safe_typing(base_cov_map, sim_cov):
 def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
     base_cov = compute_coverage(team, chart, attack_types)
     base_cov_map = {c["attack"]: c for c in base_cov}
+    base_score = typing_score(base_cov)
     strong_types = {
         c["attack"]
         for c in base_cov
@@ -1687,23 +1738,60 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
                 weak.append(atk)
         return weak
 
-    def _safe_score(def_types, added_weak):
+    def _safe_score(def_types, added_weak_details):
         weak = _weak_types(def_types)
         missing = sum(1 for t in weak if t not in strong_types)
-        score = max(0, 100 - missing * 12 - len(added_weak) * 6)
+        added_penalty = 0
+        coverage_bonus = 0
+        for _t, margin, _r, _i, _w in added_weak_details:
+            if margin >= 2:
+                added_penalty += 0
+            elif margin >= 1:
+                added_penalty += 3
+            elif margin >= 0:
+                added_penalty += 6
+            else:
+                added_penalty += 12
+            if margin >= 0:
+                coverage_bonus += (_i * 6) + (_r * 3)
+        score = 100 - missing * 12 - added_penalty
+        if not added_weak_details:
+            score += 15
+        score += coverage_bonus
+        score = max(0, min(100, score))
         return score, weak, missing
+
+    def _coverage_note(added_weak_details):
+        if not added_weak_details:
+            return "new weak: none"
+        parts = []
+        for t, margin, res, imm, weak in added_weak_details:
+            if margin >= 2:
+                parts.append(f"{t} (R{res}/I{imm}, margin +{margin:.0f})")
+            elif margin >= 1:
+                parts.append(f"{t} (R{res}/I{imm}, margin +{margin:.0f})")
+            elif margin >= 0:
+                parts.append(f"{t} (R{res}/I{imm}, margin +0)")
+            else:
+                parts.append(f"{t} (uncovered)")
+        return "new weak: " + ", ".join(parts)
 
     entries = []
     for t in attack_types:
         sim_cov = compute_coverage(team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types)
-        if not _is_safe_typing(base_cov_map, sim_cov):
-            continue
-        added_weak = []
+        added_weak_details = []
         for sc in sim_cov:
             bc = base_cov_map.get(sc["attack"], {"weak": 0})
             if sc["weak"] > bc["weak"]:
-                added_weak.append(sc["attack"])
-        safe_score, _weak_types_list, missing = _safe_score([t], added_weak)
+                margin = (sc["resist"] + sc["immune"]) - sc["weak"]
+                added_weak_details.append(
+                    (sc["attack"], margin, int(sc["resist"]), int(sc["immune"]), sc["weak"])
+                )
+        def_delta = typing_score(sim_cov) - base_score
+        covered = all(margin >= 0 for _t, margin, _r, _i, _w in added_weak_details)
+        if not covered and def_delta <= 0:
+            continue
+        safe_score, _weak_types_list, missing = _safe_score([t], added_weak_details)
         opts = fetch_single_type_candidates(
             t,
             current_team=team,
@@ -1713,22 +1801,27 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             stat_sort_key="defense",
         )
         if opts:
-            note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
-            entries.append((safe_score, missing, len(added_weak), t, opts, note))
+            note = _coverage_note(added_weak_details)
+            entries.append((safe_score, def_delta, missing, len(added_weak_details), t, opts, note))
     for i in range(len(attack_types)):
         for j in range(i + 1, len(attack_types)):
             pair = [attack_types[i], attack_types[j]]
             sim_cov = compute_coverage(
                 team + [{"name": "sim", "types": pair, "source": "sim"}], chart, attack_types
             )
-            if not _is_safe_typing(base_cov_map, sim_cov):
-                continue
-            added_weak = []
+            added_weak_details = []
             for sc in sim_cov:
                 bc = base_cov_map.get(sc["attack"], {"weak": 0})
                 if sc["weak"] > bc["weak"]:
-                    added_weak.append(sc["attack"])
-            safe_score, _weak_types_list, missing = _safe_score(pair, added_weak)
+                    margin = (sc["resist"] + sc["immune"]) - sc["weak"]
+                    added_weak_details.append(
+                        (sc["attack"], margin, int(sc["resist"]), int(sc["immune"]), sc["weak"])
+                    )
+            def_delta = typing_score(sim_cov) - base_score
+            covered = all(margin >= 0 for _t, margin, _r, _i, _w in added_weak_details)
+            if not covered and def_delta <= 0:
+                continue
+            safe_score, _weak_types_list, missing = _safe_score(pair, added_weak_details)
             opts = fetch_dual_candidates(
                 pair[0],
                 pair[1],
@@ -1740,15 +1833,15 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             )
             if opts:
                 label = f"{pair[0]} + {pair[1]}"
-                note = f"adds weak: {', '.join(added_weak)}" if added_weak else ""
-                entries.append((safe_score, missing, len(added_weak), label, opts, note))
-    entries.sort(key=lambda x: (x[2], x[1], -x[0], x[3]))
+                note = _coverage_note(added_weak_details)
+                entries.append((safe_score, def_delta, missing, len(added_weak_details), label, opts, note))
+    entries.sort(key=lambda x: (-x[0], x[3], x[2], x[4]))
     results = []
-    for score, _missing, _added_count, label, opts, note in entries:
+    for score, def_delta, _missing, _added_count, label, opts, note in entries:
         preview = ", ".join(opts[:preview_limit])
         if len(opts) > preview_limit:
             preview = f"{preview}, +{len(opts) - preview_limit} more"
-        results.append((score, label, preview, opts, note))
+        results.append((score, def_delta, label, preview, opts, note))
     return results
 
 
@@ -1896,10 +1989,12 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         lines.append("Top defensive typings: none (no positive deltas).")
         safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
         if safe_adds:
-            lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-            for idx, (score, label, preview, _opts, note) in enumerate(safe_adds, start=1):
+            lines.append("\033[33mSafe/positive defensive adds (covered or def +):\033[0m")
+            for idx, (score, def_delta, label, preview, _opts, note) in enumerate(safe_adds, start=1):
                 suffix = f" ({note})" if note else ""
-                lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}{suffix}\033[0m")
+                lines.append(
+                    f"\033[33m {idx}) {label} score {score:+.0f} (def {def_delta:+.0f}) -> {preview}{suffix}\033[0m"
+                )
         return "\n".join(lines)
 
     lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
@@ -1910,10 +2005,12 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
     safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
     if safe_adds:
-        lines.append("\033[33mSafe typing adds (no new exposures):\033[0m")
-        for idx, (score, label, preview, _opts, note) in enumerate(safe_adds, start=1):
+        lines.append("\033[33mSafe/positive defensive adds (covered or def +):\033[0m")
+        for idx, (score, def_delta, label, preview, _opts, note) in enumerate(safe_adds, start=1):
             suffix = f" ({note})" if note else ""
-            lines.append(f"\033[33m {idx}) {label} score {score:+.0f} -> {preview}{suffix}\033[0m")
+            lines.append(
+                f"\033[33m {idx}) {label} score {score:+.0f} (def {def_delta:+.0f}) -> {preview}{suffix}\033[0m"
+            )
     return "\n".join(lines)
 
 
@@ -2017,7 +2114,7 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
         stack_overlap > 0
         and def_score < 80
         and suggestion_lines
-        and all("Balanced" in ln for ln in suggestion_lines if "Balanced" in ln)
+        and all("No defensive gains left" in ln for ln in suggestion_lines if "No defensive gains left" in ln)
     ):
         report_lines.append("Note: Team has stacked weaknesses, impacting its typing-based defensive score.")
 
@@ -2026,23 +2123,28 @@ def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
 
 def _print_red_summary(team, chart, attack_types):
     cov = compute_coverage(team, chart, attack_types)
-    open_weak = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+    severity_items = [
+        (c["attack"], (c["weak"] - (c["resist"] + c["immune"])))
+        for c in cov
+        if c["weak"] > (c["resist"] + c["immune"])
+    ]
+    severity_items.sort(key=lambda x: x[1], reverse=True)
+    open_weak = [name for name, _gap in severity_items]
     roster = ", ".join(m.get("name", "").title() for m in team if m.get("name"))
     weak_text = ", ".join(open_weak) if open_weak else "none"
+    if severity_items:
+        severity_text = ", ".join(f"{name} ({gap:.2f})" for name, gap in severity_items)
+    else:
+        severity_text = "none"
     defense_text = "n/a"
     try:
-        infos = team_infos_from_cache(team)
-        _overall_score_val, _comps = predict_overall(team, infos, chart, attack_types)
-        defense_text = f"{_comps.get('defense', '?')}/100"
+        def_only = typing_score(cov)
+        defense_text = f"{def_only}/100"
     except Exception:
-        try:
-            def_only = typing_score(cov)
-            defense_text = f"{def_only}/100"
-        except Exception:
-            pass
+        pass
     print(f"\033[31mTeam: {roster}\033[0m")
     print(f"\033[31mDefense score: {defense_text}\033[0m")
-    print(f"\033[31mOpen weaknesses: {weak_text}\033[0m")
+    print(f"\033[31mWeakness severity: {severity_text}\033[0m")
     if len(team) >= 6:
         print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
 
@@ -2106,9 +2208,12 @@ def compute_best_defensive_delta(team, chart, attack_types):
     best = 0
     # singles
     for t in TYPE_POOL:
-        delta, _, _ = typing_delta(team, [t], chart, attack_types, base_cov=base_cov, base_score=base_score)
-        if delta > best:
-            best = delta
+        sim_cov = compute_coverage(
+            team + [{"name": "sim", "types": [t], "source": "sim"}], chart, attack_types
+        )
+        delta_raw = typing_score(sim_cov) - base_score
+        if delta_raw > best:
+            best = delta_raw
     # duals
     seen = set()
     for i in range(len(TYPE_POOL)):
@@ -2117,10 +2222,13 @@ def compute_best_defensive_delta(team, chart, attack_types):
             if pair in seen:
                 continue
             seen.add(pair)
-            delta, _, _ = typing_delta(team, list(pair), chart, attack_types, base_cov=base_cov, base_score=base_score)
-            if delta > best:
-                best = delta
-    return best
+            sim_cov = compute_coverage(
+                team + [{"name": "sim", "types": list(pair), "source": "sim"}], chart, attack_types
+            )
+            delta_raw = typing_score(sim_cov) - base_score
+            if delta_raw > best:
+                best = delta_raw
+    return min(100.0, best)
 
 
 def compute_best_offense_gain(team, chart, attack_types):
@@ -2226,7 +2334,7 @@ def compute_best_offense_gain(team, chart, attack_types):
                 best_gain = ranked_gain
         except Exception:
             continue
-    return best_gain
+    return min(100.0, best_gain)
 
 
 def team_infos_from_cache(team):
@@ -2258,7 +2366,7 @@ def shared_weak_score(cov):
     max_weak = max(c["weak"] for c in cov)
     overlap = max(0, max_weak - 1)
     exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    score = 100 - (overlap * 12) - (exposed * 6)
+    score = 100 - (overlap * 10) - (exposed * 5)
     return max(0, min(100, int(score)))
 
 
@@ -2280,12 +2388,12 @@ def offense_score_with_bonuses(team_infos, cov, chart, attack_types):
         if best >= 2.0:
             continue  # SE hit closes this exposure offensively
         if best >= 1.0:
-            penalties += 7.0  # neutral only
+            penalties += 6.0  # neutral only
         else:
-            penalties += 16.0  # cannot hit effectively (immune)
+            penalties += 14.0  # cannot hit effectively (immune)
 
     # Lightly discourage ultra-thin move_type sets
-    breadth_penalty = max(0, 2 - len(move_types)) * 4.0
+    breadth_penalty = max(0, 2 - len(move_types)) * 3.0
 
     base_score = max(0, min(100, 100 - penalties - breadth_penalty))
 
@@ -2363,9 +2471,9 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
     (defensive score already captures heavy stacking impact).
     """
-    delta_penalty = 0.1 * (best_defensive_delta + best_offense_gap)
+    delta_penalty = 0.10 * (best_defensive_delta + best_offense_gap)
     stack_penalty = 0.0
-    shared_penalty = max(0, 100 - shared_score) * 0.04
+    shared_penalty = max(0, 100 - shared_score) * 0.03
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     return int(max(0, min(100, overall)))
 
@@ -2524,8 +2632,7 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
             t, current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key="total"
         )
         for idx, pname in enumerate((opts or []), start=1):
-            # Single, clear print per Pokemon considered
-            print(f"[candidate] {pname} ({t})")
+            log_verbose(f"[candidate] {pname} ({t})")
             try:
                 ptypes = fetch_pokemon_typing(pname)
             except Exception:
@@ -2545,8 +2652,7 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
             )
             for pname in (opts or []):
                 dual_count += 1
-                # Single print per Pokemon considered
-                print(f"[candidate] {pname} ({pair[0]} + {pair[1]})")
+                log_verbose(f"[candidate] {pname} ({pair[0]} + {pair[1]})")
                 try:
                     ptypes = fetch_pokemon_typing(pname)
                 except Exception:
@@ -2762,9 +2868,15 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
             and winner_bst is not None
             and winner_bst < loser_bst
         ):
+            clean_reason = ""
+            if reason_line:
+                clean_reason = re.sub(r"\x1b\[[0-9;]*m", "", reason_line).strip()
+            reason_detail = label
+            if clean_reason:
+                reason_detail = f"{label}. {clean_reason}"
             print(
                 f"[Low Stat Win] {pname} (BST {winner_bst}) chosen over {loser_name} (BST {loser_bst}). "
-                f"Reason: {label}."
+                f"Reason: {reason_detail}."
             )
 
         if reason_line:
@@ -3074,8 +3186,10 @@ def main():
         global_exclude = set()
         global_used = set()
         team_infos = []
+        interactive_mode = sys.stdin.isatty()
         demo_mode = "--demo" in sys.argv
         if demo_mode:
+            interactive_mode = False
             # If no input within 15 seconds, auto-finalize to avoid hang in harness
             import threading, queue
 
@@ -3108,6 +3222,8 @@ def main():
             try:
                 return input(prompt)
             except EOFError:
+                if not interactive_mode:
+                    return "done"
                 if os.name == "nt" and not console_fallback:
                     try:
                         sys.stdin = open("CONIN$", "r")
@@ -3177,6 +3293,10 @@ def main():
             if not raw:
                 if type_filters:
                     _print_type_filtered_options(team, chart, attack_types, type_filters)
+                continue
+            if raw.lower() == "drop all":
+                team = []
+                print("Dropped all team members.")
                 continue
             if raw.lower() == "next":
                 # If we have a full team, show checkpoint summary
@@ -3537,13 +3657,13 @@ def main():
                 contrib = baseline_def - vscore
                 impacts.append((contrib, idx, info["name"], info.get("source", "")))
             impacts.sort(key=lambda x: (x[0], x[2]))
-            drop_candidates = [imp for imp in impacts if imp[3] != "user"]
+            drop_candidates = [imp for imp in impacts if imp[3] == "autofill"]
             print("Defensive impacts (higher = more critical):")
             for contrib, _idx, nm, _src in impacts:
                 print(f" - {nm}: {contrib:+.0f}")
             drop_available = bool(drop_candidates)
             if not drop_candidates:
-                print("No droppable members (all user-supplied); skipping upgrade swap.")
+                print("No droppable members (only auto-filled slots are eligible); skipping upgrade swap.")
             else:
                 weakest_idx = drop_candidates[0][1]
                 weakest_name = drop_candidates[0][2]
@@ -3586,7 +3706,7 @@ def main():
                 uplift = sim_overall - base_overall_core
                 align = info.get("alignment_score", 0) or 0
                 bst = pokemon_base_stat_total(pname)
-                eligible = uplift > 0 or (sim_overall >= base_overall_core and bst > weakest_bst)
+                eligible = uplift > 0
                 line = (
                     f"\u001b[36mOverall {pname}: {sim_overall:.0f}/100 (uplift {uplift:+.0f}; "
                     f"def {comps.get('defense','?')}, off {comps.get('offense','?')}, shared {comps.get('shared','?')}, "
@@ -3665,18 +3785,6 @@ def main():
                         team_infos.append(replacement)
                     else:
                         print("Demo mode: no eligible drop (user-supplied locked); skipping swap.")
-            elif demo_mode and best_any is not None:
-                # fallback: apply best overall even if uplift <= 0 to honor auto-swap requirement
-                if drop_available:
-                    replacement = best_any[3]
-                    print(
-                        f"\nDemo mode: applying fallback swap -> add {replacement.get('name','new')} "
-                        f"(drop {weakest_name}); uplift {best_any[1]:+.0f}"
-                    )
-                    team_infos.pop(weakest_idx)
-                    team_infos.append(replacement)
-                else:
-                    print("Demo mode: no eligible drop (user-supplied locked); skipping swap.")
             else:
                 print("\u001b[32mNo upgrade found beyond current lineup.\u001b[0m")
 

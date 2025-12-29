@@ -20,3 +20,4 @@
 - 2025-12-17: Codex (Git/bookkeeping): Read LOGBOOK and HALL_OF_FAME; proceeding to triage BUG_LOG and update ticket status.
 - 2025-12-17: Codex (Git/bookkeeping): Rewrote documentation set to current v5 scope; archived pre-rewrite docs in `archive/docs_20251217_prerewrite/`.
 - 2025-12-29: Handle registered and signed: Beacon.
+- 2025-12-29: Handle registered and signed: Quasar.

@@ -144,8 +144,8 @@ Open feature tickets
 - **FT-2025-12-28-047 | Halve role penalty (Completed)**  
   Reduce role balance penalty to half strength for 3+ of a role.
 
-- **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
-  Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
+- **FT-2025-12-17-001 | Coverage-aware move selection (Completed)**  
+  Exposed/needed types are wired into pick_moves; role-ranked 4-move suggestions + 12-move draft board emitted; offense adds require positive gain or exposure coverage before delta=0 fallbacks.
 
 - **FT-2025-12-17-002 | GUI slot reroll for unavailable mon (Open)**  
   Click sprite/name in Tk UI to rerun selection for that slot using current team (exclude the current mon) instead of 1:1 swap; covers “drop and rerun whole team” request.
@@ -156,4 +156,4 @@ Supporting/legacy work
 
 Closed/archived tickets: see `archive/docs_20251217_prerewrite` for prior verbose lists.
 
-Signed: Codex (2025-12-28)
+Signed: Quasar (2025-12-29)
