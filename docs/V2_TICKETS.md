@@ -138,6 +138,9 @@ Open feature tickets
 - **FT-2025-12-28-045 | Remove stack penalty from shared score (Completed)**  
   Drop stack penalty from shared weakness scoring; keep overlap + exposed only.
 
+- **FT-2025-12-28-046 | Defense exposed penalty increased (Completed)**  
+  Increase net-exposed penalty in defense score so teams with exposed types don't grade near 100.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

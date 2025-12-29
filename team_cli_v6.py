@@ -815,8 +815,8 @@ def typing_score(cov):
         + 1.6 * total_resist
         + 4.0 * total_immune
         + 7.0 * exposed_immunes  # immunity is absolute in ZA; strong credit for blanking holes
-        - 14 * net_exposed
-        - 12 * stack_overlap  # heavy penalty, but less than net-exposed
+        - 22 * net_exposed
+        - 10 * stack_overlap  # moderate penalty to discourage stacking
     )
     if net_exposed == 0:
         return 100
