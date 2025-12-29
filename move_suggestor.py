@@ -47,7 +47,7 @@ _load_move_cache() # Load cache once at module import
 TYPE_CHART_GLOBAL_CACHE = {} # In-memory cache for type chart
 TYPE_CACHE_STATS = {"hit": 0, "miss": 0}
 POKEMON_CACHE = {}
-POKEMON_CACHE_STATS = {"hit": 0, "miss": 0}
+POKEMON_CACHE_STATS = {"hit": 0, "miss": 0, "persist_fail": 0}
 _load_pokemon_cache() # Load cache once at module import
 ROLE_MOVE_MIX = {
     "sweeper": "Prefers strong STAB and coverage moves to maximize offensive pressure.",
@@ -103,7 +103,7 @@ def _save_pokemon_cache():
     try:
         POKEMON_CACHE_PATH.write_text(json.dumps(POKEMON_CACHE), encoding="utf-8")
     except Exception:
-        POKEMON_CACHE_STATS["persist_fail"] += 1
+        POKEMON_CACHE_STATS["persist_fail"] = POKEMON_CACHE_STATS.get("persist_fail", 0) + 1
 
 
 def get_move_cache_stats():
