@@ -178,6 +178,27 @@ TYPE_POOL = [
     "steel",
     "fairy",
 ]
+
+TYPE_COLOR_ANSI = {
+    "normal": "90",
+    "fire": "91",
+    "water": "94",
+    "electric": "93",
+    "grass": "92",
+    "ice": "96",
+    "fighting": "31",
+    "poison": "35",
+    "ground": "33",
+    "flying": "36",
+    "psychic": "95",
+    "bug": "32",
+    "rock": "90",
+    "ghost": "35",
+    "dragon": "34",
+    "dark": "30",
+    "steel": "37",
+    "fairy": "95",
+}
 # Stable list of types for rating operations (avoids relying on API order)
 TYPE_POOL = [
     "normal",
@@ -214,6 +235,27 @@ def trace_call(fn):
         print(f"[TRACE] {name} -> {repr(result)}")
         return result
     return wrapper
+
+
+def _color_type(text: str, type_name: str) -> str:
+    code = TYPE_COLOR_ANSI.get(type_name, "37")
+    return f"\033[{code}m{text}\033[0m"
+
+
+def _type_tags(type_filters):
+    return " ".join(_color_type(f"[{t}]", t) for t in type_filters)
+
+
+def _extract_type_filters(tokens):
+    type_filters = []
+    remaining = []
+    for tok in tokens:
+        low = tok.lower()
+        if low in TYPE_POOL and len(type_filters) < 2:
+            type_filters.append(low)
+        else:
+            remaining.append(tok)
+    return remaining, type_filters
 
 
 def log_verbose(msg: str):
@@ -1658,6 +1700,96 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
     return results
 
 
+def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: int = 3):
+    if not type_filters:
+        return []
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_score = typing_score(base_cov)
+    combos = []
+    if len(type_filters) == 1:
+        t = type_filters[0]
+        combos.append([t])
+        for other in attack_types:
+            if other == t:
+                continue
+            combos.append([t, other])
+    else:
+        combos.append(type_filters[:2])
+    seen = set()
+    scored = []
+    for combo in combos:
+        key = tuple(sorted(combo))
+        if key in seen:
+            continue
+        seen.add(key)
+        if len(combo) == 1:
+            opts = fetch_single_type_candidates(
+                combo[0],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            label = combo[0]
+        else:
+            opts = fetch_dual_candidates(
+                combo[0],
+                combo[1],
+                current_team=team,
+                version_group=VERSION_GROUP,
+                chart=chart,
+                attack_types=attack_types,
+                stat_sort_key="defense",
+            )
+            label = f"{combo[0]} + {combo[1]}"
+        if not opts:
+            continue
+        delta, _sim_score, _base = typing_delta(
+            team, combo, chart, attack_types, base_cov=base_cov, base_score=base_score
+        )
+        defense_choice = {
+            "delta": delta,
+            "label": label,
+            "types": combo,
+            "candidates": opts,
+            "choices": [{"delta": delta, "label": label, "types": combo, "candidates": opts}],
+        }
+        pick = pick_offense_addition(
+            team,
+            chart,
+            attack_types,
+            defense_choice=defense_choice,
+            silent=True,
+        )
+        if pick:
+            score_tuple, _label, pname, ptypes, _loser_name, _loser_bst, _reason = pick
+            def_gain = score_tuple[1] if score_tuple else delta
+            off_gain = score_tuple[2] if score_tuple else 0.0
+            score = (off_gain, def_gain)
+        else:
+            pname = max(opts, key=pokemon_defense_stat_total)
+            ptypes = combo
+            def_gain = delta
+            off_gain = 0.0
+            score = (off_gain, def_gain)
+        scored.append((score, pname, ptypes, def_gain, off_gain))
+    scored.sort(key=lambda x: (x[0][0], x[0][1]), reverse=True)
+    return scored[:limit]
+
+
+def _print_type_filtered_options(team, chart, attack_types, type_filters):
+    filtered = _filtered_type_suggestions(team, chart, attack_types, type_filters)
+    if not filtered:
+        return
+    header = f"Type add options {_type_tags(type_filters)}:"
+    print(_color_type(header, type_filters[0]))
+    for idx, (_score, pname, ptypes, def_gain, off_gain) in enumerate(filtered, start=1):
+        type_text = "/".join(ptypes) if ptypes else "unknown"
+        line = f" {idx}) {pname} ({type_text}) def {def_gain:+.0f} off {off_gain:+.0f}"
+        print(_color_type(line, type_filters[0]))
+
+
 def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
     if not team:
         return "Add at least one Pokemon to see defense-focused suggestions."
@@ -2962,13 +3094,20 @@ def main():
             raw = input("Add Pokemon name or type 'next': ").strip()
             if not raw:
                 continue
+            tokens = raw.split()
+            tokens, type_filters = _extract_type_filters(tokens)
+            raw = " ".join(tokens).strip()
             if raw.lower() == "next":
                 # If we have a full team, show checkpoint summary
                 if team:
                     print("\n=== Defense checkpoint ===")
                     print(defense_focus_report(team, chart, attack_types))
+                    if type_filters:
+                        _print_type_filtered_options(team, chart, attack_types, type_filters)
                 break
             if raw.lower() == "finalize":
+                if type_filters and team:
+                    _print_type_filtered_options(team, chart, attack_types, type_filters)
                 if do_finalize():
                     break
             if raw.lower() == "done":
@@ -2982,6 +3121,11 @@ def main():
                     if team:
                         print(defense_focus_report(team, chart, attack_types))
                     _print_red_summary(team, chart, attack_types)
+                    if type_filters and team:
+                        _print_type_filtered_options(team, chart, attack_types, type_filters)
+                continue
+            if not raw and type_filters and team:
+                _print_type_filtered_options(team, chart, attack_types, type_filters)
                 continue
             if len(team) >= 6:
                 print("Team already has 6 members. Use 'drop <name>' to remove one before adding more.")
@@ -3019,6 +3163,8 @@ def main():
                     print(f"Draft cache failed for {name}: {exc}")
             print(defense_focus_report(team, chart, attack_types))
             _print_red_summary(team, chart, attack_types)
+            if type_filters:
+                _print_type_filtered_options(team, chart, attack_types, type_filters)
             if finalize_after_add:
                 if do_finalize():
                     break
