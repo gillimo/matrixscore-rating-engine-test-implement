@@ -6,12 +6,12 @@ from pathlib import Path
 
 def run_test_harness():
     """
-    Run team_cli_v5.py and surface its output directly.
+    Run team_cli_v6.py and surface its output directly.
     By default, sends a single "finalize" command so you can see the autofill output.
     """
-    parser = argparse.ArgumentParser(description="Simple harness to exercise team_cli_v5.py and view output.")
+    parser = argparse.ArgumentParser(description="Simple harness to exercise team_cli_v6.py and view output.")
     parser.add_argument("--python", default=sys.executable, help="Python interpreter to use (defaults to current).")
-    parser.add_argument("--script", default="team_cli_v5.py", help="Target CLI script.")
+    parser.add_argument("--script", default="team_cli_v6.py", help="Target CLI script.")
     parser.add_argument(
         "--commands",
         default="finalize",

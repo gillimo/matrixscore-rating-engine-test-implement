@@ -72,6 +72,9 @@ Open feature tickets
 - **FT-2025-12-28-023 | Safe list scoring uses strong-type coverage (Completed)**  
   Score safe typing adds by whether their weaknesses are covered by team strong types (resist+immune-weak >= 2), with 100 reserved for weakness sets fully covered by strong types and no new exposures.
 
+- **FT-2025-12-28-024 | Rename main CLI to v6 and update harness (Completed)**  
+  Rename `team_cli_v5.py` to `team_cli_v6.py` and point the test harness at the v6 script.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 
