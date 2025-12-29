@@ -61,3 +61,7 @@ Overall score (overall_score)
 - Role balance penalty: after overall, subtract `0.5*(count-2)` for each role with 3+ members.
 
 Signed: Codex (2025-12-28)
+Safe typing adds (CLI list)
+- Strong types: `resist + immune - weak >= 2` from current team coverage.
+- Score per typing: `100 - 12*missing_strong - 6*added_weaknesses` (clamped 0..100).
+- List order: fewest added weaknesses, then fewest missing strong types, then score.

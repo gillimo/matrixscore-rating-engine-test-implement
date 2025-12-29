@@ -1680,10 +1680,10 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
                 weak.append(atk)
         return weak
 
-    def _safe_score(def_types):
+    def _safe_score(def_types, added_weak):
         weak = _weak_types(def_types)
         missing = sum(1 for t in weak if t not in strong_types)
-        score = max(0, 100 - missing * 12)
+        score = max(0, 100 - missing * 12 - len(added_weak) * 6)
         return score, weak, missing
 
     entries = []
@@ -1696,7 +1696,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
             bc = base_cov_map.get(sc["attack"], {"weak": 0})
             if sc["weak"] > bc["weak"]:
                 added_weak.append(sc["attack"])
-        safe_score, _weak_types_list, missing = _safe_score([t])
+        safe_score, _weak_types_list, missing = _safe_score([t], added_weak)
         opts = fetch_single_type_candidates(
             t,
             current_team=team,
@@ -1721,7 +1721,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
                 bc = base_cov_map.get(sc["attack"], {"weak": 0})
                 if sc["weak"] > bc["weak"]:
                     added_weak.append(sc["attack"])
-            safe_score, _weak_types_list, missing = _safe_score(pair)
+            safe_score, _weak_types_list, missing = _safe_score(pair, added_weak)
             opts = fetch_dual_candidates(
                 pair[0],
                 pair[1],
