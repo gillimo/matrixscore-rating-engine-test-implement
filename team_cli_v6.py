@@ -2253,7 +2253,7 @@ def shared_weak_score(cov):
     if stack == 1:
         stack = 0
     exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    score = 100 - (overlap * 16) - (stack * 6) - (exposed * 8)
+    score = 100 - (overlap * 12) - (stack * 4) - (exposed * 6)
     return max(0, min(100, int(score)))
 
 

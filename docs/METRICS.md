@@ -28,7 +28,7 @@ Shared weakness score
 - `overlap = max(0, max_weak - 1)`
 - `stack = sum(max(0, weak - 1))` (if `stack == 1`, set to 0)
 - `exposed = count(weak > resist+immune)`
-- `score = 100 - 16*overlap - 6*stack - 8*exposed` (clamped to 0..100)
+- `score = 100 - 12*overlap - 4*stack - 6*exposed` (clamped to 0..100)
 
 Offense score (offense_score_with_bonuses)
 - Build a move-type set from suggested moves across team.

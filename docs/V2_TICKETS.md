@@ -87,7 +87,7 @@ Open feature tickets
 - **FT-2025-12-28-028 | Offense score A-tier tuning (Completed)**  
   Adjust offense penalty/breadth bonus weights to ensure exposure coverage dominates, while rewarding true breadth without inflating scores; keep structure of `offense_score_with_bonuses`.
 
-- **FT-2025-12-28-029 | Shared weakness score A-tier tuning (Open)**  
+- **FT-2025-12-28-029 | Shared weakness score A-tier tuning (Completed)**  
   Rebalance overlap/stack/exposed penalties to avoid double‑punishing teams already penalized in defense, while keeping shared weaknesses a meaningful discriminator.
 
 - **FT-2025-12-28-030 | Defensive delta headroom A-tier tuning (Open)**  
