@@ -199,6 +199,14 @@ TYPE_COLOR_ANSI = {
     "steel": "37",
     "fairy": "95",
 }
+
+LEGENDARY_MYTHIC_EXCLUDE = {
+    "mewtwo",
+    "xerneas",
+    "yveltal",
+    "zygarde",
+    "diancie",
+}
 # Stable list of types for rating operations (avoids relying on API order)
 TYPE_POOL = [
     "normal",
@@ -1770,6 +1778,8 @@ def _filtered_type_suggestions(team, chart, attack_types, type_filters, limit: i
                 stat_sort_key="defense",
             )
             label = f"{combo[0]} + {combo[1]}"
+        if opts:
+            opts = [o for o in opts if o.lower() not in LEGENDARY_MYTHIC_EXCLUDE]
         if not opts:
             continue
         delta, _sim_score, _base = typing_delta(
