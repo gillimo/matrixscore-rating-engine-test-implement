@@ -1579,6 +1579,11 @@ def _is_safe_typing(base_cov_map, sim_cov):
             if bc["resist"] > bc["weak"]:
                 continue
             return False
+        if was_exposed:
+            base_gap = bc["weak"] - (bc["resist"] + bc["immune"])
+            sim_gap = sc["weak"] - (sc["resist"] + sc["immune"])
+            if sim_gap > base_gap:
+                return False
     return True
 
 
