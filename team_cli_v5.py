@@ -2062,6 +2062,7 @@ def predict_overall(team, team_infos, chart, attack_types):
         chart,
         attack_types,
     )
+    def_score_raw = typing_score(cov)
     def_score = typing_score_display(cov)
     shared_score = shared_weak_score(cov)
     stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
