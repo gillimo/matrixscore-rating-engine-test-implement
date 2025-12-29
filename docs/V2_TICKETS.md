@@ -123,6 +123,9 @@ Open feature tickets
 - **FT-2025-12-28-040 | Scoring consistency + overall lift (Completed)**  
   Use the same defense score formula for UI and deltas, and reduce overall penalties to target 92–94 for the stacked-ghost Gengar team.
 
+- **FT-2025-12-28-041 | Soften BST penalty for stacked teams (Completed)**  
+  Reduce low-BST penalty so strong stacked teams (e.g., Gengar core) can reach the 92–94 target band.
+
 - **FT-2025-12-17-001 | Coverage-aware move selection (In Progress)**  
   Wire exposed/needed types into move selection; rank moves per role for coverage; emit 4 suggested moves + top-12 draft board; enforce positive offensive gain/coverage before delta=0 fallbacks; high-BST fallback last. pick_moves accepts exposed_types/needed_offense; wiring and positive-gain enforcement pending.
 

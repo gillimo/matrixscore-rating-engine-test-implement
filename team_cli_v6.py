@@ -2864,8 +2864,8 @@ def final_team_rating(team_infos, cov, chart, attack_types):
     except Exception:
         avg_bst = 999
     bst_penalty = 0.0
-    if avg_bst < 520:
-        bst_penalty = min(10.0, (520 - avg_bst) / 10.0)  # up to -10 when very low
+    if avg_bst < 500:
+        bst_penalty = min(4.0, (500 - avg_bst) / 12.0)  # soften low-BST penalty
         overall = max(0, min(100, overall - bst_penalty))
 
     perfect_team = net_exposed == 0 and coverage_off == 100
