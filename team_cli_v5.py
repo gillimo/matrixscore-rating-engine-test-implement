@@ -1481,6 +1481,7 @@ def _preview_autopick(team, chart, attack_types):
         best_improve = None
         best_label = None
         best_opts = None
+        best_types = None
         for score, label, _preview, opts in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
             if not opts:
                 continue
@@ -1503,10 +1504,13 @@ def _preview_autopick(team, chart, attack_types):
                 best_improve = improve
                 best_label = label
                 best_opts = opts
+                best_types = types
         if best_opts:
             defense_choice = dict(defense_choice)
             defense_choice["label"] = f"Best exposure fix ({best_label})"
             defense_choice["candidates"] = best_opts
+            defense_choice["types"] = best_types
+            defense_choice["choices"] = [defense_choice]
     pick = pick_offense_addition(
         team,
         chart,
