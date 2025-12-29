@@ -1472,6 +1472,41 @@ def _preview_autopick(team, chart, attack_types):
     defense_choice = get_best_defensive_candidates(team, chart, attack_types)
     if not defense_choice:
         return None
+    # If we're in a delta-0 world, prefer safe typings that reduce current exposures.
+    if defense_choice.get("delta", 0) <= 0:
+        base_cov = compute_coverage(team, chart, attack_types)
+        base_gaps = {
+            c["attack"]: c["weak"] - (c["resist"] + c["immune"]) for c in base_cov
+        }
+        best_improve = None
+        best_label = None
+        best_opts = None
+        for score, label, _preview, opts in _safe_typing_adds(team, chart, attack_types, preview_limit=6):
+            if not opts:
+                continue
+            if "+" in label:
+                pair = [p.strip() for p in label.split("+", 1)]
+                types = [pair[0], pair[1]]
+            else:
+                types = [label]
+            sim_cov = compute_coverage(
+                team + [{"name": "sim", "types": types, "source": "sim"}], chart, attack_types
+            )
+            sim_gaps = {
+                c["attack"]: c["weak"] - (c["resist"] + c["immune"]) for c in sim_cov
+            }
+            improve = 0.0
+            for atk, gap in base_gaps.items():
+                if gap > 0:
+                    improve += max(0.0, gap - sim_gaps.get(atk, gap))
+            if improve > 0 and (best_improve is None or improve > best_improve):
+                best_improve = improve
+                best_label = label
+                best_opts = opts
+        if best_opts:
+            defense_choice = dict(defense_choice)
+            defense_choice["label"] = f"Best exposure fix ({best_label})"
+            defense_choice["candidates"] = best_opts
     pick = pick_offense_addition(
         team,
         chart,
