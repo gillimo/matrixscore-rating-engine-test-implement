@@ -32,6 +32,7 @@ The CLI operates interactively, allowing users to add Pokémon, manage the team,
     *   `drop <pokemon_name>`: Removes the specified Pokémon from the current team.
     *   `finalize`: Triggers the auto-filling of the team to 6 members (if not already full), processes move suggestions, and attempts to launch the Tkinter GUI.
 *   **Team Full Status:** If the team reaches 6 members, a message will indicate: "Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone."
+*   **Move Draft Enforcement:** Final move lists are post-processed to satisfy the role blueprint (STAB/coverage/utility targets) when those categories are available.
 
 ---
 

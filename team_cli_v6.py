@@ -666,6 +666,57 @@ def fetch_species_info(name: str):
     res.raise_for_status()
     return res.json()
 
+TERMINAL_FORM_STATUS = {}
+
+def is_terminal_form(name: str) -> bool:
+    """Return True if the Pokemon is the last stage in its evolution chain."""
+    key = normalize_pokemon_name(name)
+    if not key:
+        return False
+    cached = TERMINAL_FORM_STATUS.get(key)
+    if cached is not None:
+        return cached
+    try:
+        species = fetch_species_info(key)
+        chain_url = species.get("evolution_chain", {}).get("url")
+        if not chain_url:
+            TERMINAL_FORM_STATUS[key] = True
+            return True
+        chain = requests.get(chain_url, timeout=15).json().get("chain")
+        last_names = set()
+
+        def collect_last(node):
+            evolves = node.get("evolves_to") or []
+            if not evolves:
+                last_names.add(node["species"]["name"])
+                return
+            for nxt in evolves:
+                collect_last(nxt)
+
+        if chain:
+            collect_last(chain)
+        is_terminal = key in last_names if last_names else True
+    except Exception:
+        is_terminal = True
+    TERMINAL_FORM_STATUS[key] = is_terminal
+    return is_terminal
+
+def _prefer_final_forms(candidates):
+    finals = [c for c in candidates if is_terminal_form(c)]
+    return finals or candidates
+
+def _format_candidate_name(name: str) -> str:
+    label = name
+    if name and not is_terminal_form(name):
+        label = f"{name} (eviolite)"
+    return label
+
+def _format_candidate_preview(opts, preview_limit: int) -> str:
+    preview = ", ".join(_format_candidate_name(o) for o in opts[:preview_limit])
+    if len(opts) > preview_limit:
+        preview = f"{preview}, +{len(opts) - preview_limit} more"
+    return preview
+
 
 def is_legendary_or_mythical(name: str) -> bool:
     key = normalize_pokemon_name(name)
@@ -1054,7 +1105,10 @@ def pick_defensive_addition(team, chart, attack_types, silent: bool = False):
         return pokemon_defense_stat_total(name)
 
     # After picking the safest delta pool, favor faster options within it.
-    pname = max(best["candidates"], key=lambda n: (pokemon_speed_stat(n), stat_key(n)))
+    candidates = _prefer_final_forms(best["candidates"])
+    if not candidates:
+        candidates = best["candidates"]
+    pname = max(candidates, key=lambda n: (pokemon_speed_stat(n), stat_key(n)))
     wheel_proc = None
     try:
         ptypes = fetch_pokemon_typing(pname)
@@ -1129,7 +1183,10 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
 
     def consider_offense(def_opt):
         nonlocal best_pick, highest_bst_candidate
-        for pname in def_opt["candidates"]:
+        candidates = _prefer_final_forms(def_opt["candidates"])
+        if not candidates:
+            candidates = def_opt["candidates"]
+        for pname in candidates:
             try:
                 ptypes = fetch_pokemon_typing(pname)
             except Exception:
@@ -1154,16 +1211,6 @@ def pick_offense_addition(team, chart, attack_types, defense_choice=None, exclud
 
             candidate_move_types = set(info.get("move_types") or [])
             synthetic_cover = False
-            if not info.get("suggested_moves") and candidate_move_types:
-                info = dict(info)
-                limited_types = []
-                for t in candidate_move_types:
-                    if t not in limited_types:
-                        limited_types.append(t)
-                    if len(limited_types) >= 4:
-                        break
-                info["suggested_moves"] = [{"name": f"{t}-coverage", "type": t} for t in limited_types]
-                synthetic_cover = True
 
             move_types = base_move_types | {m["type"] for m in info.get("suggested_moves", []) if m.get("type")}
             sim_infos = base_infos + [info]
@@ -1839,9 +1886,7 @@ def _safe_typing_adds(team, chart, attack_types, preview_limit: int = 10):
     entries.sort(key=lambda x: (-x[0], x[3], x[2], x[4]))
     results = []
     for score, def_delta, _missing, _added_count, label, opts, note in entries:
-        preview = ", ".join(opts[:preview_limit])
-        if len(opts) > preview_limit:
-            preview = f"{preview}, +{len(opts) - preview_limit} more"
+        preview = _format_candidate_preview(opts, preview_limit)
         results.append((score, def_delta, label, preview, opts, note))
     return results
 
@@ -1935,7 +1980,8 @@ def _print_type_filtered_options(team, chart, attack_types, type_filters):
         print(title)
         for idx, (_score, pname, ptypes, def_gain, off_gain) in enumerate(picks, start=1):
             type_text = "/".join(ptypes) if ptypes else label
-            line = f" {idx}) {pname} ({type_text}) def {def_gain:+.0f} off {off_gain:+.0f}"
+            display = _format_candidate_name(pname)
+            line = f" {idx}) {display} ({type_text}) def {def_gain:+.0f} off {off_gain:+.0f}"
             color_type = combo[0]
             print(_color_type(line, color_type))
 
@@ -2000,9 +2046,7 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
 
     lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
     for idx, (delta, label, opts) in enumerate(top, start=1):
-        preview = ", ".join(opts[:preview_limit])
-        if len(opts) > preview_limit:
-            preview = f"{preview}, +{len(opts) - preview_limit} more"
+        preview = _format_candidate_preview(opts, preview_limit)
         lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
     safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
     if safe_adds:
@@ -2439,6 +2483,7 @@ def predict_overall(team, team_infos, chart, attack_types):
         best_offense_gap,
         shared_score,
         stack_overlap=stack_overlap,
+        def_score=def_score,
     )
     # Role balance penalty: gently nudge if we overstack one role (3+)
     role_counts = defaultdict(int)
@@ -2466,7 +2511,7 @@ def predict_overall(team, team_infos, chart, attack_types):
     return overall, components
 
 
-def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_overlap=0):
+def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_overlap=0, def_score=None):
     """
     Overall score: 100 if both deltas are zero and no stacked weaknesses,
     then lose 0.5 point per remaining delta point and a light penalty per stacked weakness
@@ -2476,6 +2521,8 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     stack_penalty = 0.0
     shared_penalty = max(0, 100 - shared_score) * 0.03
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
+    if def_score is not None and def_score < 85:
+        overall -= (85 - def_score) * 0.4
     return int(max(0, min(100, overall)))
 
 
@@ -2632,7 +2679,8 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
         opts = fetch_single_type_candidates(
             t, current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key="total"
         )
-        for idx, pname in enumerate((opts or []), start=1):
+        opts = _prefer_final_forms(opts or [])
+        for idx, pname in enumerate(opts, start=1):
             log_verbose(f"[candidate] {pname} ({t})")
             try:
                 ptypes = fetch_pokemon_typing(pname)
@@ -2651,7 +2699,8 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
             opts = fetch_dual_candidates(
                 pair[0], pair[1], current_team=team, version_group=VERSION_GROUP, chart=chart, attack_types=attack_types, stat_sort_key="total"
             )
-            for pname in (opts or []):
+            opts = _prefer_final_forms(opts or [])
+            for pname in opts:
                 dual_count += 1
                 log_verbose(f"[candidate] {pname} ({pair[0]} + {pair[1]})")
                 try:
@@ -2664,7 +2713,7 @@ def pick_overall_addition(team, chart, attack_types, allow_overlap: bool = False
         # Simplified to guarantee a pick if one exists, bypassing complex scoring.
         final_forms_set = get_final_forms() # Get final forms once
         for p in ZA_POKEDEX:
-            if p not in {m["name"] for m in team} and p in final_forms_set:
+            if p not in {m["name"] for m in team} and p in final_forms_set and is_terminal_form(p):
                 try:
                     ptypes = fetch_pokemon_typing(p)
                     # Directly return this Pokémon as a fallback, with placeholder scores.
@@ -2762,7 +2811,9 @@ def autofill_team(team, chart, attack_types, max_size=6, exclude=None):
             # favor bruiser/tank-offense roles slightly over pure walls when tied
             role_bias = {"tank": 0, "balanced": 0.2, "sweeper": 0.4, "bruiser": 0.5}
             if defense_choice and defense_choice.get("candidates"):
-                candidates = defense_choice["candidates"]
+                candidates = _prefer_final_forms(defense_choice["candidates"])
+                if not candidates:
+                    candidates = defense_choice["candidates"]
                 for cand in candidates:
                     if cand in {m["name"] for m in team} or cand.lower() in exclude:
                         continue
@@ -2949,6 +3000,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
         offensive_delta,
         shared_score,
         stack_overlap=stack_overlap,
+        def_score=def_score,
     )
     # Role balance penalty (soft): discourage 3+ of a role
     role_counts = defaultdict(int)
@@ -3253,8 +3305,12 @@ def main():
                     print("No positive additions available to auto-fill.")
             # Speed substitution pass: within same typing, upgrade to the fastest final-form option.
             if team:
-                has_fast = any(pokemon_speed_stat(m.get("name", "")) >= 110 for m in team if m.get("name"))
-                best_swap = None  # (speed_gain, cand_speed, cand_bst, idx, old, new)
+                has_fast = any(
+                    pokemon_speed_stat(m.get("name", "")) >= 110
+                    for m in team
+                    if m.get("name") and m.get("source") == "autofill"
+                )
+                best_swap = None  # (cand_speed, speed_gain, cand_bst, idx, old, new)
                 for idx, member in enumerate(team):
                     if has_fast:
                         break
@@ -3282,6 +3338,7 @@ def main():
                         )
                     if not opts:
                         continue
+                    opts = _prefer_final_forms(opts)
                     current_name = member.get("name", "")
                     current_speed = pokemon_speed_stat(current_name)
                     current_bst = pokemon_base_stat_total(current_name)
@@ -3296,6 +3353,8 @@ def main():
                             continue
                         cand_speed = pokemon_speed_stat(cand)
                         if cand_speed <= current_speed:
+                            continue
+                        if cand_speed <= 100:
                             continue
                         cand_bst = pokemon_base_stat_total(cand)
                         speed_gain = cand_speed - current_speed
@@ -3551,6 +3610,97 @@ def main():
                 _push_unique(queue, mv, seen)
             return queue
 
+        def _enforce_blueprint(info, picks):
+            role = (info.get("role") or "balanced").lower()
+            by_cat = info.get("suggested_by_category") or {}
+            stab_moves = by_cat.get("stab", [])
+            cov_moves = by_cat.get("coverage", [])
+            util_moves = (by_cat.get("utility", []) or []) + (by_cat.get("buff", []) or [])
+
+            cat_names = {
+                "stab": {m.get("name") for m in stab_moves if m.get("name")},
+                "coverage": {m.get("name") for m in cov_moves if m.get("name")},
+                "utility": {m.get("name") for m in util_moves if m.get("name")},
+            }
+
+            def _pick_category(name):
+                if name in cat_names["stab"]:
+                    return "stab"
+                if name in cat_names["coverage"]:
+                    return "coverage"
+                if name in cat_names["utility"]:
+                    return "utility"
+                return None
+
+            def _count_categories():
+                counts = {"stab": 0, "coverage": 0, "utility": 0}
+                for mv in picks:
+                    cat = _pick_category(mv.get("name"))
+                    if cat:
+                        counts[cat] += 1
+                return counts
+
+            def _first_available(pool):
+                existing = {m.get("name") for m in picks if m.get("name")}
+                for mv in pool:
+                    name = mv.get("name")
+                    if name and name not in existing:
+                        return mv
+                return None
+
+            def _replace_with(mv, required_cats):
+                if not mv or not mv.get("name"):
+                    return
+                if len(picks) < 4:
+                    picks.append(mv)
+                    return
+                counts = _count_categories()
+                replace_idx = None
+                for idx in range(len(picks) - 1, -1, -1):
+                    cat = _pick_category(picks[idx].get("name"))
+                    if cat is None:
+                        replace_idx = idx
+                        break
+                if replace_idx is None:
+                    for idx in range(len(picks) - 1, -1, -1):
+                        cat = _pick_category(picks[idx].get("name"))
+                        if cat in required_cats and counts.get(cat, 0) > 1:
+                            replace_idx = idx
+                            break
+                if replace_idx is None:
+                    replace_idx = len(picks) - 1
+                picks[replace_idx] = mv
+
+            util_target = 0
+            cov_target = 1
+            if role == "sweeper":
+                cov_target = 2 if cov_moves else 1
+                util_target = 1 if util_moves else 0
+                desired = ["stab"] + ["coverage"] * cov_target + (["utility"] if util_target else [])
+            elif role == "tank":
+                util_target = 2 if len(util_moves) >= 2 else (1 if util_moves else 0)
+                desired = ["utility"] * util_target + ["stab", "coverage"]
+            else:
+                util_target = 1 if util_moves else 0
+                desired = (["utility"] if util_target else []) + ["stab", "coverage"]
+
+            required = {c for c in desired if c in {"stab", "coverage", "utility"}}
+            counts = _count_categories()
+            for cat in desired:
+                if cat == "stab" and counts["stab"] >= 1:
+                    continue
+                if cat == "coverage" and counts["coverage"] >= cov_target:
+                    continue
+                if cat == "utility" and counts["utility"] >= util_target:
+                    continue
+                pool = stab_moves if cat == "stab" else cov_moves if cat == "coverage" else util_moves
+                mv = _first_available(pool)
+                if mv:
+                    _replace_with(mv, required)
+                    counts = _count_categories()
+            if len(picks) > 4:
+                del picks[4:]
+
         assigned = {info["name"]: [] for info in boards}
         draft_queues = {info["name"]: _build_draft_queue(info) for info in boards}
         for _round in range(4):
@@ -3568,6 +3718,9 @@ def main():
                     picks.append(mv)
                     global_used.add(mv_name)
                     break
+
+        for info in boards:
+            _enforce_blueprint(info, assigned.get(info["name"], []))
 
         # If still empty, synthesize one move to avoid none
         for info in boards:

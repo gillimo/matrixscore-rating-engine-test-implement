@@ -21,3 +21,6 @@
 - 2025-12-17: Codex (Git/bookkeeping): Rewrote documentation set to current v5 scope; archived pre-rewrite docs in `archive/docs_20251217_prerewrite/`.
 - 2025-12-29: Handle registered and signed: Beacon.
 - 2025-12-29: Handle registered and signed: Quasar.
+- 2025-12-29: Codex: tightened overall rating by applying a defense-score floor penalty when defense < 85.
+- 2025-12-29: Codex: fixed NameError in pick_offense_addition by restoring synthetic_cover default.
+- 2025-12-29: Codex: enforced move draft blueprints (STAB/coverage/utility per role) before final move list.

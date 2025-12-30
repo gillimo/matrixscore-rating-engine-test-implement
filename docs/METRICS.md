@@ -51,6 +51,7 @@ Overall score (overall_score)
 - `delta_penalty = 0.10 * (best_defensive_delta + best_offense_gap)`
 - `shared_penalty = max(0, 100 - shared_score) * 0.03`
 - `overall = 100 - delta_penalty - shared_penalty` (clamped 0..100)
+- Defense floor: if `def_score < 85`, subtract `(85 - def_score) * 0.4`.
 - Stack penalty is currently 0 (stacking is already captured in shared weakness).
 - Role balance penalty: after overall, subtract `0.25*(count-2)` for each role with 3+ members.
 - BST penalty: if average BST < 500, subtract `min(4, (500 - avg_bst) / 12)`.
