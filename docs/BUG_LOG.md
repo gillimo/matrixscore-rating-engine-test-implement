@@ -4,6 +4,7 @@ Last triage: 2025-12-17 by Codex (Git/bookkeeping).
 Updated: Quasar (2025-12-29).
 
 ### Active Bugs
+- ID: BUG-2025-12-29-008 | Title: Defense score over-penalizes stacked weaknesses even when covered | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: typing_score now applies stack_overlap only to exposed types.
 - ID: BUG-2025-12-29-007 | Title: Drafted moves can violate role blueprint (missing STAB/coverage/utility) | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: Draft enforcement now backfills missing categories per role before final move list prints.
 - ID: BUG-2025-12-29-006 | Title: pick_offense_addition crashes on synthetic_cover NameError | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: Defined synthetic_cover default after removing synthetic move injection; run no longer crashes on `froslass` add.
 - ID: BUG-2025-12-29-002 | Title: Defense score penalizes total weakness counts instead of exposed weaknesses | Status: Fixed (Verified) | Reported By: Codex | Date: 2025-12-29 | Notes: typing_score uses net_exposed/stack only; no total_weak term; verified with Gengar/Sableye coverage check.

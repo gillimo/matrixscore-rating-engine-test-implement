@@ -871,7 +871,9 @@ def compute_coverage(team, chart, attack_types):
 
 def typing_score(cov):
     net_exposed = sum(1 for c in cov if c["weak"] > (c["resist"] + c["immune"]))
-    stack_overlap = sum(max(0, c["weak"] - 1) for c in cov)
+    stack_overlap = sum(
+        max(0, c["weak"] - 1) for c in cov if c["weak"] > (c["resist"] + c["immune"])
+    )
     exposure_gap_total = sum(
         max(0, c["weak"] - (c["resist"] + c["immune"])) for c in cov
     )

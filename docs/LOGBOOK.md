@@ -24,3 +24,4 @@
 - 2025-12-29: Codex: tightened overall rating by applying a defense-score floor penalty when defense < 85.
 - 2025-12-29: Codex: fixed NameError in pick_offense_addition by restoring synthetic_cover default.
 - 2025-12-29: Codex: enforced move draft blueprints (STAB/coverage/utility per role) before final move list.
+- 2025-12-29: Codex: limited defense stack overlap penalty to exposed types only.

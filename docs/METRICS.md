@@ -6,9 +6,9 @@ Defense (typing_score)
 - Coverage inputs: for each attack type, count team members that are weak, resist, immune, or neutral.
 - Exposed type: `weak > (resist + immune)`.
 - Score formula:
-  - `def_score = 100 - 8*exposure_gap_total - 8*stack_overlap`
-  - `exposure_gap_total = sum(max(0, weak - (resist + immune)))`
-  - `stack_overlap = sum(max(0, weak - 1))`
+- `def_score = 100 - 8*exposure_gap_total - 8*stack_overlap`
+- `exposure_gap_total = sum(max(0, weak - (resist + immune)))`
+- `stack_overlap = sum(max(0, weak - 1))` for exposed types only (`weak > resist + immune`)
   - No explicit exposure caps/floors; score clamps to 0..100 only.
 
 Defense (display score)
