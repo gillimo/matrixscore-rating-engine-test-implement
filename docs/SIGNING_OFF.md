@@ -45,3 +45,12 @@ Signoff: Aster (2026-01-04)
 - Known issues left: none new.
 - Next steps for the next agent: run a quick finalize to materialize `move_rarity_cache.json` if needed.
 
+Signoff: Aster (2026-01-04)
+- Date & handle: 2026-01-04 - Aster
+- What changed (files/commits): added `speed` CLI command to list fastest candidates and top positive defensive-delta speed picks; updated `docs/LOGBOOK.md`.
+- Bugs opened/updated (IDs): none.
+- Tickets opened/updated (IDs): none.
+- Tests run: not run.
+- Known issues left: none new.
+- Next steps for the next agent: try `speed` with and without a team to confirm output.
+

@@ -2174,6 +2174,58 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
     return "\n".join(lines)
 
 
+def print_speed_candidates(team, chart, attack_types, top_n: int = 5):
+    finals_set = get_final_forms()
+    pool = [p for p in ZA_POKEDEX if p in finals_set]
+    speed_rows = []
+    for name in pool:
+        try:
+            spd = pokemon_speed_stat(name)
+        except Exception:
+            continue
+        speed_rows.append((spd, name))
+    speed_rows.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    top_speed = speed_rows[:top_n]
+    print("\033[96mTop speed candidates:\033[0m")
+    for idx, (spd, name) in enumerate(top_speed, start=1):
+        try:
+            types = fetch_pokemon_typing(name)
+        except Exception:
+            types = []
+        type_text = "/".join(types) if types else "unknown"
+        line = f" {idx}) {name} ({type_text}) speed {spd}"
+        print(f"\033[96m{line}\033[0m")
+
+    if not team:
+        print("\033[33mAdd at least one Pokemon to compute positive defensive deltas.\033[0m")
+        return
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_score = typing_score(base_cov)
+    positive = []
+    for spd, name in speed_rows:
+        try:
+            types = fetch_pokemon_typing(name)
+        except Exception:
+            types = []
+        if not types:
+            continue
+        delta, _sim_score, _base = typing_delta(team, types, chart, attack_types, base_cov=base_cov, base_score=base_score)
+        if delta > 0:
+            positive.append((spd, delta, name, types))
+        if len(positive) >= top_n and spd < positive[-1][0]:
+            continue
+    positive.sort(key=lambda x: (x[0], x[1], x[2]), reverse=True)
+    top_positive = positive[:top_n]
+    print("\033[32mTop speed candidates with positive defensive delta:\033[0m")
+    if not top_positive:
+        print("\033[32m (none)\033[0m")
+        return
+    for idx, (spd, delta, name, types) in enumerate(top_positive, start=1):
+        type_text = "/".join(types) if types else "unknown"
+        line = f" {idx}) {name} ({type_text}) speed {spd} def {delta:+.0f}"
+        print(f"\033[32m{line}\033[0m")
+
+
 def coverage_report(team, chart, attack_types, show_suggestions: bool = True):
     # Pre-cache draft boards for current team to avoid re-fetching later and surface offense hints early
     for member in team:
@@ -3655,6 +3707,11 @@ def main():
                     if type_filters:
                         _print_type_filtered_options(team, chart, attack_types, type_filters)
                 break
+            if raw.lower() == "speed":
+                print_speed_candidates(team, chart, attack_types)
+                if type_filters:
+                    _print_type_filtered_options(team, chart, attack_types, type_filters)
+                continue
             if raw.lower() == "finalize":
                 if type_filters and team:
                     _print_type_filtered_options(team, chart, attack_types, type_filters)
