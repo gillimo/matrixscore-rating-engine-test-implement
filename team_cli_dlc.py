@@ -113,7 +113,7 @@ ZA_POKEDEX = [
     "pancham","pangoro",
     "trubbish","garbodor",
     "dedenne",
-    "pichu","pikachu","raichu",
+    "pichu","pikachu","raichu","raichu-alola",
     "cleffa","clefairy","clefable",
     "spinarak","ariados",
     "ekans","arbok",
@@ -2725,6 +2725,7 @@ def predict_overall(team, team_infos, chart, attack_types):
             role_penalty += 0.25 * (cnt - 2)  # 3 of a kind = -0.25, 4 = -0.5, etc.
     if role_penalty:
         overall = max(0, min(100, overall - role_penalty))
+    overall = round(overall, 1)
     components = {
         "defense": def_score,
         "offense": off_score,
@@ -2752,7 +2753,7 @@ def overall_score(best_defensive_delta, best_offense_gap, shared_score, stack_ov
     overall = 100 - delta_penalty - stack_penalty - shared_penalty
     if def_score is not None and def_score < 85:
         overall -= (85 - def_score) * 0.4
-    return int(max(0, min(100, overall)))
+    return max(0.0, min(100.0, overall))
 
 
 def coverage_totals(cov):
@@ -3254,6 +3255,7 @@ def final_team_rating(team_infos, cov, chart, attack_types):
     if avg_bst < 500:
         bst_penalty = min(4.0, (500 - avg_bst) / 12.0)  # soften low-BST penalty
         overall = max(0, min(100, overall - bst_penalty))
+    overall = round(overall, 1)
 
     perfect_team = net_exposed == 0 and coverage_off == 100
     scores = {
@@ -3386,6 +3388,7 @@ def _populate_move_data(
     # Populate info dictionary with results from pick_moves
     info["suggested_moves"] = move_info.get("suggested_moves", [])
     info["draft_board"] = move_info.get("draft_board", [])
+    info["rare_moves"] = move_info.get("rare_moves", [])
     info["suggested_by_category"] = move_info.get("suggested_by_category", {})
     info["coverage_priority"] = move_info.get("coverage_priority", [])
     seen_types = []
@@ -4105,6 +4108,8 @@ def main():
             if len(team_infos) < 6:
                 print("Team not full; skipping drop/upgrade until 6 members are set.")
         if contrib_lines and len(team_infos) >= 6:
+            TOTAL_POKEMON_FOR_MOVE_FETCH = 0
+            POKEMON_MOVES_FETCHED = 0
             upgrade_lines = []
             impacts = []
             for idx, info in enumerate(team_infos):

@@ -27,6 +27,7 @@
 - 2025-12-29: Codex: limited defense stack overlap penalty to exposed types only.
 - 2026-01-04: Handle registered and signed: Aster.
 - 2026-01-04: Aster: normalized ZA form entries for type cache; added 6/6 drop+upgrade prompt; enforced unique draft moves; added move rarity weighting; tests: py_compile, test_harness finalize (timeout).
+- 2026-01-04: Aster: moved move rarity ranker into `move_rarity.py` and cached rarity stats in `move_rarity_cache.json`.
 
 
 

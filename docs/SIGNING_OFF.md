@@ -36,3 +36,12 @@ Signoff: Aster (2026-01-04)
 - Known issues left: test_harness timeout during finalize (see latest log).
 - Next steps for the next agent: verify 6/6 prompt output and move rarity weighting in a short interactive run; consider reducing harness runtime or adding a shorter smoke flag for finalize.
 
+Signoff: Aster (2026-01-04)
+- Date & handle: 2026-01-04 - Aster
+- What changed (files/commits): moved rarity ranker into `move_rarity.py`; cached rarity stats in `move_rarity_cache.json`; updated `move_suggestor.py`, `tk_team_builder.py`, `team_cli_dlc.py`, `docs/LOGBOOK.md`.
+- Bugs opened/updated (IDs): none.
+- Tickets opened/updated (IDs): none.
+- Tests run: not run (request was refactor only).
+- Known issues left: none new.
+- Next steps for the next agent: run a quick finalize to materialize `move_rarity_cache.json` if needed.
+

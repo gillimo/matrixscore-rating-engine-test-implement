@@ -2,12 +2,12 @@
 import sys
 import re
 import json
-import math
 import requests
 from pathlib import Path
 from collections import defaultdict
 
 from globals import TOTAL_POKEMON_FOR_MOVE_FETCH, POKEMON_MOVES_FETCHED
+from move_rarity import get_rarity_for_move
 
 POKEAPI_BASE = "https://pokeapi.co/api/v2"
 EXCLUDED_TYPES = {"shadow", "unknown"}
@@ -20,6 +20,7 @@ MOVE_VERSION_FALLBACKS = [
 ]
 TRACE_FUNCTIONS = False  # tracing hard-disabled to avoid noisy logs
 MOVE_CACHE_PATH = Path(__file__).with_name("move_cache.json")
+MOVE_RARITY_CACHE_PATH = Path(__file__).with_name("move_rarity_cache.json")
 TYPE_CACHE_PATH = Path(__file__).with_name("type_chart_cache.json")
 POKEMON_CACHE_PATH = Path(__file__).with_name("pokemon_cache.json")
 MOVE_CACHE = {}
@@ -43,6 +44,8 @@ def _load_pokemon_cache():
             POKEMON_CACHE = json.loads(POKEMON_CACHE_PATH.read_text(encoding="utf-8"))
         except Exception:
             POKEMON_CACHE = {}
+
+
 
 _load_move_cache() # Load cache once at module import
 TYPE_CHART_GLOBAL_CACHE = {} # In-memory cache for type chart
@@ -114,6 +117,8 @@ def save_all_caches():
     _save_move_cache()
     _save_type_chart() # Save type chart if it was loaded/modified.
     _save_pokemon_cache() # Save pokemon cache if it was loaded/modified.
+
+
 
 # Lightweight tracing to show entry/exit of functions for progress visibility.
 def trace_call(fn):
@@ -1397,23 +1402,12 @@ def pick_moves(
 
     physical = stats["attack"] >= stats["special-attack"]
 
-    max_learned = max((m["learned_by"] for m in candidate_moves), default=0)
-    type_max = defaultdict(int)
     for m in candidate_moves:
-        tname = m.get("type")
-        if tname:
-            type_max[tname] = max(type_max[tname], m["learned_by"])
-
-    def _rarity_score(count, max_count):
-        if max_count <= 0:
-            return 0
-        if count <= 0:
-            return 100
-        return int(round(100 * (1 - (math.log(count + 1) / math.log(max_count + 1)))))
-
-    for m in candidate_moves:
-        m["rarity"] = _rarity_score(m["learned_by"], max_learned)
-        m["type_rarity"] = _rarity_score(m["learned_by"], type_max.get(m.get("type"), 0))
+        learned_by = m["learned_by"]
+        rarity = get_rarity_for_move(m["name"], m.get("type"), learned_by, MOVE_CACHE, MOVE_RARITY_CACHE_PATH)
+        m["rarity_score"] = rarity.get("rarity_score", 0)
+        m["type_rarity_score"] = rarity.get("type_rarity_score", 0)
+        m["rarity_tier"] = rarity.get("rarity_tier", "")
 
     def move_score(m):
         cat_match = (m["cat"] == "physical" and physical) or (m["cat"] == "special" and not physical)
@@ -1425,7 +1419,7 @@ def pick_moves(
         if cat_match:
             score += 15
         score += def_type_hits[m["type"]] * 25  # weight coverage count higher
-        score += 0.2 * m.get("rarity", 0) + 0.2 * m.get("type_rarity", 0)
+        score += 0.2 * m.get("rarity_score", 0) + 0.2 * m.get("type_rarity_score", 0)
         # Coverage bonus for exposed/needed types
         coverage_bonus = 0
         for t in exposed_types:
@@ -1471,7 +1465,7 @@ def pick_moves(
                 base += 25
             elif mult >= 1.0:
                 base += 8
-        base += 0.2 * m.get("rarity", 0) + 0.2 * m.get("type_rarity", 0)
+        base += 0.2 * m.get("rarity_score", 0) + 0.2 * m.get("type_rarity_score", 0)
         return base
 
     stab_sorted = sorted(stab_moves, key=move_score, reverse=True)
@@ -1691,6 +1685,9 @@ def pick_moves(
         existing = [m for m in draft_board if m["name"] not in required_names]
         draft_board = (required_stabs + existing)[:12]
 
+    rare_moves = [m for m in candidate_moves if m.get("rarity_tier")]
+    rare_moves.sort(key=lambda m: (m.get("learned_by", 0), m.get("name", "")))
+
     # Alignment score: how well moves fit role priorities
     role_weights = {
         "sweeper": {
@@ -1747,6 +1744,7 @@ def pick_moves(
         "suggested_moves": final_moves,
         "suggested_by_category": suggested_by_category,
         "draft_board": draft_board,
+        "rare_moves": rare_moves,
         "alignment_score": alignment_score,
     }
 

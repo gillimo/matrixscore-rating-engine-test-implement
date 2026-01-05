@@ -995,6 +995,25 @@ class App:
                 cat = mv.get("cat", "")
                 cat_label = "Phys" if cat == "physical" else ("Spec" if cat == "special" else "Status")
                 lines.append(f" - {mv.get('name','?')} [{mv.get('type','-')}/{cat_label}]")
+        rare_moves = member.get("rare_moves") or []
+        if rare_moves:
+            unique = [m for m in rare_moves if m.get("rarity_tier") == "unique"]
+            near_unique = [m for m in rare_moves if m.get("rarity_tier") == "near-unique"]
+            rare = [m for m in rare_moves if m.get("rarity_tier") == "rare"]
+            def _fmt(m):
+                return (
+                    f"{m.get('name','?')} "
+                    f"[{m.get('type','-')}] "
+                    f"r{m.get('rarity_score','?')}/tr{m.get('type_rarity_score','?')}"
+                )
+            lines.append("")
+            lines.append("Rare moves (bell-curve):")
+            if unique:
+                lines.append(" - Unique: " + ", ".join(_fmt(m) for m in unique))
+            if near_unique:
+                lines.append(" - Near-unique: " + ", ".join(_fmt(m) for m in near_unique))
+            if rare:
+                lines.append(" - Rare: " + ", ".join(_fmt(m) for m in rare))
         cats = member.get("suggested_by_category") or {}
         if cats:
             lines.append("")
@@ -1093,7 +1112,7 @@ class App:
             info.setdefault("role", info.get("role", "balanced"))
             team_infos.append(info)
         off_score = offense_score_with_bonuses(team_infos, cov, chart, attack_types)
-        overall = int(min(100, max(0, (def_score + off_score) / 2 - 2.0 * stack_overlap)))
+        overall = round(min(100, max(0, (def_score + off_score) / 2 - 2.0 * stack_overlap)), 1)
         exposures = [c for c in cov if c["weak"] > (c["resist"] + c["immune"])]
         role_counts = {}
         for info in self.team:
@@ -1143,3 +1162,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
