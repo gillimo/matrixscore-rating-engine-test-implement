@@ -4125,7 +4125,8 @@ def main():
                 impacts.append((contrib, idx, info["name"], info.get("source", "")))
             impacts.sort(key=lambda x: (x[0], x[2]))
             drop_candidates = [imp for imp in impacts if imp[3] == "autofill"]
-            print(f"Defensive impacts (current defense {baseline_def}/100; higher = more critical):")
+            print(f"Current team defense score: {baseline_def}/100")
+            print("Defensive impacts (higher = more critical):")
             for contrib, _idx, nm, _src in impacts:
                 print(f" - {nm}: {contrib:+.0f}")
             drop_available = bool(drop_candidates)
