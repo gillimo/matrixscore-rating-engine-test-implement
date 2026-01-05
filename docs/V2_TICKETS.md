@@ -1,8 +1,13 @@
-## Tickets (v5, 2025-12-17)
+﻿## Tickets (DLC, 2025-12-17)
 
 Scope: code in git + tickets added by the current agent are in-scope. Log new tickets here (features) and bugs in `BUG_LOG.md`.
 
 Open feature tickets
+- **FT-2026-01-04-001 | 6/6 prompt shows best drop+upgrade suggestion (Open)**  
+  When team is full, show "who to drop" result plus the highest-overall replacement option and delta. Requested by Aster (2026-01-04).
+
+- **FT-2026-01-04-002 | Move rarity scoring in draft (Open)**  
+  Add global rarity and type-specific rarity scores to move selection to prioritize rarer moves during drafting. Requested by Aster (2026-01-04).
 - **FT-2025-12-28-001 | Show all safe typing adds in CLI output (Completed)**  
   Replace top-3 safest list with full safe-typing add list in the orange summary block.
 
@@ -72,14 +77,14 @@ Open feature tickets
 - **FT-2025-12-28-023 | Safe list scoring uses strong-type coverage (Completed)**  
   Score safe typing adds by whether their weaknesses are covered by team strong types (resist+immune-weak >= 2), with 100 reserved for weakness sets fully covered by strong types and no new exposures.
 
-- **FT-2025-12-28-024 | Rename main CLI to v6 and update harness (Completed)**  
-  Rename `team_cli_v5.py` to `team_cli_v6.py` and point the test harness at the v6 script.
+- **FT-2025-12-28-024 | Rename main CLI to DLC and update harness (Completed)**  
+  Rename `team_cli_dlc.py` to `team_cli_dlc.py` and point the test harness at the DLC script.
 
 - **FT-2025-12-28-025 | Safe list prioritizes fewest added weaknesses (Completed)**  
   Order safe typing adds by added weakness count first, then by missing strong-type coverage and score.
 
-- **FT-2025-12-28-026 | Update METRICS.md to v6 formulas (Completed)**  
-  Document the current defense/offense/shared/overall formulas and penalties in `team_cli_v6.py`.
+- **FT-2025-12-28-026 | Update METRICS.md to DLC formulas (Completed)**  
+  Document the current defense/offense/shared/overall formulas and penalties in `team_cli_dlc.py`.
 
 - **FT-2025-12-28-027 | Defense score A-tier tuning (Completed)**  
   Retune defense weights (weak/resist/immune/exposed/stack) to reduce drift between `typing_score` and `typing_score_display`, keep 100 only when net_exposed==0, and preserve current structure while improving stability across stacked teams.
@@ -88,7 +93,7 @@ Open feature tickets
   Adjust offense penalty/breadth bonus weights to ensure exposure coverage dominates, while rewarding true breadth without inflating scores; keep structure of `offense_score_with_bonuses`.
 
 - **FT-2025-12-28-029 | Shared weakness score A-tier tuning (Completed)**  
-  Rebalance overlap/stack/exposed penalties to avoid double‑punishing teams already penalized in defense, while keeping shared weaknesses a meaningful discriminator.
+  Rebalance overlap/stack/exposed penalties to avoid doubleâ€‘punishing teams already penalized in defense, while keeping shared weaknesses a meaningful discriminator.
 
 - **FT-2025-12-28-030 | Defensive delta headroom A-tier tuning (Completed)**  
   Refine `typing_delta` penalty/bonus coefficients to better penalize new exposures/stacking and reward closing exposed types, without changing the formula shape.
@@ -97,7 +102,7 @@ Open feature tickets
   Normalize `compute_best_offense_gain` scaling to prevent inflation and make 0 truly mean no remaining offensive lift; keep current calculation flow.
 
 - **FT-2025-12-28-032 | Overall score A-tier tuning (Completed)**  
-  Adjust overall weighting for delta penalties and shared penalty so strong, balanced teams land in expected bands (e.g., 83–85 for the clefable/mawile team, 92–94 for stacked ghosts) without changing structure.
+  Adjust overall weighting for delta penalties and shared penalty so strong, balanced teams land in expected bands (e.g., 83â€“85 for the clefable/mawile team, 92â€“94 for stacked ghosts) without changing structure.
 
 - **FT-2025-12-28-033 | Speed-weighted offense stats (Completed)**  
   Include a stronger speed contribution in offensive stat total (Atk + SpA + 0.75*Speed) used by offense gain scaling.
@@ -121,10 +126,10 @@ Open feature tickets
   Print the "Perfect team" definition in gold only when the team meets perfect criteria.
 
 - **FT-2025-12-28-040 | Scoring consistency + overall lift (Completed)**  
-  Use the same defense score formula for UI and deltas, and reduce overall penalties to target 92–94 for the stacked-ghost Gengar team.
+  Use the same defense score formula for UI and deltas, and reduce overall penalties to target 92â€“94 for the stacked-ghost Gengar team.
 
 - **FT-2025-12-28-041 | Soften BST penalty for stacked teams (Completed)**  
-  Reduce low-BST penalty so strong stacked teams (e.g., Gengar core) can reach the 92–94 target band.
+  Reduce low-BST penalty so strong stacked teams (e.g., Gengar core) can reach the 92â€“94 target band.
 
 - **FT-2025-12-28-042 | Exposed types listed in breakdown (Completed)**  
   Append explicit exposed type names in the detailed breakdown summary line.
@@ -148,7 +153,7 @@ Open feature tickets
   Exposed/needed types are wired into pick_moves; role-ranked 4-move suggestions + 12-move draft board emitted; offense adds require positive gain or exposure coverage before delta=0 fallbacks.
 
 - **FT-2025-12-17-002 | GUI slot reroll for unavailable mon (Open)**  
-  Click sprite/name in Tk UI to rerun selection for that slot using current team (exclude the current mon) instead of 1:1 swap; covers “drop and rerun whole team” request.
+  Click sprite/name in Tk UI to rerun selection for that slot using current team (exclude the current mon) instead of 1:1 swap; covers â€œdrop and rerun whole teamâ€ request.
 
 Supporting/legacy work
 - Draft board caching: keep move-data refresh to avoid stale/1-move outputs; ensure cached boards update after move fetch.
@@ -157,3 +162,5 @@ Supporting/legacy work
 Closed/archived tickets: see `archive/docs_20251217_prerewrite` for prior verbose lists.
 
 Signed: Quasar (2025-12-29)
+
+

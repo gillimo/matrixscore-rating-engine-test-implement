@@ -1,7 +1,8 @@
-import os
+﻿import os
 import sys
 import re
 import json
+import math
 import requests
 from pathlib import Path
 from collections import defaultdict
@@ -1050,7 +1051,7 @@ def normalize_move_name(name: str) -> str:
     return (
         name.strip()
         .lower()
-        .replace("’", "")
+        .replace("â€™", "")
         .replace("'", "")
         .replace(" ", "-")
     )
@@ -1379,6 +1380,7 @@ def pick_moves(
         category = md["damage_class"]["name"]
         power = md.get("power") or 0
         accuracy = md.get("accuracy") or 100
+        learned_by = len(md.get("learned_by_pokemon", []) or [])
         candidate_moves.append(
             {
                 "name": mv,
@@ -1389,10 +1391,29 @@ def pick_moves(
                 "method": method,
                 "level": lvl,
                 "priority": md.get("priority", 0),
+                "learned_by": learned_by,
             }
         )
 
     physical = stats["attack"] >= stats["special-attack"]
+
+    max_learned = max((m["learned_by"] for m in candidate_moves), default=0)
+    type_max = defaultdict(int)
+    for m in candidate_moves:
+        tname = m.get("type")
+        if tname:
+            type_max[tname] = max(type_max[tname], m["learned_by"])
+
+    def _rarity_score(count, max_count):
+        if max_count <= 0:
+            return 0
+        if count <= 0:
+            return 100
+        return int(round(100 * (1 - (math.log(count + 1) / math.log(max_count + 1)))))
+
+    for m in candidate_moves:
+        m["rarity"] = _rarity_score(m["learned_by"], max_learned)
+        m["type_rarity"] = _rarity_score(m["learned_by"], type_max.get(m.get("type"), 0))
 
     def move_score(m):
         cat_match = (m["cat"] == "physical" and physical) or (m["cat"] == "special" and not physical)
@@ -1404,6 +1425,7 @@ def pick_moves(
         if cat_match:
             score += 15
         score += def_type_hits[m["type"]] * 25  # weight coverage count higher
+        score += 0.2 * m.get("rarity", 0) + 0.2 * m.get("type_rarity", 0)
         # Coverage bonus for exposed/needed types
         coverage_bonus = 0
         for t in exposed_types:
@@ -1449,6 +1471,7 @@ def pick_moves(
                 base += 25
             elif mult >= 1.0:
                 base += 8
+        base += 0.2 * m.get("rarity", 0) + 0.2 * m.get("type_rarity", 0)
         return base
 
     stab_sorted = sorted(stab_moves, key=move_score, reverse=True)
@@ -1862,3 +1885,4 @@ if __name__ == "__main__":
     main()
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+

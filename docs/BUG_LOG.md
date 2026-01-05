@@ -1,9 +1,11 @@
-## Bug Log
+﻿## Bug Log
 
 Last triage: 2025-12-17 by Codex (Git/bookkeeping).
 Updated: Quasar (2025-12-29).
 
 ### Active Bugs
+- ID: BUG-2026-01-04-001 | Title: ZA roster missing form-based entries in type cache (e.g., Aegislash) | Status: Open | Reported By: Aster | Date: 2026-01-04 | Notes: type_pokemon_cache filters hyphenated forms; defaults like aegislash-shield/meowstic-male never map to base ZA names.
+- ID: BUG-2026-01-04-002 | Title: Draft enforcement can reuse moves across the team after blueprint pass | Status: Open | Reported By: Aster | Date: 2026-01-04 | Notes: blueprint backfill ignores global_used, allowing duplicates across members.
 - ID: BUG-2025-12-29-008 | Title: Defense score over-penalizes stacked weaknesses even when covered | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: typing_score now applies stack_overlap only to exposed types.
 - ID: BUG-2025-12-29-007 | Title: Drafted moves can violate role blueprint (missing STAB/coverage/utility) | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: Draft enforcement now backfills missing categories per role before final move list prints.
 - ID: BUG-2025-12-29-006 | Title: pick_offense_addition crashes on synthetic_cover NameError | Status: Fixed (Verified) | Reported By: Quasar | Date: 2025-12-29 | Notes: Defined synthetic_cover default after removing synthetic move injection; run no longer crashes on `froslass` add.
@@ -16,7 +18,7 @@ Updated: Quasar (2025-12-29).
 - ID: BUG-2025-12-28-003 | Title: _top_defensive_typings sort lambda crashes | Status: Fixed (Verified) | Reported By: Atlas | Date: 2025-12-28 | Notes: sort key uses delta + label only; no tuple index crash.
 - ID: BUG-2025-12-28-002 | Title: NameError def_score_raw in predict_overall | Status: Fixed (Verified) | Reported By: Codex | Date: 2025-12-28 | Notes: def_score_raw set from typing_score(cov).
 - ID: BUG-2025-12-28-001 | Title: Autopick returns none despite safe candidates | Status: Fixed (Verified) | Reported By: Codex | Date: 2025-12-28 | Notes: Defensive fallback always returns a pick when safe adds exist.
-- ID: BUG-2025-12-12-002 | Title: Exposed weakness popup sometimes appears twice | Status: Fixed (Verified) | Reported By: Atlas | Date: 2025-12-12 | Notes: No exposed-weakness popup path remains in v6 Tk flow; duplicate trigger no longer present.
+- ID: BUG-2025-12-12-002 | Title: Exposed weakness popup sometimes appears twice | Status: Fixed (Verified) | Reported By: Atlas | Date: 2025-12-12 | Notes: No exposed-weakness popup path remains in DLC Tk flow; duplicate trigger no longer present.
 - ID: BUG-2025-12-12-005 | Title: Demo log shows defense 34/100 despite "Balanced" banner | Status: Fixed (Verified) | Reported By: Atlas-Delta | Date: 2025-12-12 | Notes: Banner text now reads "No defensive gains left" to avoid implying a high defense score.
 - ID: BUG-2025-12-13-014 | Title: Logs remain 0 bytes / runs hang | Status: Fixed (Verified) | Reported By: Orion | Date: 2025-12-13 | Notes: Non-interactive EOF now returns "done"; harness run produced non-empty log (run_20251229_114109.log). Long move fetches can still extend runtime.
 - ID: BUG-2025-12-15-023 | Title: Typing delta prefers new exposures (emolga stacking rock) | Status: Fixed (Verified) | Reported By: Nova | Date: 2025-12-15 | Notes: Increased new_exposed/stack penalties and added exposure-first ordering in defensive candidates.
@@ -38,3 +40,5 @@ Updated: Quasar (2025-12-29).
 - ID: FT-2025-12-17-002 (formerly BUG-2025-12-15-038) | Title: GUI reroll a slot when unavailable | Status: Open | Reported By: Gemini | Date: 2025-12-15 | Notes: Click sprite/name in a slot to rerun selection for that slot using the current team (exclude the existing mon) instead of a 1:1 swap; covers the "drop and rerun whole team" request.
 - ID: FT-2025-12-17-001 | Title: Coverage-aware move selection | Status: Completed | Reported By: Gemini | Date: 2025-12-17 | Notes: Exposed/needed types wired into move selection; role-ranked suggestions + top-12 draft board emitted; offense adds require positive gain or exposure coverage before delta=0 fallbacks.
 - [NEW] UX Cleanup: Rework CLI prints for ship-ready clarity (section headers, concise autofill decisions, single-line gain reasons, trimmed progress noise, aligned final summaries, and consistent coloring). Status: Open.
+
+
