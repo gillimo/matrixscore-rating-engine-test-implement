@@ -17,7 +17,15 @@ from datetime import datetime
 from pathlib import Path
 import json
 
-from move_suggestor import ROLE_MOVE_MIX, pick_moves, format_output, get_move_cache_stats
+from move_suggestor import (
+    ROLE_MOVE_MIX,
+    pick_moves,
+    format_output,
+    get_move_cache_stats,
+    normalize_move_name,
+    fetch_move_detail,
+    classify_role,
+)
 
 import requests
 
@@ -38,6 +46,8 @@ TYPE_CACHE_PATH = Path(__file__).with_name("type_chart_cache.json")
 DRAFT_CACHE_PATH = Path(__file__).with_name("draft_cache.json")
 TYPE_POKEMON_CACHE_PATH = Path(__file__).with_name("type_pokemon_cache.json")
 FINAL_FORMS_CACHE_PATH = Path(__file__).with_name("final_forms_cache.json")
+FINAL_FORMS_CACHE_VERSION = 2
+MEGA_CACHE_PATH = Path(__file__).with_name("mega_cache.json")
 TYPE_POKEMON_CACHE_VERSION = 2
 LOG_FOOTER = "Permissions: full access to OneDrive/Desktop/teambuilder dlc granted by user on 2025-12-17. Signed: Codex"
 VERBOSE = False  # enable for detailed loop progress during test runs
@@ -45,6 +55,7 @@ TRACE_FUNCTIONS = False  # tracing disabled by default; enable for detailed logs
 HARNESS_SMOKE = os.environ.get("TEAM_HARNESS_SMOKE", "0") == "1" or "--harness-smoke" in sys.argv
 TYPE_CACHE_STATS = {"hit": 0, "miss": 0}
 WHEEL_LAUNCHED = False  # prevent multiple Tk launches per run
+MEGA_CACHE = {}
 REGIONAL_PREFIXES = {
     "galarian": "galar",
     "galar": "galar",
@@ -91,6 +102,23 @@ TYPE_FORM_REMAPS = {
     "keldeo-resolute": "keldeo",
     "meloetta-aria": "meloetta",
 }
+# Reverse mapping: base names -> default PokeAPI form names
+API_FORM_DEFAULTS = {
+    "aegislash": "aegislash-shield",
+    "meowstic": "meowstic-male",
+    "pumpkaboo": "pumpkaboo-average",
+    "gourgeist": "gourgeist-average",
+    "zygarde": "zygarde-50",
+    "tatsugiri": "tatsugiri-curly",
+    "indeedee": "indeedee-male",
+    "mimikyu": "mimikyu-disguised",
+    "morpeko": "morpeko-full-belly",
+    "squawkabilly": "squawkabilly-green-plumage",
+    "toxtricity": "toxtricity-amped",
+    "keldeo": "keldeo-ordinary",
+    "meloetta": "meloetta-aria",
+}
+
 ZA_POKEDEX = [
     "chikorita","bayleef","meganium",
     "tepig","pignite","emboar",
@@ -436,6 +464,26 @@ def _save_type_pokemon_cache(cache):
         pass
 
 
+def _load_mega_cache():
+    global MEGA_CACHE
+    if MEGA_CACHE:
+        return
+    if MEGA_CACHE_PATH.exists():
+        try:
+            MEGA_CACHE = json.loads(MEGA_CACHE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            MEGA_CACHE = {}
+
+
+def _save_mega_cache():
+    if not MEGA_CACHE:
+        return
+    try:
+        MEGA_CACHE_PATH.write_text(json.dumps(MEGA_CACHE), encoding="utf-8")
+    except Exception:
+        pass
+
+
 def normalize_type_pokemon_entry(pname: str) -> str:
     if not pname:
         return ""
@@ -516,11 +564,12 @@ def fetch_type_chart():
 
 def fetch_pokemon_typing(name: str):
     key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
     if key in POKEMON_CACHE:
         POKEMON_CACHE["__hits__"] = POKEMON_CACHE.get("__hits__", 0) + 1
     else:
         POKEMON_CACHE["__miss__"] = POKEMON_CACHE.get("__miss__", 0) + 1
-        res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+        res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
         res.raise_for_status()
         POKEMON_CACHE[key] = res.json()
     data = POKEMON_CACHE[key]
@@ -530,11 +579,12 @@ def fetch_pokemon_typing(name: str):
 
 def pokemon_base_stat_total(name: str):
     key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
     if not key:
         return 0
     try:
         if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
             res.raise_for_status()
             POKEMON_CACHE[key] = res.json()
         data = POKEMON_CACHE.get(key) or {}
@@ -547,11 +597,12 @@ def pokemon_base_stat_total(name: str):
 def pokemon_speed_stat(name: str):
     """Return base Speed stat for a Pokemon (0 on failure)."""
     key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
     if not key:
         return 0
     try:
         if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
             res.raise_for_status()
             POKEMON_CACHE[key] = res.json()
         data = POKEMON_CACHE.get(key) or {}
@@ -568,11 +619,12 @@ def pokemon_speed_stat(name: str):
 def pokemon_offense_stat_total(name: str):
     """Return offensive stat total (Atk + SpA + speed weight) for offense scoring/sorting."""
     key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
     if not key:
         return 0
     try:
         if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
             res.raise_for_status()
             POKEMON_CACHE[key] = res.json()
         data = POKEMON_CACHE.get(key) or {}
@@ -592,11 +644,12 @@ def pokemon_offense_stat_total(name: str):
 def pokemon_defense_stat_total(name: str):
     """Return defensive stat total (Def + SpD) for use in defense scoring/sorting."""
     key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
     if not key:
         return 0
     try:
         if key not in POKEMON_CACHE:
-            res = requests.get(f"{POKEAPI_BASE}/pokemon/{key}", timeout=15)
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
             res.raise_for_status()
             POKEMON_CACHE[key] = res.json()
         data = POKEMON_CACHE.get(key) or {}
@@ -642,8 +695,11 @@ def get_final_forms():
     if FINAL_FORMS_CACHE_PATH.exists():
         try:
             data = json.loads(FINAL_FORMS_CACHE_PATH.read_text(encoding="utf-8"))
-            FINAL_FORMS_CACHE = set(data)
-            return FINAL_FORMS_CACHE
+            if isinstance(data, dict):
+                if data.get("version") == FINAL_FORMS_CACHE_VERSION:
+                    FINAL_FORMS_CACHE = set(data.get("forms", []))
+                    return FINAL_FORMS_CACHE
+            # Legacy list cache: recompute to fix stale entries.
         except Exception:
             FINAL_FORMS_CACHE = None
 
@@ -708,7 +764,8 @@ def get_final_forms():
 
     FINAL_FORMS_CACHE = finals
     try:
-        FINAL_FORMS_CACHE_PATH.write_text(json.dumps(sorted(FINAL_FORMS_CACHE)), encoding="utf-8")
+        payload = {"version": FINAL_FORMS_CACHE_VERSION, "forms": sorted(FINAL_FORMS_CACHE)}
+        FINAL_FORMS_CACHE_PATH.write_text(json.dumps(payload), encoding="utf-8")
     except Exception:
         pass
     return FINAL_FORMS_CACHE
@@ -2101,9 +2158,381 @@ def _print_type_filtered_options(team, chart, attack_types, type_filters):
             print(_color_type(line, color_type))
 
 
+def _move_exposure_impact(move_type: str, exposed_types: list, chart) -> str:
+    if not exposed_types:
+        return "No net exposed types to target."
+    se = []
+    neutral = []
+    resisted = []
+    immune = []
+    for t in exposed_types:
+        mult = chart.get(move_type, {}).get(t, 1.0)
+        if mult == 0:
+            immune.append(t)
+        elif mult >= 2.0:
+            se.append(t)
+        elif mult == 1.0:
+            neutral.append(t)
+        else:
+            resisted.append(t)
+    parts = []
+    if se:
+        parts.append(f"SE: {', '.join(se)}")
+    if neutral:
+        parts.append(f"neutral: {', '.join(neutral)}")
+    if resisted:
+        parts.append(f"resisted: {', '.join(resisted)}")
+    if immune:
+        parts.append(f"immune: {', '.join(immune)}")
+    return "Exposed types vs move: " + ("; ".join(parts) if parts else "none")
+
+
+def _move_context_key(exposed_types, needed_offense, exclude_moves, used_moves, level_cap):
+    return (
+        tuple(sorted(exposed_types or [])),
+        tuple(sorted(needed_offense or [])),
+        tuple(sorted(exclude_moves or [])),
+        tuple(sorted(used_moves or [])),
+        level_cap,
+    )
+
+
+def _get_pokemon_data(name: str):
+    key = normalize_pokemon_name(name)
+    api_key = api_pokemon_key(name)
+    if not key:
+        return None, key
+    try:
+        if key not in POKEMON_CACHE:
+            res = requests.get(f"{POKEAPI_BASE}/pokemon/{api_key}", timeout=15)
+            res.raise_for_status()
+            POKEMON_CACHE[key] = res.json()
+        return POKEMON_CACHE.get(key) or None, key
+    except Exception:
+        return None, key
+
+
+def _get_mega_forms(name: str):
+    _load_mega_cache()
+    key = normalize_pokemon_name(name)
+    if not key:
+        return []
+    cached = MEGA_CACHE.get(key)
+    if cached is not None:
+        return cached.get("forms", [])
+    forms = []
+    try:
+        species = fetch_species_info(key)
+        varieties = species.get("varieties") or []
+        for v in varieties:
+            pname = (v.get("pokemon") or {}).get("name", "")
+            if pname and "mega" in pname:
+                forms.append(pname)
+    except Exception:
+        forms = []
+    MEGA_CACHE[key] = {"forms": forms, "types": {}}
+    _save_mega_cache()
+    return forms
+
+
+def _get_mega_types(base_name: str, form_name: str):
+    _load_mega_cache()
+    base = MEGA_CACHE.get(base_name, {"forms": [], "types": {}})
+    types_map = base.get("types", {})
+    cached = types_map.get(form_name)
+    if cached:
+        return cached
+    try:
+        types = fetch_pokemon_typing(form_name)
+    except Exception:
+        types = []
+    types_map[form_name] = types
+    base["types"] = types_map
+    MEGA_CACHE[base_name] = base
+    _save_mega_cache()
+    return types
+
+
+def print_worthwhile_megas(team, chart, attack_types):
+    if not team:
+        return
+    base_cov = compute_coverage(team, chart, attack_types)
+    base_score = typing_score(base_cov)
+    base_net = sum(1 for c in base_cov if c["weak"] > (c["resist"] + c["immune"]))
+    base_exposed = {c["attack"] for c in base_cov if c["weak"] > (c["resist"] + c["immune"])}
+    picks = []
+    for idx, member in enumerate(team):
+        base_name = normalize_pokemon_name(member.get("name", ""))
+        if not base_name:
+            continue
+        base_types = member.get("types") or []
+        for form in _get_mega_forms(base_name):
+            mega_types = _get_mega_types(base_name, form)
+            if not mega_types or set(mega_types) == set(base_types):
+                continue
+            sim_team = [dict(m) for m in team]
+            sim_team[idx] = {**sim_team[idx], "types": mega_types}
+            sim_cov = compute_coverage(sim_team, chart, attack_types)
+            sim_score = typing_score(sim_cov)
+            sim_net = sum(1 for c in sim_cov if c["weak"] > (c["resist"] + c["immune"]))
+            closes = [c["attack"] for c in sim_cov if c["attack"] in base_exposed and c["weak"] <= (c["resist"] + c["immune"])]
+            delta = sim_score - base_score
+            worthwhile = delta > 0 or sim_net < base_net or closes
+            if worthwhile:
+                picks.append(
+                    {
+                        "base": base_name,
+                        "form": form,
+                        "types": mega_types,
+                        "delta": delta,
+                        "closes": closes,
+                        "sim_net": sim_net,
+                    }
+                )
+    if not picks:
+        return
+    picks.sort(key=lambda p: (p["delta"], len(p["closes"])), reverse=True)
+    print("\nWorthwhile mega options (typing improvements):")
+    for p in picks:
+        type_text = "/".join(p["types"]) if p["types"] else "unknown"
+        closes = f"; closes: {', '.join(p['closes'])}" if p["closes"] else ""
+        print(f" - {p['base']} -> {p['form']} ({type_text}) def {p['delta']:+.0f}{closes}")
+
+
+def print_bst_compare(raw: str):
+    _, _, query = raw.partition(" ")
+    if not query:
+        print("Usage: check <name[, name][ and name]>")
+        return
+    query = query.replace('"', "").replace("'", "").strip()
+    parts = re.split(r"\s*(?:,|\band\b)\s*", query, flags=re.IGNORECASE)
+    names = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        key = normalize_pokemon_name(part)
+        if key and key not in names:
+            names.append(key)
+    if not names:
+        print("Usage: check <name[, name][ and name]>")
+        return
+
+    rows = []
+    missing = []
+    for name in names:
+        data, key = _get_pokemon_data(name)
+        if not data:
+            missing.append(name)
+            continue
+        stats = {s["stat"]["name"]: s.get("base_stat", 0) for s in data.get("stats") or []}
+        hp = stats.get("hp", 0)
+        atk = stats.get("attack", 0)
+        defe = stats.get("defense", 0)
+        spa = stats.get("special-attack", 0)
+        spd = stats.get("special-defense", 0)
+        spe = stats.get("speed", 0)
+        bst = hp + atk + defe + spa + spd + spe
+        offense = atk + spa + spe
+        defense = defe + spd
+        types = [t["type"]["name"] for t in sorted(data.get("types") or [], key=lambda x: x["slot"])]
+        role = classify_role(
+            {
+                "attack": atk,
+                "special-attack": spa,
+                "defense": defe,
+                "special-defense": spd,
+                "hp": hp,
+                "speed": spe,
+            }
+        )
+        rows.append(
+            {
+                "name": key,
+                "types": types,
+                "bst": bst,
+                "offense": offense,
+                "defense": defense,
+                "speed": spe,
+                "hp": hp,
+                "atk": atk,
+                "def": defe,
+                "spa": spa,
+                "spd": spd,
+                "role": role,
+            }
+        )
+
+    if missing:
+        print(f"Could not find: {', '.join(missing)}")
+    if not rows:
+        return
+
+    rows.sort(key=lambda r: (r["bst"], r["speed"], r["offense"], r["defense"]), reverse=True)
+    print("\nBST comparison (higher first):")
+    for idx, r in enumerate(rows, start=1):
+        type_text = "/".join(r["types"]) if r["types"] else "unknown"
+        print(
+            f" {idx}) {r['name']} ({type_text}) | role {r['role']} | "
+            f"BST {r['bst']} | off {r['offense']} | def {r['defense']} | spe {r['speed']}"
+        )
+        print(
+            f"    HP {r['hp']} | Atk {r['atk']} | Def {r['def']} | SpA {r['spa']} | SpD {r['spd']} | Spe {r['speed']}"
+        )
+
+
+def print_move_search(team, chart, attack_types, raw: str):
+    if not raw.lower().startswith("move"):
+        print("Usage: move <move name[, move name][ and move name]> [top_n]")
+        return
+    _, _, query = raw.partition(" ")
+    if not query:
+        print("Usage: move <move name[, move name][ and move name]> [top_n]")
+        return
+    top_n = 10
+    trailing = re.search(r"\s+(\d+)\s*$", query)
+    if trailing:
+        top_n = max(1, min(50, int(trailing.group(1))))
+        query = query[: trailing.start()].strip()
+    parts = re.split(r"\s*(?:,|\band\b)\s*", query, flags=re.IGNORECASE)
+    moves = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        key = normalize_move_name(part)
+        if key and key not in moves:
+            moves.append(key)
+    if not moves:
+        print("Usage: move <move name[, move name][ and move name]> [top_n]")
+        return
+
+    cov = compute_coverage(team, chart, attack_types)
+    exposed_types = [c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])]
+
+    learners_by_move = {}
+    move_info = []
+    finals_set = get_final_forms()
+    for move_key in moves:
+        try:
+            data = fetch_move_detail(move_key)
+        except Exception as exc:
+            print(f"Move lookup failed for '{move_key}': {exc}")
+            return
+        move_type = ((data.get("type") or {}).get("name")) or "unknown"
+        dmg_class = ((data.get("damage_class") or {}).get("name")) or "unknown"
+        power = data.get("power")
+        accuracy = data.get("accuracy")
+        pp = data.get("pp")
+        meta = []
+        if power is not None:
+            meta.append(f"power {power}")
+        if accuracy is not None:
+            meta.append(f"acc {accuracy}")
+        if pp is not None:
+            meta.append(f"pp {pp}")
+        meta_text = f"; {', '.join(meta)}" if meta else ""
+        move_info.append((move_key, move_type, dmg_class, meta_text))
+
+        learners = data.get("learned_by_pokemon") or []
+        filtered = []
+        seen = set()
+        for entry in learners:
+            pname = normalize_pokemon_name(entry.get("name", ""))
+            if not pname or pname in seen:
+                continue
+            seen.add(pname)
+            if pname not in ZA_POKEDEX_SET:
+                continue
+            if finals_set and pname not in finals_set:
+                continue
+            if not pokemon_in_version(pname, version_group=VERSION_GROUP):
+                continue
+            filtered.append(pname)
+        learners_by_move[move_key] = set(filtered)
+
+    print("\nMove lookup:")
+    for move_key, move_type, dmg_class, meta_text in move_info:
+        print(f" - {move_key} ({move_type}, {dmg_class}{meta_text})")
+        print(f"   { _move_exposure_impact(move_type, exposed_types, chart) }")
+        print(f"   Z-A dex final-form learners: {len(learners_by_move.get(move_key, []))}")
+
+    base_score = typing_score(cov)
+
+    def _group_and_print(title, mons, mon_matches=None):
+        if not mons:
+            print(f"{title}: none")
+            return
+        typing_map = defaultdict(list)
+        for pname in sorted(mons):
+            try:
+                ptypes = fetch_pokemon_typing(pname)
+            except Exception:
+                ptypes = []
+            if not ptypes:
+                continue
+            typing_map[tuple(ptypes)].append(pname)
+
+        entries = []
+        for ptypes, names in typing_map.items():
+            delta, _sim_score, _base = typing_delta(
+                team,
+                list(ptypes),
+                chart,
+                attack_types,
+                base_cov=cov,
+                base_score=base_score,
+            )
+            entries.append((delta, ptypes, sorted(names)))
+
+        entries.sort(key=lambda x: (x[0], "/".join(x[1])), reverse=True)
+        print(title + ":")
+        for idx, (delta, ptypes, names) in enumerate(entries, start=1):
+            if len(ptypes) == 1:
+                title_line = _color_type(f"{ptypes[0].title()} options (def {delta:+.0f}):", ptypes[0])
+                color_type = ptypes[0]
+            else:
+                left = _color_type(ptypes[0], ptypes[0])
+                right = _color_type(ptypes[1], ptypes[1])
+                title_line = f"{left} + {right} options (def {delta:+.0f}):"
+                color_type = ptypes[0]
+            print(title_line)
+            for jdx, pname in enumerate(names, start=1):
+                type_text = "/".join(ptypes)
+                display = _format_candidate_name(pname)
+                extra = ""
+                if mon_matches is not None:
+                    matched = mon_matches.get(pname, [])
+                    if matched:
+                        extra = f" | matches {len(matched)}: {', '.join(matched)}"
+                line = f" {jdx}) {display} ({type_text}) def {delta:+.0f} off +0{extra}"
+                print(_color_type(line, color_type))
+
+    # All requested moves
+    all_sets = [s for s in learners_by_move.values()]
+    all_match = set.intersection(*all_sets) if all_sets else set()
+    _group_and_print("Learns ALL requested moves (grouped by typing, defensive delta)", all_match)
+
+    # If 3+ moves requested, show groupings with 2+ matches
+    if len(moves) > 2:
+        mon_matches = defaultdict(list)
+        for move_key, mons in learners_by_move.items():
+            for pname in mons:
+                mon_matches[pname].append(move_key)
+        two_plus = {p for p, mv in mon_matches.items() if len(mv) >= 2}
+        # Keep output focused on these partials even if they also learn all.
+        _group_and_print(
+            "Learns 2+ of requested moves (grouped by typing, defensive delta)",
+            two_plus,
+            mon_matches=mon_matches,
+        )
+
+
 def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limit: int = 10):
     if not team:
         return "Add at least one Pokemon to see defense-focused suggestions."
+    if len(team) >= 6:
+        return ""  # Team is full, skip add suggestions
     lines = []
     def _clean_reason(text: str) -> str:
         return re.sub(r"\x1b\[[0-9;]*m", "", text or "").strip()
@@ -2154,13 +2583,15 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
             lines.append("\033[33mSafe/positive defensive adds (covered or def +):\033[0m")
             for idx, (score, def_delta, label, preview, _opts, note) in enumerate(safe_adds, start=1):
                 suffix = f" ({note})" if note else ""
+                label = (label or "").lower()
                 lines.append(
                     f"\033[33m {idx}) {label} score {score:+.0f} (def {def_delta:+.0f}) -> {preview}{suffix}\033[0m"
                 )
         return "\n".join(lines)
 
-    lines.append("\033[32mTop defensive typings (delta -> candidates):\033[0m")
+    lines.append("\033[32mTop defensive typings:\033[0m")
     for idx, (delta, label, opts) in enumerate(top, start=1):
+        label = (label or "").lower()
         preview = _format_candidate_preview(opts, preview_limit)
         lines.append(f"\033[32m {idx}) {label} {delta:+.0f} -> {preview}\033[0m")
     safe_adds = _safe_typing_adds(team, chart, attack_types, preview_limit=preview_limit)
@@ -2168,6 +2599,7 @@ def defense_focus_report(team, chart, attack_types, top_n: int = 5, preview_limi
         lines.append("\033[33mSafe/positive defensive adds (covered or def +):\033[0m")
         for idx, (score, def_delta, label, preview, _opts, note) in enumerate(safe_adds, start=1):
             suffix = f" ({note})" if note else ""
+            label = (label or "").lower()
             lines.append(
                 f"\033[33m {idx}) {label} score {score:+.0f} (def {def_delta:+.0f}) -> {preview}{suffix}\033[0m"
             )
@@ -2461,18 +2893,19 @@ def _print_red_summary(team, chart, attack_types):
     print(f"\033[31mDefense score: {defense_text}\033[0m")
     print(f"\033[31mWeakness severity: {severity_text}\033[0m")
     if len(team) >= 6:
-        upgrade = suggest_drop_upgrade(team, chart, attack_types)
-        if upgrade and upgrade.get("best"):
-            best = upgrade["best"]
-            delta_text = f"{best['uplift']:+.0f}"
-            print(
-                "Team is full (6/6). Suggested upgrade: "
-                f"drop {upgrade['drop_name']} -> add {best['name']} "
-                f"(overall {best['overall']}/100, delta {delta_text})."
-            )
-            print("Type 'drop <name>' to swap someone or 'next' to lock typings.")
-        else:
-            print("Team is full (6/6). Type 'next' to lock typings or 'drop <name>' to swap someone.")
+        # Show each member's defensive contribution
+        base_cov = compute_coverage(team, chart, attack_types)
+        base_def = typing_score(base_cov)
+        print("
+[33mMember contributions (points lost if dropped):[0m")
+        for idx, member in enumerate(team):
+            variant = [dict(m) for m in team]
+            variant[idx] = {"name": "", "types": [], "source": ""}
+            vcov = compute_coverage(variant, chart, attack_types)
+            vscore = typing_score(vcov)
+            contrib = base_def - vscore
+            print(f"  {member.get('name', '?').title()}: {contrib:+.0f}")
+        print("[33mTeam is full (6/6). Type 'drop <name>' to swap or 'next' to continue.[0m")
 
 
 def parse_name_level(raw):
@@ -2493,6 +2926,12 @@ def normalize_pokemon_name(raw: str) -> str:
         base = parts[1].replace(" ", "-")
         return f"{base}-{REGIONAL_PREFIXES[parts[0]]}"
     return name.replace(" ", "-")
+
+def api_pokemon_key(name: str) -> str:
+    """Get the PokeAPI key for a Pokemon, handling form defaults."""
+    key = normalize_pokemon_name(name)
+    return API_FORM_DEFAULTS.get(key, key)
+
 
 
 def launch_wheel(team_data, wheel_path, metrics=None):
@@ -3402,6 +3841,7 @@ def _populate_move_data(
     exposed_types: set = None,
     needed_offense: set = None,
     force: bool = False,
+    context_key: tuple = None,
 ):
     """Lazily fetches and populates detailed move data for the provided Pokemon info."""
     global POKEMON_MOVES_FETCHED, TOTAL_POKEMON_FOR_MOVE_FETCH
@@ -3410,6 +3850,14 @@ def _populate_move_data(
         if cached_entry is not None:
             cached_entry["moves_fetched"] = False
     if info.get("moves_fetched"):
+        if cached_entry is not None and context_key is not None:
+            if cached_entry.get("context_key") == context_key:
+                return
+        elif context_key is None:
+            return
+
+    if cached_entry is not None and context_key is not None:
+        cached_entry["context_key"] = context_key
         return
 
     # Increment a global counter to support the consolidated progress bar.
@@ -3503,6 +3951,7 @@ def main():
             pass
     # Preload caches from disk to avoid redundant network calls
     _load_draft_cache()
+    _load_mega_cache()
     LOG_DIR.mkdir(exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     suffix = "demo" if "--demo" in sys.argv else "run"
@@ -3550,7 +3999,7 @@ def main():
 
             builtins.input = demo_input
 
-        print("Team builder. Type a Pokemon name to add it. Commands: 'next' to continue, 'drop <name>' to remove, 'finalize' to auto-fill.")
+        print("Team builder. Type a Pokemon name to add it. Commands: next to continue, drop <name> to remove, finalize to auto-fill, move <name> for move help, check <names> for BST compare.")
 
         console_fallback = False
 
@@ -3689,6 +4138,27 @@ def main():
         while True:
             raw = _read_input("Add Pokemon name or type 'next': ").strip()
             tokens = raw.split()
+            if tokens and tokens[0].lower() == "move":
+                print_move_search(team, chart, attack_types, raw)
+                continue
+            if tokens and tokens[0].lower() == "check":
+                print_bst_compare(raw)
+                continue
+            if tokens and tokens[0].lower() == "rebuild":
+                if len(tokens) > 1 and tokens[1].lower() == "finals":
+                    global FINAL_FORMS_CACHE
+                    FINAL_FORMS_CACHE = None
+                    if FINAL_FORMS_CACHE_PATH.exists():
+                        try:
+                            FINAL_FORMS_CACHE_PATH.unlink()
+                        except Exception:
+                            pass
+                    print("Rebuilding final forms cache...")
+                    get_final_forms()
+                    print("Final forms cache rebuilt.")
+                else:
+                    print("Usage: rebuild finals")
+                continue
             tokens, type_filters = _extract_type_filters(tokens)
             raw = " ".join(tokens).strip()
             if not raw:
@@ -3704,6 +4174,7 @@ def main():
                 if team:
                     print("\n=== Defense checkpoint ===")
                     print(defense_focus_report(team, chart, attack_types))
+                    print_worthwhile_megas(team, chart, attack_types)
                     if type_filters:
                         _print_type_filtered_options(team, chart, attack_types, type_filters)
                 break
@@ -3770,6 +4241,7 @@ def main():
                     print(f"Draft cache failed for {name}: {exc}")
             print(defense_focus_report(team, chart, attack_types))
             _print_red_summary(team, chart, attack_types)
+            print_worthwhile_megas(team, chart, attack_types)
             if type_filters:
                 _print_type_filtered_options(team, chart, attack_types, type_filters)
             if finalize_after_add:
@@ -3795,7 +4267,10 @@ def main():
         if team:
             print("\n=== Defense checkpoint ===")
             print(defense_focus_report(team, chart, attack_types))
+            print_worthwhile_megas(team, chart, attack_types)
         print("\n=== Typing locked. Moving to move suggestions ===")
+        print("Move phase: building draft boards (first run can take several minutes).")
+        phase_start = time.time()
         # Collect boards for draft
         boards = []
         global TOTAL_POKEMON_FOR_MOVE_FETCH, POKEMON_MOVES_FETCHED
@@ -3804,11 +4279,20 @@ def main():
         cov = compute_coverage(team, chart, attack_types)
         exposed_types = {c["attack"] for c in cov if c["weak"] > (c["resist"] + c["immune"])}
         needed_offense = set(attack_types)  # simple proxy: all types desirable; exposed prioritized in move scoring
-        for member in team:
+        for idx, member in enumerate(team, start=1):
             name = member["name"]
             level_cap = member.get("level_cap")
+            context_key = _move_context_key(
+                exposed_types,
+                needed_offense,
+                global_exclude,
+                global_used,
+                level_cap,
+            )
             cache_key = board_cache_key(name, level_cap)
             cached = BOARD_CACHE.get(cache_key) or BOARD_CACHE.get((cache_key[0], cache_key[1]))
+            per_start = time.time()
+            print(f"[moves] {idx}/{len(team)} {name}: fetching move data...")
             if cached:
                 info = cached["info"]
                 _populate_move_data(
@@ -3818,7 +4302,8 @@ def main():
                     cached_entry=cached,
                     exposed_types=exposed_types,
                     needed_offense=needed_offense,
-                    force=True,
+                    force=False,
+                    context_key=context_key,
                 )  # Ensure populated
             else:
                 # If not cached at all, create a basic entry and then populate
@@ -3849,11 +4334,18 @@ def main():
                     exclude_moves=global_exclude,
                     used_moves=global_used,
                     cached_entry=cached_entry,
+                    exposed_types=exposed_types,
+                    needed_offense=needed_offense,
+                    context_key=context_key,
                 )
                 _save_draft_cache() # Save after population
 
+            elapsed = time.time() - per_start
+            print(f"[moves] {name}: done in {elapsed:.1f}s")
             print(f"\nBuilding draft board for {name}...") # Moved print after potential fetch.
             boards.append(info)
+        phase_elapsed = time.time() - phase_start
+        print(f"Move phase: draft boards ready in {phase_elapsed:.1f}s")
 
         # Formal draft: round-robin, role-priority picks, no overlap across team
         def _push_unique(queue, mv, seen):

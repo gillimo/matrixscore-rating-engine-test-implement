@@ -1,6 +1,6 @@
-## Metrics (v6 snapshot, 2025-12-28)
+﻿## Metrics (DLC snapshot, 2025-12-28)
 
-This document reflects the current scoring formulas in `team_cli_v6.py`.
+This document reflects the current scoring formulas in `team_cli_dlc.py`.
 
 Defense (typing_score)
 - Coverage inputs: for each attack type, count team members that are weak, resist, immune, or neutral.
@@ -69,3 +69,5 @@ Safe typing adds (CLI list)
 - Inclusion: show typings that keep all new weaknesses covered (`margin >= 0`) or produce a positive defensive delta.
 - List order: highest score, then fewest added weaknesses, then fewest missing strong types.
 - Display note: lists any newly added weaknesses and how covered they are by the current team (R/I counts), plus raw defensive score delta.
+
+

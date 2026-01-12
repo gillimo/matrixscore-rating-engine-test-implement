@@ -1,524 +1,112 @@
 {
   "team": [
     {
-      "name": "gengar",
+      "name": "genesect",
       "types": [
-        "ghost",
-        "poison"
+        "bug",
+        "steel"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "poltergeist",
-          "type": "ghost",
-          "cat": "physical",
-          "power": 110,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "skitter-smack",
-          "type": "bug",
-          "cat": "physical",
-          "power": 70,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "gunk-shot",
-          "type": "poison",
-          "cat": "physical",
-          "power": 120,
-          "acc": 80,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "shadow-ball",
-          "type": "ghost",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "level-up",
-          "level": 48,
-          "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "poltergeist",
-          "type": "ghost",
-          "cat": "physical",
-          "power": 110,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "gunk-shot",
-          "type": "poison",
-          "cat": "physical",
-          "power": 120,
-          "acc": 80,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "skitter-smack",
-          "type": "bug",
-          "cat": "physical",
-          "power": 70,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "dark-pulse",
-          "type": "dark",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "level-up",
-          "level": 42,
-          "priority": 0
-        },
-        {
-          "name": "foul-play",
-          "type": "dark",
-          "cat": "physical",
-          "power": 95,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "sucker-punch",
-          "type": "dark",
-          "cat": "physical",
-          "power": 70,
-          "acc": 100,
-          "method": "level-up",
-          "level": 36,
-          "priority": 1
-        },
-        {
-          "name": "knock-off",
-          "type": "dark",
-          "cat": "physical",
-          "power": 65,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "thief",
-          "type": "dark",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "payback",
-          "type": "dark",
-          "cat": "physical",
-          "power": 50,
-          "acc": 100,
-          "method": "level-up",
-          "level": 12,
-          "priority": 0
-        },
-        {
-          "name": "fling",
-          "type": "dark",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-punch",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 150,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -3
-        }
-      ],
-      "coverage_priority": [
-        [
-          "bug",
-          2
-        ],
-        [
-          "ghost",
-          2
-        ],
-        [
-          "dark",
-          2
-        ],
-        [
-          "fighting",
-          1
-        ],
-        [
-          "water",
-          1
-        ],
-        [
-          "grass",
-          1
-        ],
-        [
-          "ice",
-          1
-        ],
-        [
-          "fairy",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "poison",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "steel",
-          0
-        ],
-        [
-          "fire",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "move_types": [
-        "ghost",
-        "poison",
-        "bug",
-        "dark",
-        "fighting"
-      ],
-      "se_hits": [
-        "bug",
-        "ghost",
-        "dark",
-        "fighting",
-        "water",
-        "grass",
-        "ice",
-        "fairy"
-      ],
-      "role": "sweeper",
-      "alignment_score": 95,
-      "moves_fetched": true,
-      "weaknesses": [],
-      "suggested_by_category": {
-        "stab": [
-          {
-            "name": "poltergeist",
-            "type": "ghost",
-            "cat": "physical",
-            "power": 110,
-            "acc": 90,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "shadow-ball",
-            "type": "ghost",
-            "cat": "special",
-            "power": 80,
-            "acc": 100,
-            "method": "level-up",
-            "level": 48,
-            "priority": 0
-          },
-          {
-            "name": "phantom-force",
-            "type": "ghost",
-            "cat": "physical",
-            "power": 90,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hex",
-            "type": "ghost",
-            "cat": "special",
-            "power": 65,
-            "acc": 100,
-            "method": "level-up",
-            "level": 24,
-            "priority": 0
-          }
-        ],
-        "coverage": [
-          {
-            "name": "skitter-smack",
-            "type": "bug",
-            "cat": "physical",
-            "power": 70,
-            "acc": 90,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "dark-pulse",
-            "type": "dark",
-            "cat": "special",
-            "power": 80,
-            "acc": 100,
-            "method": "level-up",
-            "level": 42,
-            "priority": 0
-          },
-          {
-            "name": "foul-play",
-            "type": "dark",
-            "cat": "physical",
-            "power": 95,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "sucker-punch",
-            "type": "dark",
-            "cat": "physical",
-            "power": 70,
-            "acc": 100,
-            "method": "level-up",
-            "level": 36,
-            "priority": 1
-          }
-        ],
-        "utility": [
-          {
-            "name": "destiny-bond",
-            "type": "ghost",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "level-up",
-            "level": 54,
-            "priority": 0
-          },
-          {
-            "name": "perish-song",
-            "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "level-up",
-            "level": 1,
-            "priority": 0
-          },
-          {
-            "name": "toxic-spikes",
-            "type": "poison",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hypnosis",
-            "type": "psychic",
-            "cat": "status",
-            "power": 0,
-            "acc": 60,
-            "method": "level-up",
-            "level": 1,
-            "priority": 0
-          }
-        ]
-      },
-      "source": "sim"
-    },
-    {
-      "name": "sableye",
-      "types": [
-        "dark",
-        "ghost"
-      ],
-      "level_cap": null,
-      "suggested_moves": [
-        {
-          "name": "mean-look",
+          "name": "simple-beam",
           "type": "normal",
           "cat": "status",
           "power": 0,
           "acc": 100,
           "method": "level-up",
-          "level": 36,
-          "priority": 0
+          "level": 63,
+          "priority": 0,
+          "learned_by": 16,
+          "rarity_score": 75,
+          "type_rarity_score": 76,
+          "rarity_tier": ""
         },
         {
-          "name": "detect",
-          "type": "fighting",
-          "cat": "status",
-          "power": 0,
+          "name": "steel-beam",
+          "type": "steel",
+          "cat": "special",
+          "power": 140,
+          "acc": 95,
+          "method": "tutor",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 85,
+          "rarity_score": 63,
+          "type_rarity_score": 57,
+          "rarity_tier": ""
+        },
+        {
+          "name": "self-destruct",
+          "type": "normal",
+          "cat": "physical",
+          "power": 200,
           "acc": 100,
           "method": "level-up",
-          "level": 18,
-          "priority": 4
+          "level": 91,
+          "priority": 0,
+          "learned_by": 120,
+          "rarity_score": 56,
+          "type_rarity_score": 65,
+          "rarity_tier": ""
         },
         {
-          "name": "poison-jab",
-          "type": "poison",
+          "name": "leech-life",
+          "type": "bug",
           "cat": "physical",
           "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "foul-play",
-          "type": "dark",
-          "cat": "physical",
-          "power": 95,
-          "acc": 100,
-          "method": "level-up",
-          "level": 48,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 84,
+          "rarity_score": 63,
+          "type_rarity_score": 51,
+          "rarity_tier": ""
         }
       ],
       "draft_board": [
         {
-          "name": "foul-play",
-          "type": "dark",
-          "cat": "physical",
-          "power": 95,
-          "acc": 100,
-          "method": "level-up",
-          "level": 48,
-          "priority": 0
-        },
-        {
-          "name": "poltergeist",
-          "type": "ghost",
-          "cat": "physical",
-          "power": 110,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "poison-jab",
-          "type": "poison",
+          "name": "leech-life",
+          "type": "bug",
           "cat": "physical",
           "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 84,
+          "rarity_score": 63,
+          "type_rarity_score": 51,
+          "rarity_tier": ""
         },
         {
-          "name": "metal-claw",
+          "name": "steel-beam",
           "type": "steel",
-          "cat": "physical",
-          "power": 50,
+          "cat": "special",
+          "power": 140,
           "acc": 95,
-          "method": "machine",
+          "method": "tutor",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 85,
+          "rarity_score": 63,
+          "type_rarity_score": 57,
+          "rarity_tier": ""
         },
         {
-          "name": "gyro-ball",
-          "type": "steel",
+          "name": "self-destruct",
+          "type": "normal",
           "cat": "physical",
-          "power": 0,
+          "power": 200,
           "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "metal-burst",
-          "type": "steel",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "egg",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "focus-punch",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 150,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -3
+          "method": "level-up",
+          "level": 91,
+          "priority": 0,
+          "learned_by": 120,
+          "rarity_score": 56,
+          "type_rarity_score": 65,
+          "rarity_tier": ""
         },
         {
           "name": "giga-impact",
@@ -528,7 +116,39 @@
           "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 758,
+          "rarity_score": 0,
+          "type_rarity_score": 5,
+          "rarity_tier": ""
+        },
+        {
+          "name": "gunk-shot",
+          "type": "poison",
+          "cat": "physical",
+          "power": 120,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 139,
+          "rarity_score": 52,
+          "type_rarity_score": 41,
+          "rarity_tier": ""
+        },
+        {
+          "name": "zap-cannon",
+          "type": "electric",
+          "cat": "special",
+          "power": 120,
+          "acc": 50,
+          "method": "level-up",
+          "level": 70,
+          "priority": 0,
+          "learned_by": 104,
+          "rarity_score": 59,
+          "type_rarity_score": 61,
+          "rarity_tier": ""
         },
         {
           "name": "hyper-beam",
@@ -538,444 +158,84 @@
           "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 735,
+          "rarity_score": 0,
+          "type_rarity_score": 6,
+          "rarity_tier": ""
         },
         {
-          "name": "brick-break",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "drain-punch",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "ice-punch",
-          "type": "ice",
-          "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "coverage_priority": [
-        [
-          "poison",
-          1
-        ],
-        [
-          "steel",
-          1
-        ],
-        [
-          "normal",
-          0
-        ],
-        [
-          "fighting",
-          0
-        ],
-        [
-          "flying",
-          0
-        ],
-        [
-          "ground",
-          0
-        ],
-        [
-          "rock",
-          0
-        ],
-        [
-          "bug",
-          0
-        ],
-        [
-          "ghost",
-          0
-        ],
-        [
-          "fire",
-          0
-        ],
-        [
-          "water",
-          0
-        ],
-        [
-          "grass",
-          0
-        ],
-        [
-          "electric",
-          0
-        ],
-        [
-          "psychic",
-          0
-        ],
-        [
-          "ice",
-          0
-        ],
-        [
-          "dragon",
-          0
-        ],
-        [
-          "dark",
-          0
-        ],
-        [
-          "fairy",
-          0
-        ],
-        [
-          "stellar",
-          0
-        ]
-      ],
-      "move_types": [
-        "dark",
-        "ghost",
-        "poison",
-        "steel",
-        "fighting",
-        "normal",
-        "ice"
-      ],
-      "se_hits": [
-        "poison",
-        "steel"
-      ],
-      "role": "tank",
-      "alignment_score": 47,
-      "moves_fetched": true,
-      "weaknesses": [],
-      "suggested_by_category": {
-        "stab": [
-          {
-            "name": "poltergeist",
-            "type": "ghost",
-            "cat": "physical",
-            "power": 110,
-            "acc": 90,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "foul-play",
-            "type": "dark",
-            "cat": "physical",
-            "power": 95,
-            "acc": 100,
-            "method": "level-up",
-            "level": 48,
-            "priority": 0
-          },
-          {
-            "name": "phantom-force",
-            "type": "ghost",
-            "cat": "physical",
-            "power": 90,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "sucker-punch",
-            "type": "dark",
-            "cat": "physical",
-            "power": 70,
-            "acc": 100,
-            "method": "egg",
-            "level": 0,
-            "priority": 1
-          }
-        ],
-        "coverage": [
-          {
-            "name": "poison-jab",
-            "type": "poison",
-            "cat": "physical",
-            "power": 80,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "metal-claw",
-            "type": "steel",
-            "cat": "physical",
-            "power": 50,
-            "acc": 95,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "gyro-ball",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "metal-burst",
-            "type": "steel",
-            "cat": "physical",
-            "power": 0,
-            "acc": 100,
-            "method": "egg",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "utility": [
-          {
-            "name": "mean-look",
-            "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "level-up",
-            "level": 36,
-            "priority": 0
-          },
-          {
-            "name": "detect",
-            "type": "fighting",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "level-up",
-            "level": 18,
-            "priority": 4
-          },
-          {
-            "name": "rain-dance",
-            "type": "water",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "bulk-up",
-            "type": "fighting",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ]
-      },
-      "source": "sim"
-    },
-    {
-      "name": "doublade",
-      "types": [
-        "steel",
-        "ghost"
-      ],
-      "level_cap": null,
-      "suggested_moves": [
-        {
-          "name": "rain-dance",
-          "type": "water",
-          "cat": "status",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "protect",
+          "name": "techno-blast",
           "type": "normal",
-          "cat": "status",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 4
-        },
-        {
-          "name": "close-combat",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "steel-beam",
-          "type": "steel",
           "cat": "special",
-          "power": 140,
-          "acc": 95,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        }
-      ],
-      "draft_board": [
-        {
-          "name": "steel-beam",
-          "type": "steel",
-          "cat": "special",
-          "power": 140,
-          "acc": 95,
-          "method": "tutor",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "shadow-claw",
-          "type": "ghost",
-          "cat": "physical",
-          "power": 70,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "close-combat",
-          "type": "fighting",
-          "cat": "physical",
           "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "solar-blade",
-          "type": "grass",
-          "cat": "physical",
-          "power": 125,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "sacred-sword",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 90,
           "acc": 100,
           "method": "level-up",
-          "level": 56,
-          "priority": 0
+          "level": 84,
+          "priority": 0,
+          "learned_by": 1,
+          "rarity_score": 77,
+          "type_rarity_score": 78,
+          "rarity_tier": "unique"
         },
         {
-          "name": "brick-break",
-          "type": "fighting",
+          "name": "blaze-kick",
+          "type": "fire",
           "cat": "physical",
-          "power": 75,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "rock-slide",
-          "type": "rock",
-          "cat": "physical",
-          "power": 75,
+          "power": 85,
           "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 19,
+          "rarity_score": 75,
+          "type_rarity_score": 74,
+          "rarity_tier": ""
         },
         {
-          "name": "fury-cutter",
-          "type": "bug",
-          "cat": "physical",
-          "power": 40,
-          "acc": 95,
-          "method": "level-up",
-          "level": 1,
-          "priority": 0
-        },
-        {
-          "name": "night-slash",
-          "type": "dark",
-          "cat": "physical",
-          "power": 70,
-          "acc": 100,
-          "method": "level-up",
-          "level": 24,
-          "priority": 0
-        },
-        {
-          "name": "brutal-swing",
-          "type": "dark",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "reversal",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 0,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "aerial-ace",
+          "name": "fly",
           "type": "flying",
           "cat": "physical",
-          "power": 60,
+          "power": 90,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 135,
+          "rarity_score": 53,
+          "type_rarity_score": 43,
+          "rarity_tier": ""
+        },
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
           "acc": 100,
-          "method": "level-up",
-          "level": 12,
-          "priority": 0
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 403,
+          "rarity_score": 10,
+          "type_rarity_score": 0,
+          "rarity_tier": ""
+        },
+        {
+          "name": "blizzard",
+          "type": "ice",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 315,
+          "rarity_score": 21,
+          "type_rarity_score": 3,
+          "rarity_tier": ""
         }
       ],
       "coverage_priority": [
-        [
-          "water",
-          2
-        ],
-        [
-          "fighting",
-          1
-        ],
         [
           "ground",
           1
@@ -985,31 +245,15 @@
           1
         ],
         [
-          "bug",
-          1
-        ],
-        [
-          "ghost",
-          1
-        ],
-        [
-          "grass",
-          1
-        ],
-        [
-          "ice",
-          1
-        ],
-        [
-          "dark",
-          1
-        ],
-        [
-          "fairy",
+          "water",
           1
         ],
         [
           "normal",
+          0
+        ],
+        [
+          "fighting",
           0
         ],
         [
@@ -1021,11 +265,23 @@
           0
         ],
         [
+          "bug",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
           "steel",
           0
         ],
         [
           "fire",
+          0
+        ],
+        [
+          "grass",
           0
         ],
         [
@@ -1037,7 +293,19 @@
           0
         ],
         [
+          "ice",
+          0
+        ],
+        [
           "dragon",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "fairy",
           0
         ],
         [
@@ -1046,31 +314,24 @@
         ]
       ],
       "move_types": [
-        "steel",
-        "ghost",
-        "fighting",
-        "grass",
-        "rock",
         "bug",
-        "dark",
-        "flying"
+        "steel",
+        "normal",
+        "poison",
+        "electric",
+        "fire",
+        "flying",
+        "grass",
+        "ice"
       ],
       "se_hits": [
-        "water",
-        "fighting",
         "ground",
         "rock",
-        "bug",
-        "ghost",
-        "grass",
-        "ice",
-        "dark",
-        "fairy"
+        "water"
       ],
-      "role": "tank",
-      "alignment_score": 47,
+      "role": "balanced",
+      "alignment_score": 31,
       "moves_fetched": true,
-      "source": "sim",
       "suggested_by_category": {
         "stab": [
           {
@@ -1081,265 +342,312 @@
             "acc": 95,
             "method": "tutor",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 85,
+            "rarity_score": 63,
+            "type_rarity_score": 57,
+            "rarity_tier": ""
           },
           {
-            "name": "iron-head",
-            "type": "steel",
+            "name": "leech-life",
+            "type": "bug",
             "cat": "physical",
             "power": 80,
             "acc": 100,
-            "method": "level-up",
-            "level": 38,
-            "priority": 0
-          },
-          {
-            "name": "shadow-claw",
-            "type": "ghost",
-            "cat": "physical",
-            "power": 70,
-            "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 84,
+            "rarity_score": 63,
+            "type_rarity_score": 51,
+            "rarity_tier": ""
           },
           {
-            "name": "flash-cannon",
-            "type": "steel",
+            "name": "bug-buzz",
+            "type": "bug",
             "cat": "special",
-            "power": 80,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "coverage": [
-          {
-            "name": "close-combat",
-            "type": "fighting",
-            "cat": "physical",
-            "power": 120,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "solar-blade",
-            "type": "grass",
-            "cat": "physical",
-            "power": 125,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "sacred-sword",
-            "type": "fighting",
-            "cat": "physical",
             "power": 90,
             "acc": 100,
             "method": "level-up",
             "level": 56,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 77,
+            "rarity_score": 64,
+            "type_rarity_score": 55,
+            "rarity_tier": ""
           },
           {
-            "name": "brick-break",
-            "type": "fighting",
+            "name": "x-scissor",
+            "type": "bug",
             "cat": "physical",
-            "power": 75,
+            "power": 80,
             "acc": 100,
+            "method": "level-up",
+            "level": 42,
+            "priority": 0,
+            "learned_by": 139,
+            "rarity_score": 52,
+            "type_rarity_score": 19,
+            "rarity_tier": ""
+          }
+        ],
+        "coverage": [
+          {
+            "name": "self-destruct",
+            "type": "normal",
+            "cat": "physical",
+            "power": 200,
+            "acc": 100,
+            "method": "level-up",
+            "level": 91,
+            "priority": 0,
+            "learned_by": 120,
+            "rarity_score": 56,
+            "type_rarity_score": 65,
+            "rarity_tier": ""
+          },
+          {
+            "name": "giga-impact",
+            "type": "normal",
+            "cat": "physical",
+            "power": 150,
+            "acc": 90,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 758,
+            "rarity_score": 0,
+            "type_rarity_score": 5,
+            "rarity_tier": ""
+          },
+          {
+            "name": "gunk-shot",
+            "type": "poison",
+            "cat": "physical",
+            "power": 120,
+            "acc": 80,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 139,
+            "rarity_score": 52,
+            "type_rarity_score": 41,
+            "rarity_tier": ""
+          },
+          {
+            "name": "zap-cannon",
+            "type": "electric",
+            "cat": "special",
+            "power": 120,
+            "acc": 50,
+            "method": "level-up",
+            "level": 70,
+            "priority": 0,
+            "learned_by": 104,
+            "rarity_score": 59,
+            "type_rarity_score": 61,
+            "rarity_tier": ""
           }
         ],
         "utility": [
           {
-            "name": "rain-dance",
-            "type": "water",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "protect",
-            "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 4
-          },
-          {
-            "name": "endure",
-            "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 4
-          },
-          {
-            "name": "swords-dance",
+            "name": "simple-beam",
             "type": "normal",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "level-up",
-            "level": 50,
-            "priority": 0
+            "level": 63,
+            "priority": 0,
+            "learned_by": 16,
+            "rarity_score": 75,
+            "type_rarity_score": 76,
+            "rarity_tier": ""
+          },
+          {
+            "name": "lock-on",
+            "type": "normal",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "level-up",
+            "level": 77,
+            "priority": 0,
+            "learned_by": 24,
+            "rarity_score": 74,
+            "type_rarity_score": 75,
+            "rarity_tier": ""
+          },
+          {
+            "name": "ally-switch",
+            "type": "psychic",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 2,
+            "learned_by": 212,
+            "rarity_score": 38,
+            "type_rarity_score": 39,
+            "rarity_tier": ""
+          },
+          {
+            "name": "metal-sound",
+            "type": "steel",
+            "cat": "status",
+            "power": 0,
+            "acc": 85,
+            "method": "level-up",
+            "level": 35,
+            "priority": 0,
+            "learned_by": 84,
+            "rarity_score": 63,
+            "type_rarity_score": 57,
+            "rarity_tier": ""
           }
         ]
       },
-      "weaknesses": []
+      "source": "autofill",
+      "weaknesses": [],
+      "rare_moves": [
+        {
+          "name": "techno-blast",
+          "type": "normal",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 84,
+          "priority": 0,
+          "learned_by": 1,
+          "rarity_score": 77,
+          "type_rarity_score": 78,
+          "rarity_tier": "unique"
+        }
+      ]
     },
     {
-      "name": "camerupt",
+      "name": "garchomp",
       "types": [
-        "fire",
+        "dragon",
         "ground"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "stealth-rock",
-          "type": "rock",
+          "name": "spikes",
+          "type": "ground",
           "cat": "status",
           "power": 0,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 90,
+          "rarity_score": 62,
+          "type_rarity_score": 73,
+          "rarity_tier": ""
         },
         {
-          "name": "yawn",
-          "type": "normal",
-          "cat": "status",
-          "power": 0,
-          "acc": 100,
-          "method": "level-up",
-          "level": 39,
-          "priority": 0
-        },
-        {
-          "name": "solar-beam",
-          "type": "grass",
+          "name": "draco-meteor",
+          "type": "dragon",
           "cat": "special",
-          "power": 120,
+          "power": 130,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 103,
+          "rarity_score": 59,
+          "type_rarity_score": 42,
+          "rarity_tier": ""
+        },
+        {
+          "name": "iron-head",
+          "type": "steel",
+          "cat": "physical",
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 286,
+          "rarity_score": 25,
+          "type_rarity_score": 4,
+          "rarity_tier": ""
         },
         {
-          "name": "eruption",
-          "type": "fire",
-          "cat": "special",
-          "power": 150,
+          "name": "earthquake",
+          "type": "ground",
+          "cat": "physical",
+          "power": 100,
           "acc": 100,
-          "method": "level-up",
-          "level": 1,
-          "priority": 0
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 384,
+          "rarity_score": 12,
+          "type_rarity_score": 13,
+          "rarity_tier": ""
         }
       ],
       "draft_board": [
         {
-          "name": "eruption",
-          "type": "fire",
+          "name": "draco-meteor",
+          "type": "dragon",
           "cat": "special",
-          "power": 150,
-          "acc": 100,
-          "method": "level-up",
-          "level": 1,
-          "priority": 0
+          "power": 130,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 103,
+          "rarity_score": 59,
+          "type_rarity_score": 42,
+          "rarity_tier": ""
         },
         {
-          "name": "earth-power",
+          "name": "earthquake",
           "type": "ground",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "level-up",
-          "level": 26,
-          "priority": 0
-        },
-        {
-          "name": "solar-beam",
-          "type": "grass",
-          "cat": "special",
-          "power": 120,
+          "cat": "physical",
+          "power": 100,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 384,
+          "rarity_score": 12,
+          "type_rarity_score": 13,
+          "rarity_tier": ""
         },
         {
-          "name": "trailblaze",
-          "type": "grass",
+          "name": "iron-head",
+          "type": "steel",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 286,
+          "rarity_score": 25,
+          "type_rarity_score": 4,
+          "rarity_tier": ""
+        },
+        {
+          "name": "metal-claw",
+          "type": "steel",
           "cat": "physical",
           "power": 50,
-          "acc": 100,
+          "acc": 95,
           "method": "machine",
           "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hyper-beam",
-          "type": "normal",
-          "cat": "special",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "giga-impact",
-          "type": "normal",
-          "cat": "physical",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "body-press",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "double-edge",
-          "type": "normal",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "flash-cannon",
-          "type": "steel",
-          "cat": "special",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 118,
+          "rarity_score": 57,
+          "type_rarity_score": 44,
+          "rarity_tier": ""
         },
         {
           "name": "stone-edge",
@@ -1349,40 +657,130 @@
           "acc": 80,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 308,
+          "rarity_score": 22,
+          "type_rarity_score": 17,
+          "rarity_tier": ""
         },
         {
-          "name": "iron-head",
-          "type": "steel",
-          "cat": "physical",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "tera-blast",
-          "type": "normal",
+          "name": "power-gem",
+          "type": "rock",
           "cat": "special",
           "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 105,
+          "rarity_score": 59,
+          "type_rarity_score": 68,
+          "rarity_tier": ""
+        },
+        {
+          "name": "rock-slide",
+          "type": "rock",
+          "cat": "physical",
+          "power": 75,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 475,
+          "rarity_score": 5,
+          "type_rarity_score": 2,
+          "rarity_tier": ""
+        },
+        {
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 241,
+          "rarity_score": 33,
+          "type_rarity_score": 23,
+          "rarity_tier": ""
+        },
+        {
+          "name": "rock-tomb",
+          "type": "rock",
+          "cat": "physical",
+          "power": 60,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 478,
+          "rarity_score": 5,
+          "type_rarity_score": 2,
+          "rarity_tier": ""
+        },
+        {
+          "name": "poison-jab",
+          "type": "poison",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 227,
+          "rarity_score": 35,
+          "type_rarity_score": 23,
+          "rarity_tier": ""
+        },
+        {
+          "name": "brick-break",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 442,
+          "rarity_score": 7,
+          "type_rarity_score": 0,
+          "rarity_tier": ""
+        },
+        {
+          "name": "fire-fang",
+          "type": "fire",
+          "cat": "physical",
+          "power": 65,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 136,
+          "rarity_score": 53,
+          "type_rarity_score": 47,
+          "rarity_tier": ""
         }
       ],
       "coverage_priority": [
         [
-          "grass",
+          "steel",
           2
         ],
         [
-          "water",
+          "fighting",
           1
         ],
         [
-          "electric",
+          "poison",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "fire",
           1
         ],
         [
@@ -1390,11 +788,15 @@
           1
         ],
         [
-          "normal",
-          0
+          "dragon",
+          1
         ],
         [
-          "fighting",
+          "fairy",
+          1
+        ],
+        [
+          "normal",
           0
         ],
         [
@@ -1402,15 +804,7 @@
           0
         ],
         [
-          "poison",
-          0
-        ],
-        [
           "ground",
-          0
-        ],
-        [
-          "rock",
           0
         ],
         [
@@ -1422,11 +816,15 @@
           0
         ],
         [
-          "steel",
+          "water",
           0
         ],
         [
-          "fire",
+          "grass",
+          0
+        ],
+        [
+          "electric",
           0
         ],
         [
@@ -1434,15 +832,7 @@
           0
         ],
         [
-          "dragon",
-          0
-        ],
-        [
           "dark",
-          0
-        ],
-        [
-          "fairy",
           0
         ],
         [
@@ -1451,110 +841,159 @@
         ]
       ],
       "move_types": [
-        "fire",
+        "dragon",
         "ground",
-        "grass",
-        "normal",
-        "fighting",
         "steel",
-        "rock"
+        "rock",
+        "fire",
+        "poison",
+        "fighting"
       ],
       "se_hits": [
-        "grass",
-        "water",
-        "electric",
-        "ice"
+        "steel",
+        "fighting",
+        "poison",
+        "rock",
+        "fire",
+        "ice",
+        "dragon",
+        "fairy"
       ],
-      "role": "tank",
-      "alignment_score": 47,
+      "role": "balanced",
+      "alignment_score": 40,
       "moves_fetched": true,
-      "weaknesses": [],
       "suggested_by_category": {
         "stab": [
           {
-            "name": "eruption",
-            "type": "fire",
-            "cat": "special",
-            "power": 150,
-            "acc": 100,
-            "method": "level-up",
-            "level": 1,
-            "priority": 0
-          },
-          {
-            "name": "overheat",
-            "type": "fire",
+            "name": "draco-meteor",
+            "type": "dragon",
             "cat": "special",
             "power": 130,
             "acc": 90,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 103,
+            "rarity_score": 59,
+            "type_rarity_score": 42,
+            "rarity_tier": ""
           },
           {
-            "name": "fire-blast",
-            "type": "fire",
-            "cat": "special",
-            "power": 110,
-            "acc": 85,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
+            "name": "dragon-rush",
+            "type": "dragon",
+            "cat": "physical",
+            "power": 100,
+            "acc": 75,
+            "method": "level-up",
+            "level": 82,
+            "priority": 0,
+            "learned_by": 42,
+            "rarity_score": 71,
+            "type_rarity_score": 82,
+            "rarity_tier": ""
           },
           {
-            "name": "flare-blitz",
-            "type": "fire",
+            "name": "outrage",
+            "type": "dragon",
             "cat": "physical",
             "power": 120,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 219,
+            "rarity_score": 37,
+            "type_rarity_score": 1,
+            "rarity_tier": ""
+          },
+          {
+            "name": "earthquake",
+            "type": "ground",
+            "cat": "physical",
+            "power": 100,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 384,
+            "rarity_score": 12,
+            "type_rarity_score": 13,
+            "rarity_tier": ""
           }
         ],
         "coverage": [
           {
-            "name": "solar-beam",
-            "type": "grass",
-            "cat": "special",
-            "power": 120,
+            "name": "iron-head",
+            "type": "steel",
+            "cat": "physical",
+            "power": 80,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 286,
+            "rarity_score": 25,
+            "type_rarity_score": 4,
+            "rarity_tier": ""
           },
           {
-            "name": "trailblaze",
-            "type": "grass",
+            "name": "metal-claw",
+            "type": "steel",
             "cat": "physical",
             "power": 50,
+            "acc": 95,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 118,
+            "rarity_score": 57,
+            "type_rarity_score": 44,
+            "rarity_tier": ""
+          },
+          {
+            "name": "stone-edge",
+            "type": "rock",
+            "cat": "physical",
+            "power": 100,
+            "acc": 80,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 308,
+            "rarity_score": 22,
+            "type_rarity_score": 17,
+            "rarity_tier": ""
+          },
+          {
+            "name": "power-gem",
+            "type": "rock",
+            "cat": "special",
+            "power": 80,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "hyper-beam",
-            "type": "normal",
-            "cat": "special",
-            "power": 150,
-            "acc": 90,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "giga-impact",
-            "type": "normal",
-            "cat": "physical",
-            "power": 150,
-            "acc": 90,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 105,
+            "rarity_score": 59,
+            "type_rarity_score": 68,
+            "rarity_tier": ""
           }
         ],
         "utility": [
+          {
+            "name": "spikes",
+            "type": "ground",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 90,
+            "rarity_score": 62,
+            "type_rarity_score": 73,
+            "rarity_tier": ""
+          },
           {
             "name": "stealth-rock",
             "type": "rock",
@@ -1563,69 +1002,94 @@
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 261,
+            "rarity_score": 29,
+            "type_rarity_score": 27,
+            "rarity_tier": ""
           },
           {
-            "name": "yawn",
-            "type": "normal",
+            "name": "sand-attack",
+            "type": "ground",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "level-up",
-            "level": 39,
-            "priority": 0
+            "level": 1,
+            "priority": 0,
+            "learned_by": 121,
+            "rarity_score": 56,
+            "type_rarity_score": 67,
+            "rarity_tier": ""
           },
           {
-            "name": "roar",
-            "type": "normal",
+            "name": "dragon-cheer",
+            "type": "dragon",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": -6
-          },
-          {
-            "name": "rain-dance",
-            "type": "water",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 62,
+            "rarity_score": 67,
+            "type_rarity_score": 71,
+            "rarity_tier": ""
           }
         ]
       },
-      "source": "sim"
+      "source": "autofill",
+      "weaknesses": [],
+      "rare_moves": []
     },
     {
-      "name": "gyarados",
+      "name": "milotic",
       "types": [
-        "water",
-        "flying"
+        "water"
       ],
       "level_cap": null,
       "suggested_moves": [
         {
-          "name": "roar",
-          "type": "normal",
+          "name": "hypnosis",
+          "type": "psychic",
+          "cat": "status",
+          "power": 0,
+          "acc": 60,
+          "method": "egg",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 88,
+          "rarity_score": 62,
+          "type_rarity_score": 64,
+          "rarity_tier": ""
+        },
+        {
+          "name": "coil",
+          "type": "poison",
           "cat": "status",
           "power": 0,
           "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": -6
+          "method": "level-up",
+          "level": 48,
+          "priority": 0,
+          "learned_by": 25,
+          "rarity_score": 74,
+          "type_rarity_score": 65,
+          "rarity_tier": ""
         },
         {
-          "name": "earthquake",
-          "type": "ground",
-          "cat": "physical",
-          "power": 100,
-          "acc": 100,
+          "name": "blizzard",
+          "type": "ice",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 315,
+          "rarity_score": 21,
+          "type_rarity_score": 3,
+          "rarity_tier": ""
         },
         {
           "name": "hydro-pump",
@@ -1634,18 +1098,12 @@
           "power": 110,
           "acc": 80,
           "method": "level-up",
-          "level": 40,
-          "priority": 0
-        },
-        {
-          "name": "hurricane",
-          "type": "flying",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "level-up",
-          "level": 44,
-          "priority": 0
+          "level": 52,
+          "priority": 0,
+          "learned_by": 212,
+          "rarity_score": 38,
+          "type_rarity_score": 28,
+          "rarity_tier": ""
         }
       ],
       "draft_board": [
@@ -1656,58 +1114,12 @@
           "power": 110,
           "acc": 80,
           "method": "level-up",
-          "level": 40,
-          "priority": 0
-        },
-        {
-          "name": "hurricane",
-          "type": "flying",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "level-up",
-          "level": 44,
-          "priority": 0
-        },
-        {
-          "name": "earthquake",
-          "type": "ground",
-          "cat": "physical",
-          "power": 100,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "bulldoze",
-          "type": "ground",
-          "cat": "physical",
-          "power": 60,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "iron-head",
-          "type": "steel",
-          "cat": "physical",
-          "power": 80,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "giga-impact",
-          "type": "normal",
-          "cat": "physical",
-          "power": 150,
-          "acc": 90,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
+          "level": 52,
+          "priority": 0,
+          "learned_by": 212,
+          "rarity_score": 38,
+          "type_rarity_score": 28,
+          "rarity_tier": ""
         },
         {
           "name": "blizzard",
@@ -1717,47 +1129,11 @@
           "acc": 70,
           "method": "machine",
           "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hyper-beam",
-          "type": "normal",
-          "cat": "special",
-          "power": 150,
-          "acc": 90,
-          "method": "level-up",
-          "level": 52,
-          "priority": 0
-        },
-        {
-          "name": "outrage",
-          "type": "dragon",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "thrash",
-          "type": "normal",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "level-up",
-          "level": 48,
-          "priority": 0
-        },
-        {
-          "name": "double-edge",
-          "type": "normal",
-          "cat": "physical",
-          "power": 120,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 315,
+          "rarity_score": 21,
+          "type_rarity_score": 3,
+          "rarity_tier": ""
         },
         {
           "name": "ice-beam",
@@ -1767,7 +1143,648 @@
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 346,
+          "rarity_score": 16,
+          "type_rarity_score": 1,
+          "rarity_tier": ""
+        },
+        {
+          "name": "mud-shot",
+          "type": "ground",
+          "cat": "special",
+          "power": 55,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 276,
+          "rarity_score": 27,
+          "type_rarity_score": 32,
+          "rarity_tier": ""
+        },
+        {
+          "name": "skitter-smack",
+          "type": "bug",
+          "cat": "physical",
+          "power": 70,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 144,
+          "rarity_score": 51,
+          "type_rarity_score": 17,
+          "rarity_tier": ""
+        },
+        {
+          "name": "icy-wind",
+          "type": "ice",
+          "cat": "special",
+          "power": 55,
+          "acc": 95,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 370,
+          "rarity_score": 14,
+          "type_rarity_score": 1,
+          "rarity_tier": ""
+        },
+        {
+          "name": "bulldoze",
+          "type": "ground",
+          "cat": "physical",
+          "power": 60,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 446,
+          "rarity_score": 7,
+          "type_rarity_score": 7,
+          "rarity_tier": ""
+        },
+        {
+          "name": "triple-axel",
+          "type": "ice",
+          "cat": "physical",
+          "power": 20,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 45,
+          "rarity_score": 70,
+          "type_rarity_score": 72,
+          "rarity_tier": ""
+        },
+        {
+          "name": "avalanche",
+          "type": "ice",
+          "cat": "physical",
+          "power": 60,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": -4,
+          "learned_by": 119,
+          "rarity_score": 56,
+          "type_rarity_score": 46,
+          "rarity_tier": ""
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 735,
+          "rarity_score": 0,
+          "type_rarity_score": 6,
+          "rarity_tier": ""
+        },
+        {
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 758,
+          "rarity_score": 0,
+          "type_rarity_score": 5,
+          "rarity_tier": ""
+        },
+        {
+          "name": "alluring-voice",
+          "type": "fairy",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 67,
+          "rarity_score": 66,
+          "type_rarity_score": 54,
+          "rarity_tier": ""
+        }
+      ],
+      "coverage_priority": [
+        [
+          "flying",
+          1
+        ],
+        [
+          "poison",
+          1
+        ],
+        [
+          "ground",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "ice",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "fighting",
+          0
+        ],
+        [
+          "rock",
+          0
+        ],
+        [
+          "ghost",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "dark",
+          0
+        ],
+        [
+          "fairy",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "water",
+        "ice",
+        "ground",
+        "bug",
+        "normal",
+        "fairy"
+      ],
+      "se_hits": [
+        "flying",
+        "poison",
+        "ground",
+        "bug",
+        "fire",
+        "ice"
+      ],
+      "role": "tank",
+      "alignment_score": 57,
+      "moves_fetched": true,
+      "suggested_by_category": {
+        "stab": [
+          {
+            "name": "hydro-pump",
+            "type": "water",
+            "cat": "special",
+            "power": 110,
+            "acc": 80,
+            "method": "level-up",
+            "level": 52,
+            "priority": 0,
+            "learned_by": 212,
+            "rarity_score": 38,
+            "type_rarity_score": 28,
+            "rarity_tier": ""
+          },
+          {
+            "name": "muddy-water",
+            "type": "water",
+            "cat": "special",
+            "power": 90,
+            "acc": 85,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 114,
+            "rarity_score": 57,
+            "type_rarity_score": 52,
+            "rarity_tier": ""
+          },
+          {
+            "name": "surf",
+            "type": "water",
+            "cat": "special",
+            "power": 90,
+            "acc": 100,
+            "method": "level-up",
+            "level": 40,
+            "priority": 0,
+            "learned_by": 285,
+            "rarity_score": 25,
+            "type_rarity_score": 15,
+            "rarity_tier": ""
+          },
+          {
+            "name": "scald",
+            "type": "water",
+            "cat": "special",
+            "power": 80,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 171,
+            "rarity_score": 46,
+            "type_rarity_score": 38,
+            "rarity_tier": ""
+          }
+        ],
+        "coverage": [
+          {
+            "name": "blizzard",
+            "type": "ice",
+            "cat": "special",
+            "power": 110,
+            "acc": 70,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 315,
+            "rarity_score": 21,
+            "type_rarity_score": 3,
+            "rarity_tier": ""
+          },
+          {
+            "name": "ice-beam",
+            "type": "ice",
+            "cat": "special",
+            "power": 90,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 346,
+            "rarity_score": 16,
+            "type_rarity_score": 1,
+            "rarity_tier": ""
+          },
+          {
+            "name": "mud-shot",
+            "type": "ground",
+            "cat": "special",
+            "power": 55,
+            "acc": 95,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 276,
+            "rarity_score": 27,
+            "type_rarity_score": 32,
+            "rarity_tier": ""
+          },
+          {
+            "name": "skitter-smack",
+            "type": "bug",
+            "cat": "physical",
+            "power": 70,
+            "acc": 90,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 144,
+            "rarity_score": 51,
+            "type_rarity_score": 17,
+            "rarity_tier": ""
+          }
+        ],
+        "utility": [
+          {
+            "name": "hypnosis",
+            "type": "psychic",
+            "cat": "status",
+            "power": 0,
+            "acc": 60,
+            "method": "egg",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 88,
+            "rarity_score": 62,
+            "type_rarity_score": 64,
+            "rarity_tier": ""
+          },
+          {
+            "name": "coil",
+            "type": "poison",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "level-up",
+            "level": 48,
+            "priority": 0,
+            "learned_by": 25,
+            "rarity_score": 74,
+            "type_rarity_score": 65,
+            "rarity_tier": ""
+          },
+          {
+            "name": "mist",
+            "type": "ice",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "egg",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 79,
+            "rarity_score": 64,
+            "type_rarity_score": 60,
+            "rarity_tier": ""
+          },
+          {
+            "name": "haze",
+            "type": "ice",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "egg",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 126,
+            "rarity_score": 55,
+            "type_rarity_score": 43,
+            "rarity_tier": ""
+          }
+        ]
+      },
+      "source": "sim",
+      "weaknesses": [],
+      "rare_moves": []
+    },
+    {
+      "name": "florges",
+      "types": [
+        "fairy"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "wish",
+          "type": "normal",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0,
+          "learned_by": 47,
+          "rarity_score": 70,
+          "type_rarity_score": 73,
+          "rarity_tier": ""
+        },
+        {
+          "name": "skill-swap",
+          "type": "psychic",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 184,
+          "rarity_score": 43,
+          "type_rarity_score": 44,
+          "rarity_tier": ""
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 77,
+          "rarity_score": 64,
+          "type_rarity_score": 66,
+          "rarity_tier": ""
+        },
+        {
+          "name": "misty-explosion",
+          "type": "fairy",
+          "cat": "special",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 27,
+          "rarity_score": 73,
+          "type_rarity_score": 73,
+          "rarity_tier": ""
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "misty-explosion",
+          "type": "fairy",
+          "cat": "special",
+          "power": 100,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 27,
+          "rarity_score": 73,
+          "type_rarity_score": 73,
+          "rarity_tier": ""
+        },
+        {
+          "name": "psychic-noise",
+          "type": "psychic",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 77,
+          "rarity_score": 64,
+          "type_rarity_score": 66,
+          "rarity_tier": ""
+        },
+        {
+          "name": "psychic",
+          "type": "psychic",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 318,
+          "rarity_score": 20,
+          "type_rarity_score": 20,
+          "rarity_tier": ""
+        },
+        {
+          "name": "stored-power",
+          "type": "psychic",
+          "cat": "special",
+          "power": 20,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 173,
+          "rarity_score": 46,
+          "type_rarity_score": 47,
+          "rarity_tier": ""
+        },
+        {
+          "name": "petal-dance",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0,
+          "learned_by": 24,
+          "rarity_score": 74,
+          "type_rarity_score": 75,
+          "rarity_tier": ""
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
+          "cat": "special",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 735,
+          "rarity_score": 0,
+          "type_rarity_score": 6,
+          "rarity_tier": ""
+        },
+        {
+          "name": "solar-beam",
+          "type": "grass",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0,
+          "learned_by": 403,
+          "rarity_score": 10,
+          "type_rarity_score": 0,
+          "rarity_tier": ""
+        },
+        {
+          "name": "giga-impact",
+          "type": "normal",
+          "cat": "physical",
+          "power": 150,
+          "acc": 90,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 758,
+          "rarity_score": 0,
+          "type_rarity_score": 5,
+          "rarity_tier": ""
+        },
+        {
+          "name": "pollen-puff",
+          "type": "bug",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 40,
+          "rarity_score": 71,
+          "type_rarity_score": 76,
+          "rarity_tier": ""
+        },
+        {
+          "name": "petal-blizzard",
+          "type": "grass",
+          "cat": "physical",
+          "power": 90,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0,
+          "learned_by": 38,
+          "rarity_score": 71,
+          "type_rarity_score": 71,
+          "rarity_tier": ""
+        },
+        {
+          "name": "energy-ball",
+          "type": "grass",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 297,
+          "rarity_score": 23,
+          "type_rarity_score": 3,
+          "rarity_tier": ""
+        },
+        {
+          "name": "giga-drain",
+          "type": "grass",
+          "cat": "special",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 253,
+          "rarity_score": 30,
+          "type_rarity_score": 7,
+          "rarity_tier": ""
         }
       ],
       "coverage_priority": [
@@ -1780,15 +1797,11 @@
           1
         ],
         [
-          "steel",
+          "fire",
           1
         ],
         [
-          "water",
-          1
-        ],
-        [
-          "grass",
+          "psychic",
           1
         ],
         [
@@ -1816,15 +1829,19 @@
           0
         ],
         [
-          "fire",
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
           0
         ],
         [
           "electric",
-          0
-        ],
-        [
-          "psychic",
           0
         ],
         [
@@ -1849,157 +1866,203 @@
         ]
       ],
       "move_types": [
-        "water",
-        "flying",
-        "ground",
-        "steel",
+        "fairy",
+        "psychic",
+        "grass",
         "normal",
-        "ice",
-        "dragon"
+        "bug"
       ],
       "se_hits": [
         "ground",
         "fighting",
-        "steel",
-        "water",
-        "grass"
+        "fire",
+        "psychic"
       ],
       "role": "tank",
-      "alignment_score": 47,
+      "alignment_score": 49,
       "moves_fetched": true,
-      "source": "sim",
-      "weaknesses": [],
       "suggested_by_category": {
         "stab": [
           {
-            "name": "hydro-pump",
-            "type": "water",
+            "name": "misty-explosion",
+            "type": "fairy",
             "cat": "special",
-            "power": 110,
-            "acc": 80,
-            "method": "level-up",
-            "level": 40,
-            "priority": 0
-          },
-          {
-            "name": "aqua-tail",
-            "type": "water",
-            "cat": "physical",
-            "power": 90,
-            "acc": 90,
-            "method": "level-up",
-            "level": 32,
-            "priority": 0
-          },
-          {
-            "name": "waterfall",
-            "type": "water",
-            "cat": "physical",
-            "power": 80,
-            "acc": 100,
-            "method": "level-up",
-            "level": 21,
-            "priority": 0
-          },
-          {
-            "name": "surf",
-            "type": "water",
-            "cat": "special",
-            "power": 90,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          }
-        ],
-        "coverage": [
-          {
-            "name": "earthquake",
-            "type": "ground",
-            "cat": "physical",
             "power": 100,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 27,
+            "rarity_score": 73,
+            "type_rarity_score": 73,
+            "rarity_tier": ""
           },
           {
-            "name": "bulldoze",
-            "type": "ground",
-            "cat": "physical",
-            "power": 60,
+            "name": "moonblast",
+            "type": "fairy",
+            "cat": "special",
+            "power": 95,
             "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
+            "method": "level-up",
+            "level": 5,
+            "priority": 0,
+            "learned_by": 63,
+            "rarity_score": 67,
+            "type_rarity_score": 56,
+            "rarity_tier": ""
           },
           {
-            "name": "iron-head",
-            "type": "steel",
-            "cat": "physical",
+            "name": "alluring-voice",
+            "type": "fairy",
+            "cat": "special",
             "power": 80,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 67,
+            "rarity_score": 66,
+            "type_rarity_score": 54,
+            "rarity_tier": ""
           },
           {
-            "name": "giga-impact",
-            "type": "normal",
-            "cat": "physical",
-            "power": 150,
-            "acc": 90,
+            "name": "dazzling-gleam",
+            "type": "fairy",
+            "cat": "special",
+            "power": 80,
+            "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 207,
+            "rarity_score": 39,
+            "type_rarity_score": 4,
+            "rarity_tier": ""
+          }
+        ],
+        "coverage": [
+          {
+            "name": "psychic-noise",
+            "type": "psychic",
+            "cat": "special",
+            "power": 75,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 77,
+            "rarity_score": 64,
+            "type_rarity_score": 66,
+            "rarity_tier": ""
+          },
+          {
+            "name": "psychic",
+            "type": "psychic",
+            "cat": "special",
+            "power": 90,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 318,
+            "rarity_score": 20,
+            "type_rarity_score": 20,
+            "rarity_tier": ""
+          },
+          {
+            "name": "stored-power",
+            "type": "psychic",
+            "cat": "special",
+            "power": 20,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 173,
+            "rarity_score": 46,
+            "type_rarity_score": 47,
+            "rarity_tier": ""
+          },
+          {
+            "name": "petal-dance",
+            "type": "grass",
+            "cat": "special",
+            "power": 120,
+            "acc": 100,
+            "method": "level-up",
+            "level": 1,
+            "priority": 0,
+            "learned_by": 24,
+            "rarity_score": 74,
+            "type_rarity_score": 75,
+            "rarity_tier": ""
           }
         ],
         "utility": [
           {
-            "name": "roar",
+            "name": "wish",
             "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": -6
-          },
-          {
-            "name": "rain-dance",
-            "type": "water",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "level-up",
-            "level": 28,
-            "priority": 0
+            "level": 1,
+            "priority": 0,
+            "learned_by": 47,
+            "rarity_score": 70,
+            "type_rarity_score": 73,
+            "rarity_tier": ""
           },
           {
-            "name": "protect",
-            "type": "normal",
+            "name": "skill-swap",
+            "type": "psychic",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 4
+            "priority": 0,
+            "learned_by": 184,
+            "rarity_score": 43,
+            "type_rarity_score": 44,
+            "rarity_tier": ""
           },
           {
-            "name": "endure",
-            "type": "normal",
+            "name": "trick",
+            "type": "psychic",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 4
+            "priority": 0,
+            "learned_by": 220,
+            "rarity_score": 36,
+            "type_rarity_score": 37,
+            "rarity_tier": ""
+          },
+          {
+            "name": "misty-terrain",
+            "type": "fairy",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "level-up",
+            "level": 1,
+            "priority": 0,
+            "learned_by": 71,
+            "rarity_score": 66,
+            "type_rarity_score": 52,
+            "rarity_tier": ""
           }
         ]
-      }
+      },
+      "source": "sim",
+      "weaknesses": [],
+      "rare_moves": []
     },
     {
-      "name": "kangaskhan",
+      "name": "persian",
       "types": [
         "normal"
       ],
@@ -2013,37 +2076,53 @@
           "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 758,
+          "rarity_score": 0,
+          "type_rarity_score": 5,
+          "rarity_tier": ""
         },
         {
-          "name": "focus-blast",
-          "type": "fighting",
+          "name": "play-rough",
+          "type": "fairy",
+          "cat": "physical",
+          "power": 90,
+          "acc": 90,
+          "method": "level-up",
+          "level": 54,
+          "priority": 0,
+          "learned_by": 204,
+          "rarity_score": 40,
+          "type_rarity_score": 4,
+          "rarity_tier": ""
+        },
+        {
+          "name": "hyper-beam",
+          "type": "normal",
           "cat": "special",
-          "power": 120,
-          "acc": 70,
+          "power": 150,
+          "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 735,
+          "rarity_score": 0,
+          "type_rarity_score": 6,
+          "rarity_tier": ""
         },
         {
-          "name": "last-resort",
+          "name": "roar",
           "type": "normal",
-          "cat": "physical",
-          "power": 140,
+          "cat": "status",
+          "power": 0,
           "acc": 100,
-          "method": "level-up",
-          "level": 52,
-          "priority": 0
-        },
-        {
-          "name": "hammer-arm",
-          "type": "fighting",
-          "cat": "physical",
-          "power": 100,
-          "acc": 90,
-          "method": "egg",
+          "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": -6,
+          "learned_by": 290,
+          "rarity_score": 24,
+          "type_rarity_score": 44,
+          "rarity_tier": ""
         }
       ],
       "draft_board": [
@@ -2055,117 +2134,165 @@
           "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 758,
+          "rarity_score": 0,
+          "type_rarity_score": 5,
+          "rarity_tier": ""
         },
         {
-          "name": "focus-blast",
-          "type": "fighting",
-          "cat": "special",
-          "power": 120,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hammer-arm",
-          "type": "fighting",
+          "name": "play-rough",
+          "type": "fairy",
           "cat": "physical",
-          "power": 100,
+          "power": 90,
           "acc": 90,
-          "method": "egg",
-          "level": 0,
-          "priority": 0
+          "method": "level-up",
+          "level": 54,
+          "priority": 0,
+          "learned_by": 204,
+          "rarity_score": 40,
+          "type_rarity_score": 4,
+          "rarity_tier": ""
         },
         {
-          "name": "solar-beam",
-          "type": "grass",
-          "cat": "special",
-          "power": 120,
+          "name": "aerial-ace",
+          "type": "flying",
+          "cat": "physical",
+          "power": 60,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 417,
+          "rarity_score": 9,
+          "type_rarity_score": 0,
+          "rarity_tier": ""
         },
         {
-          "name": "blizzard",
-          "type": "ice",
-          "cat": "special",
-          "power": 110,
-          "acc": 70,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "hydro-pump",
-          "type": "water",
-          "cat": "special",
-          "power": 110,
+          "name": "gunk-shot",
+          "type": "poison",
+          "cat": "physical",
+          "power": 120,
           "acc": 80,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 139,
+          "rarity_score": 52,
+          "type_rarity_score": 41,
+          "rarity_tier": ""
         },
         {
-          "name": "earthquake",
-          "type": "ground",
+          "name": "foul-play",
+          "type": "dark",
           "cat": "physical",
-          "power": 100,
+          "power": 95,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 198,
+          "rarity_score": 41,
+          "type_rarity_score": 44,
+          "rarity_tier": ""
         },
         {
-          "name": "outrage",
-          "type": "dragon",
-          "cat": "physical",
-          "power": 120,
+          "name": "thunder",
+          "type": "electric",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 305,
+          "rarity_score": 22,
+          "type_rarity_score": 6,
+          "rarity_tier": ""
+        },
+        {
+          "name": "power-gem",
+          "type": "rock",
+          "cat": "special",
+          "power": 80,
           "acc": 100,
           "method": "level-up",
-          "level": 48,
-          "priority": 0
+          "level": 0,
+          "priority": 0,
+          "learned_by": 105,
+          "rarity_score": 59,
+          "type_rarity_score": 68,
+          "rarity_tier": ""
         },
         {
-          "name": "brick-break",
-          "type": "fighting",
+          "name": "dig",
+          "type": "ground",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 491,
+          "rarity_score": 4,
+          "type_rarity_score": 4,
+          "rarity_tier": ""
+        },
+        {
+          "name": "throat-chop",
+          "type": "dark",
+          "cat": "physical",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 213,
+          "rarity_score": 38,
+          "type_rarity_score": 40,
+          "rarity_tier": ""
+        },
+        {
+          "name": "lash-out",
+          "type": "dark",
           "cat": "physical",
           "power": 75,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 161,
+          "rarity_score": 48,
+          "type_rarity_score": 54,
+          "rarity_tier": ""
         },
         {
-          "name": "drain-punch",
-          "type": "fighting",
+          "name": "seed-bomb",
+          "type": "grass",
           "cat": "physical",
-          "power": 75,
+          "power": 80,
           "acc": 100,
           "method": "machine",
           "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 223,
+          "rarity_score": 36,
+          "type_rarity_score": 12,
+          "rarity_tier": ""
         },
         {
-          "name": "ice-punch",
-          "type": "ice",
+          "name": "skitter-smack",
+          "type": "bug",
           "cat": "physical",
-          "power": 75,
-          "acc": 100,
+          "power": 70,
+          "acc": 90,
           "method": "machine",
           "level": 0,
-          "priority": 0
-        },
-        {
-          "name": "ice-beam",
-          "type": "ice",
-          "cat": "special",
-          "power": 90,
-          "acc": 100,
-          "method": "machine",
-          "level": 0,
-          "priority": 0
+          "priority": 0,
+          "learned_by": 144,
+          "rarity_score": 51,
+          "type_rarity_score": 17,
+          "rarity_tier": ""
         }
       ],
       "coverage_priority": [
@@ -2248,22 +2375,24 @@
       ],
       "move_types": [
         "normal",
-        "fighting",
-        "grass",
-        "ice",
-        "water",
+        "fairy",
+        "flying",
+        "poison",
+        "dark",
+        "electric",
+        "rock",
         "ground",
-        "dragon"
+        "grass",
+        "bug"
       ],
       "se_hits": [
         "flying",
         "psychic",
         "fairy"
       ],
-      "role": "balanced",
-      "alignment_score": 27,
+      "role": "sweeper",
+      "alignment_score": 100,
       "moves_fetched": true,
-      "weaknesses": [],
       "suggested_by_category": {
         "stab": [
           {
@@ -2274,17 +2403,11 @@
             "acc": 90,
             "method": "machine",
             "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "last-resort",
-            "type": "normal",
-            "cat": "physical",
-            "power": 140,
-            "acc": 100,
-            "method": "level-up",
-            "level": 52,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 758,
+            "rarity_score": 0,
+            "type_rarity_score": 5,
+            "rarity_tier": ""
           },
           {
             "name": "hyper-beam",
@@ -2294,17 +2417,552 @@
             "acc": 90,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 735,
+            "rarity_score": 0,
+            "type_rarity_score": 6,
+            "rarity_tier": ""
           },
           {
-            "name": "mega-kick",
+            "name": "double-edge",
             "type": "normal",
             "cat": "physical",
             "power": 120,
-            "acc": 75,
+            "acc": 100,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 686,
+            "rarity_score": 0,
+            "type_rarity_score": 8,
+            "rarity_tier": ""
+          },
+          {
+            "name": "fake-out",
+            "type": "normal",
+            "cat": "physical",
+            "power": 40,
+            "acc": 100,
+            "method": "level-up",
+            "level": 1,
+            "priority": 3,
+            "learned_by": 84,
+            "rarity_score": 63,
+            "type_rarity_score": 69,
+            "rarity_tier": ""
+          }
+        ],
+        "coverage": [
+          {
+            "name": "play-rough",
+            "type": "fairy",
+            "cat": "physical",
+            "power": 90,
+            "acc": 90,
+            "method": "level-up",
+            "level": 54,
+            "priority": 0,
+            "learned_by": 204,
+            "rarity_score": 40,
+            "type_rarity_score": 4,
+            "rarity_tier": ""
+          },
+          {
+            "name": "aerial-ace",
+            "type": "flying",
+            "cat": "physical",
+            "power": 60,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 417,
+            "rarity_score": 9,
+            "type_rarity_score": 0,
+            "rarity_tier": ""
+          },
+          {
+            "name": "gunk-shot",
+            "type": "poison",
+            "cat": "physical",
+            "power": 120,
+            "acc": 80,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 139,
+            "rarity_score": 52,
+            "type_rarity_score": 41,
+            "rarity_tier": ""
+          },
+          {
+            "name": "foul-play",
+            "type": "dark",
+            "cat": "physical",
+            "power": 95,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 198,
+            "rarity_score": 41,
+            "type_rarity_score": 44,
+            "rarity_tier": ""
+          }
+        ],
+        "utility": [
+          {
+            "name": "roar",
+            "type": "normal",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": -6,
+            "learned_by": 290,
+            "rarity_score": 24,
+            "type_rarity_score": 44,
+            "rarity_tier": ""
+          },
+          {
+            "name": "switcheroo",
+            "type": "dark",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "level-up",
+            "level": 1,
+            "priority": 0,
+            "learned_by": 48,
+            "rarity_score": 70,
+            "type_rarity_score": 81,
+            "rarity_tier": ""
+          },
+          {
+            "name": "amnesia",
+            "type": "psychic",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 167,
+            "rarity_score": 47,
+            "type_rarity_score": 48,
+            "rarity_tier": ""
+          },
+          {
+            "name": "fake-tears",
+            "type": "dark",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 158,
+            "rarity_score": 49,
+            "type_rarity_score": 55,
+            "rarity_tier": ""
+          }
+        ]
+      },
+      "source": "sim",
+      "weaknesses": [],
+      "rare_moves": []
+    },
+    {
+      "name": "mewtwo",
+      "types": [
+        "psychic"
+      ],
+      "level_cap": null,
+      "suggested_moves": [
+        {
+          "name": "future-sight",
+          "type": "psychic",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 88,
+          "priority": 0,
+          "learned_by": 129,
+          "rarity_score": 54,
+          "type_rarity_score": 56,
+          "rarity_tier": ""
+        },
+        {
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 298,
+          "rarity_score": 23,
+          "type_rarity_score": 8,
+          "rarity_tier": ""
+        },
+        {
+          "name": "psystrike",
+          "type": "psychic",
+          "cat": "special",
+          "power": 100,
+          "acc": 100,
+          "method": "level-up",
+          "level": 72,
+          "priority": 0,
+          "learned_by": 3,
+          "rarity_score": 77,
+          "type_rarity_score": 79,
+          "rarity_tier": "near-unique"
+        },
+        {
+          "name": "life-dew",
+          "type": "water",
+          "cat": "status",
+          "power": 0,
+          "acc": 100,
+          "method": "level-up",
+          "level": 1,
+          "priority": 0,
+          "learned_by": 39,
+          "rarity_score": 71,
+          "type_rarity_score": 70,
+          "rarity_tier": ""
+        }
+      ],
+      "draft_board": [
+        {
+          "name": "future-sight",
+          "type": "psychic",
+          "cat": "special",
+          "power": 120,
+          "acc": 100,
+          "method": "level-up",
+          "level": 88,
+          "priority": 0,
+          "learned_by": 129,
+          "rarity_score": 54,
+          "type_rarity_score": 56,
+          "rarity_tier": ""
+        },
+        {
+          "name": "focus-blast",
+          "type": "fighting",
+          "cat": "special",
+          "power": 120,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 298,
+          "rarity_score": 23,
+          "type_rarity_score": 8,
+          "rarity_tier": ""
+        },
+        {
+          "name": "hurricane",
+          "type": "flying",
+          "cat": "special",
+          "power": 110,
+          "acc": 70,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 98,
+          "rarity_score": 60,
+          "type_rarity_score": 59,
+          "rarity_tier": ""
+        },
+        {
+          "name": "fire-blast",
+          "type": "fire",
+          "cat": "special",
+          "power": 110,
+          "acc": 85,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 241,
+          "rarity_score": 33,
+          "type_rarity_score": 23,
+          "rarity_tier": ""
+        },
+        {
+          "name": "focus-punch",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 150,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": -3,
+          "learned_by": 292,
+          "rarity_score": 24,
+          "type_rarity_score": 8,
+          "rarity_tier": ""
+        },
+        {
+          "name": "aura-sphere",
+          "type": "fighting",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "level-up",
+          "level": 40,
+          "priority": 0,
+          "learned_by": 59,
+          "rarity_score": 68,
+          "type_rarity_score": 70,
+          "rarity_tier": ""
+        },
+        {
+          "name": "power-gem",
+          "type": "rock",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 105,
+          "rarity_score": 59,
+          "type_rarity_score": 68,
+          "rarity_tier": ""
+        },
+        {
+          "name": "flamethrower",
+          "type": "fire",
+          "cat": "special",
+          "power": 90,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 268,
+          "rarity_score": 28,
+          "type_rarity_score": 18,
+          "rarity_tier": ""
+        },
+        {
+          "name": "stone-edge",
+          "type": "rock",
+          "cat": "physical",
+          "power": 100,
+          "acc": 80,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 308,
+          "rarity_score": 22,
+          "type_rarity_score": 17,
+          "rarity_tier": ""
+        },
+        {
+          "name": "foul-play",
+          "type": "dark",
+          "cat": "physical",
+          "power": 95,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 198,
+          "rarity_score": 41,
+          "type_rarity_score": 44,
+          "rarity_tier": ""
+        },
+        {
+          "name": "dark-pulse",
+          "type": "dark",
+          "cat": "special",
+          "power": 80,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 241,
+          "rarity_score": 33,
+          "type_rarity_score": 33,
+          "rarity_tier": ""
+        },
+        {
+          "name": "drain-punch",
+          "type": "fighting",
+          "cat": "physical",
+          "power": 75,
+          "acc": 100,
+          "method": "machine",
+          "level": 0,
+          "priority": 0,
+          "learned_by": 177,
+          "rarity_score": 45,
+          "type_rarity_score": 33,
+          "rarity_tier": ""
+        }
+      ],
+      "coverage_priority": [
+        [
+          "fighting",
+          1
+        ],
+        [
+          "flying",
+          1
+        ],
+        [
+          "rock",
+          1
+        ],
+        [
+          "bug",
+          1
+        ],
+        [
+          "ghost",
+          1
+        ],
+        [
+          "fire",
+          1
+        ],
+        [
+          "dark",
+          1
+        ],
+        [
+          "fairy",
+          1
+        ],
+        [
+          "normal",
+          0
+        ],
+        [
+          "poison",
+          0
+        ],
+        [
+          "ground",
+          0
+        ],
+        [
+          "steel",
+          0
+        ],
+        [
+          "water",
+          0
+        ],
+        [
+          "grass",
+          0
+        ],
+        [
+          "electric",
+          0
+        ],
+        [
+          "psychic",
+          0
+        ],
+        [
+          "ice",
+          0
+        ],
+        [
+          "dragon",
+          0
+        ],
+        [
+          "stellar",
+          0
+        ]
+      ],
+      "move_types": [
+        "psychic",
+        "fighting",
+        "flying",
+        "fire",
+        "rock",
+        "dark"
+      ],
+      "se_hits": [
+        "fighting",
+        "flying",
+        "rock",
+        "bug",
+        "ghost",
+        "fire",
+        "dark",
+        "fairy"
+      ],
+      "role": "sweeper",
+      "alignment_score": 86,
+      "moves_fetched": true,
+      "suggested_by_category": {
+        "stab": [
+          {
+            "name": "future-sight",
+            "type": "psychic",
+            "cat": "special",
+            "power": 120,
+            "acc": 100,
+            "method": "level-up",
+            "level": 88,
+            "priority": 0,
+            "learned_by": 129,
+            "rarity_score": 54,
+            "type_rarity_score": 56,
+            "rarity_tier": ""
+          },
+          {
+            "name": "psystrike",
+            "type": "psychic",
+            "cat": "special",
+            "power": 100,
+            "acc": 100,
+            "method": "level-up",
+            "level": 72,
+            "priority": 0,
+            "learned_by": 3,
+            "rarity_score": 77,
+            "type_rarity_score": 79,
+            "rarity_tier": "near-unique"
+          },
+          {
+            "name": "expanding-force",
+            "type": "psychic",
+            "cat": "special",
+            "power": 80,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 104,
+            "rarity_score": 59,
+            "type_rarity_score": 61,
+            "rarity_tier": ""
+          },
+          {
+            "name": "psychic-noise",
+            "type": "psychic",
+            "cat": "special",
+            "power": 75,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 77,
+            "rarity_score": 64,
+            "type_rarity_score": 66,
+            "rarity_tier": ""
           }
         ],
         "coverage": [
@@ -2316,83 +2974,132 @@
             "acc": 70,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 298,
+            "rarity_score": 23,
+            "type_rarity_score": 8,
+            "rarity_tier": ""
           },
           {
-            "name": "hammer-arm",
-            "type": "fighting",
-            "cat": "physical",
-            "power": 100,
-            "acc": 90,
-            "method": "egg",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "solar-beam",
-            "type": "grass",
-            "cat": "special",
-            "power": 120,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "blizzard",
-            "type": "ice",
+            "name": "hurricane",
+            "type": "flying",
             "cat": "special",
             "power": 110,
             "acc": 70,
             "method": "machine",
             "level": 0,
-            "priority": 0
+            "priority": 0,
+            "learned_by": 98,
+            "rarity_score": 60,
+            "type_rarity_score": 59,
+            "rarity_tier": ""
+          },
+          {
+            "name": "fire-blast",
+            "type": "fire",
+            "cat": "special",
+            "power": 110,
+            "acc": 85,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 241,
+            "rarity_score": 33,
+            "type_rarity_score": 23,
+            "rarity_tier": ""
+          },
+          {
+            "name": "focus-punch",
+            "type": "fighting",
+            "cat": "physical",
+            "power": 150,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": -3,
+            "learned_by": 292,
+            "rarity_score": 24,
+            "type_rarity_score": 8,
+            "rarity_tier": ""
           }
         ],
         "utility": [
           {
-            "name": "rain-dance",
+            "name": "life-dew",
             "type": "water",
             "cat": "status",
             "power": 0,
             "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
+            "method": "level-up",
+            "level": 1,
+            "priority": 0,
+            "learned_by": 39,
+            "rarity_score": 71,
+            "type_rarity_score": 70,
+            "rarity_tier": ""
           },
           {
-            "name": "hail",
-            "type": "ice",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 0
-          },
-          {
-            "name": "protect",
-            "type": "normal",
-            "cat": "status",
-            "power": 0,
-            "acc": 100,
-            "method": "machine",
-            "level": 0,
-            "priority": 4
-          },
-          {
-            "name": "endure",
+            "name": "recover",
             "type": "normal",
             "cat": "status",
             "power": 0,
             "acc": 100,
             "method": "level-up",
-            "level": 40,
-            "priority": 4
+            "level": 80,
+            "priority": 0,
+            "learned_by": 80,
+            "rarity_score": 64,
+            "type_rarity_score": 69,
+            "rarity_tier": ""
+          },
+          {
+            "name": "will-o-wisp",
+            "type": "fire",
+            "cat": "status",
+            "power": 0,
+            "acc": 85,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 175,
+            "rarity_score": 45,
+            "type_rarity_score": 37,
+            "rarity_tier": ""
+          },
+          {
+            "name": "bulk-up",
+            "type": "fighting",
+            "cat": "status",
+            "power": 0,
+            "acc": 100,
+            "method": "machine",
+            "level": 0,
+            "priority": 0,
+            "learned_by": 168,
+            "rarity_score": 47,
+            "type_rarity_score": 35,
+            "rarity_tier": ""
           }
         ]
       },
-      "source": "autofill"
+      "source": "sim",
+      "weaknesses": [],
+      "rare_moves": [
+        {
+          "name": "psystrike",
+          "type": "psychic",
+          "cat": "special",
+          "power": 100,
+          "acc": 100,
+          "method": "level-up",
+          "level": 72,
+          "priority": 0,
+          "learned_by": 3,
+          "rarity_score": 77,
+          "type_rarity_score": 79,
+          "rarity_tier": "near-unique"
+        }
+      ]
     }
   ],
   "role_move_mix": {
@@ -2402,195 +3109,178 @@
   },
   "metrics": {
     "scores": {
-      "defense": 48,
+      "defense": 100,
       "offense": 100,
-      "delta": 9.5,
-      "delta_headroom": 90.5,
+      "delta": 0,
+      "delta_headroom": 100,
       "offensive_delta": 0,
-      "shared": 73,
-      "overall": 93.97222222222223,
-      "perfect_text": "",
-      "weak": 11.75,
-      "resist": 24,
-      "immune": 11,
-      "net_exposed": 2,
+      "shared": 100,
+      "overall": 100.0,
+      "perfect_text": "Perfect team: no net weaknesses (resist/immune >= weak for every attack type) AND offensive coverage can hit every type at least neutral, ideally super-effective.",
+      "weak": 11.25,
+      "resist": 20,
+      "immune": 4,
+      "net_exposed": 0,
       "move_types": [
         "bug",
-        "dark",
+        "dragon",
+        "fairy",
         "fighting",
-        "fire",
-        "flying",
-        "ghost",
-        "grass",
         "ground",
+        "ice",
         "normal",
         "poison",
-        "rock",
+        "psychic",
         "steel",
         "water"
       ],
-      "best_defensive_delta": 9.5,
+      "best_defensive_delta": 0,
       "best_offense_gap": 0,
       "coverage_offense": 100,
       "headroom_offense": 100,
-      "stack_overlap": 2.25,
-      "stat_total": 2818,
-      "role_penalty": 0.5,
-      "bst_penalty": 2.5277777777777763
+      "stack_overlap": 0,
+      "stat_total": 3412,
+      "role_penalty": 0.0,
+      "bst_penalty": 0.0
     },
-    "exposures": [
-      {
-        "attack": "ground",
-        "weak": 2.25,
-        "resist": 0,
-        "immune": 1,
-        "neutral": 2,
-        "size": 6
-      },
-      {
-        "attack": "dark",
-        "weak": 2.0,
-        "resist": 0,
-        "immune": 0,
-        "neutral": 4,
-        "size": 6
-      }
-    ],
+    "exposures": [],
     "role_counts": {
-      "sweeper": 1,
-      "tank": 4,
-      "balanced": 1
+      "balanced": 2,
+      "tank": 2,
+      "sweeper": 2
     },
     "upgrades": [
-      "\u001b[36mOverall xerneas: 98/100 (uplift +4; def 95, off 100, shared 91, delta 4.0; align 31, bst 680)\u001b[0m",
-      "\u001b[36mOverall dedenne: 98/100 (uplift +4; def 95, off 100, shared 79, delta 0; align 26, bst 431)\u001b[0m",
-      "\u001b[36mOverall chesnaught: 98/100 (uplift +4; def 100, off 100, shared 88, delta 0; align 77, bst 530)\u001b[0m"
+      "\u001b[36mOverall garchomp: 100/100 (uplift +4; def 100, off 100, shared 100, delta 0; align 40, bst 600)\u001b[0m",
+      "\u001b[36mOverall dragonair: 100/100 (uplift +4; def 100, off 100, shared 100, delta 0; align 34, bst 420)\u001b[0m",
+      "\u001b[36mOverall shelgon: 100/100 (uplift +3; def 100, off 100, shared 100, delta 0; align 49, bst 420)\u001b[0m"
     ],
     "team": [
       {
-        "name": "gengar",
-        "role": "sweeper",
-        "alignment_score": 95,
+        "name": "genesect",
+        "role": "balanced",
+        "alignment_score": 31,
         "move_types": [
-          "ghost",
-          "poison",
           "bug",
-          "dark",
+          "steel",
+          "normal",
+          "poison",
+          "electric",
+          "fire",
+          "flying",
+          "grass",
+          "ice"
+        ],
+        "se_hits": [
+          "ground",
+          "rock",
+          "water"
+        ]
+      },
+      {
+        "name": "garchomp",
+        "role": "balanced",
+        "alignment_score": 40,
+        "move_types": [
+          "dragon",
+          "ground",
+          "steel",
+          "rock",
+          "fire",
+          "poison",
           "fighting"
         ],
         "se_hits": [
-          "bug",
-          "ghost",
-          "dark",
-          "fighting",
-          "water",
-          "grass",
-          "ice",
-          "fairy"
-        ]
-      },
-      {
-        "name": "sableye",
-        "role": "tank",
-        "alignment_score": 47,
-        "move_types": [
-          "dark",
-          "ghost",
-          "poison",
           "steel",
           "fighting",
-          "normal",
-          "ice"
-        ],
-        "se_hits": [
           "poison",
-          "steel"
-        ]
-      },
-      {
-        "name": "doublade",
-        "role": "tank",
-        "alignment_score": 47,
-        "move_types": [
-          "steel",
-          "ghost",
-          "fighting",
-          "grass",
           "rock",
-          "bug",
-          "dark",
-          "flying"
-        ],
-        "se_hits": [
-          "water",
-          "fighting",
-          "ground",
-          "rock",
-          "bug",
-          "ghost",
-          "grass",
-          "ice",
-          "dark",
-          "fairy"
-        ]
-      },
-      {
-        "name": "camerupt",
-        "role": "tank",
-        "alignment_score": 47,
-        "move_types": [
           "fire",
+          "ice",
+          "dragon",
+          "fairy"
+        ]
+      },
+      {
+        "name": "milotic",
+        "role": "tank",
+        "alignment_score": 57,
+        "move_types": [
+          "water",
+          "ice",
           "ground",
-          "grass",
+          "bug",
           "normal",
-          "fighting",
-          "steel",
-          "rock"
+          "fairy"
         ],
         "se_hits": [
-          "grass",
-          "water",
-          "electric",
+          "flying",
+          "poison",
+          "ground",
+          "bug",
+          "fire",
           "ice"
         ]
       },
       {
-        "name": "gyarados",
+        "name": "florges",
         "role": "tank",
-        "alignment_score": 47,
+        "alignment_score": 49,
         "move_types": [
-          "water",
-          "flying",
-          "ground",
-          "steel",
+          "fairy",
+          "psychic",
+          "grass",
           "normal",
-          "ice",
-          "dragon"
+          "bug"
         ],
         "se_hits": [
           "ground",
           "fighting",
-          "steel",
-          "water",
-          "grass"
+          "fire",
+          "psychic"
         ]
       },
       {
-        "name": "kangaskhan",
-        "role": "balanced",
-        "alignment_score": 27,
+        "name": "persian",
+        "role": "sweeper",
+        "alignment_score": 100,
         "move_types": [
           "normal",
-          "fighting",
-          "grass",
-          "ice",
-          "water",
+          "fairy",
+          "flying",
+          "poison",
+          "dark",
+          "electric",
+          "rock",
           "ground",
-          "dragon"
+          "grass",
+          "bug"
         ],
         "se_hits": [
           "flying",
           "psychic",
+          "fairy"
+        ]
+      },
+      {
+        "name": "mewtwo",
+        "role": "sweeper",
+        "alignment_score": 86,
+        "move_types": [
+          "psychic",
+          "fighting",
+          "flying",
+          "fire",
+          "rock",
+          "dark"
+        ],
+        "se_hits": [
+          "fighting",
+          "flying",
+          "rock",
+          "bug",
+          "ghost",
+          "fire",
+          "dark",
           "fairy"
         ]
       }
