@@ -1,31 +1,26 @@
-# Teambuilder DLC
+# MatrixScore — Full Use-Case Implementation / Rating Engine Test
 
-Pokemon team builder for Legends Z-A with defensive/offensive scoring.
+Mission Learning Statement
+- Mission: Implement a MatrixScore rating engine end-to-end, including scoring, suggestions, and evaluation.
+- Learning focus: scoring models, heuristic optimization, caching strategies, CLI/GUI workflows.
+- Project start date: 2025-12-17 (inferred from earliest git commit)
 
 ## Quick Start
 ```bash
-python team_cli_dlc.py                    # Interactive mode
-echo "gengar\nfinalize" | python team_cli_dlc.py  # Pipe commands
+python team_cli_dlc.py
+echo "example_entity\nfinalize" | python team_cli_dlc.py
 ```
 
-## For AI Agents
-
-**Read these first (in order):**
-1. `docs/FUNCTION_INDEX.md` - Find any function quickly
-2. `docs/METRICS.md` - Scoring formulas
-3. `docs/V2_TICKETS.md` - Open work items
-
-**Token-friendly workflow:**
-- Use FUNCTION_INDEX.md to locate code - don't grep randomly
-- Don't read archived docs unless explicitly needed
-- Delete logs after each session
-- Archive completed tickets immediately
-- Keep /docs minimal
+## What This Demonstrates
+- Weighted scoring and rank aggregation across multiple attributes
+- Draft/selection heuristics with guardrails and role balancing
+- Cache-backed data pipelines for fast iteration
+- CLI + GUI workflows for rapid experimentation
 
 ## Project Structure
 ```
 team_cli_dlc.py     # Main CLI (all core logic)
-move_suggestor.py   # Move selection/drafting
+move_suggestor.py   # Suggestion heuristics and role classification
 move_rarity.py      # Rarity scoring
 tk_team_builder.py  # Tkinter GUI
 globals.py          # Shared constants
@@ -36,9 +31,9 @@ archive/            # Old docs, don't read unless asked
 ## Key Files
 | File | Purpose |
 |------|---------|
-| team_cli_dlc.py | Main app - team building, scoring, suggestions |
+| team_cli_dlc.py | Main app - scoring, drafting, suggestions |
 | move_suggestor.py | pick_moves(), role classification |
-| *_cache.json | Runtime caches (don't read, large) |
+| *_cache.json | Runtime caches (large, not for manual edits) |
 
 ---
 Last updated: 2026-01-11
