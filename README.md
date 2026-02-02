@@ -33,6 +33,22 @@ docs/               # Essential docs only
 archive/            # Old docs, don't read unless asked
 ```
 
+## Architecture
+```
+CLI Input
+  |
+  v
+Team Builder Core (team_cli_dlc.py)
+  |
+  +--> Move Suggestion (move_suggestor.py)
+  |
+  +--> Rarity Scoring (move_rarity.py)
+  |
+  +--> UI (tk_team_builder.py)
+  v
+Scores + Recommendations
+```
+
 ## Key Files
 | File | Purpose |
 |------|---------|
